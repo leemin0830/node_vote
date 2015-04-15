@@ -5,6 +5,7 @@ var mongoose = restful.mongoose;
 var app = express();
 
 var port = 8000;
+var currentVoteId;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
@@ -12,44 +13,62 @@ app.use(bodyParser.urlencoded({
 }))
 // parse application/json
 app.use(bodyParser.json())
-app.use(express.query());
 
-mongoose.connect("mongodb://localhost/elector");
+mongoose.connect("mongodb://localhost/vote");
 
 var User = app.resource = restful.model('users', mongoose.Schema({
-	nick : 'string'
+	date: { type: Date, default: Date.now }
 })).methods([ 'get', 'post', 'put', 'delete' ]);
 
 User.register(app, '/users');
 
-var Group = app.resource = restful.model('groups', mongoose.Schema({
-	name : 'string'
-})).methods([ 'get', 'post', 'put', 'delete' ]);
-Group.register(app, '/groups');
-
-
 var Vote = app.resource = restful.model('votes', mongoose.Schema({
-	name : 'string',
-	items:'array',
-	state:'string'
+	title : 'string',
 })).methods([ 'get', 'post', 'put', 'delete' ]);
+
 Vote.register(app, '/votes');
 
-var Item = app.resource = restful.model('items', mongoose.Schema({
-	vote_id : 'string',
-	title:'string',
-	description:'string',
-	count:'number'
+var VotingPaper = app.resource = restful.model('voting_paper', mongoose.Schema({
+	vote_id:'string',
+	date: { type: Date, default: Date.now },
+	user_id:'string'
 })).methods([ 'get', 'post', 'put', 'delete' ]);
-Item.register(app, '/items');
 
-var Result = app.resource = restful.model('results', mongoose.Schema({
-	item_id : 'string',
-	user_id : 'string',
-	description:'string',
-	date: { type: Date, default: Date.now }
-})).methods([ 'get', 'post', 'put', 'delete' ]);
-Group.register(app, '/items');
+VotingPaper.before('post', function(req, res, next) {
+	  if(!currentVoteId){
+		  res.status(500).send({ error: 'no vote opened' });
+		  return;
+	  }else{
+		  req.body.vote_id=currentVoteId;
+	  }
+	  
+	  if(!req.body.user_id){
+		  res.status(401).send({ error: 'unauthorized' });
+		  return;
+	  }
+	  
+	  //중복 투표체크
+	  VotingPaper.findOne({user_id:req.body.user_id,vote_id:currentVoteId}, function (err, votePaper) {
+		  if(votePaper){
+			  console.log(votePaper)
+			  res.status(500).send({ error: 'already voted' });
+			  return;	  
+		  }else{
+			  next();  
+		  }	  
+	  });
+	  
+
+	})
+
+VotingPaper.register(app, '/voting_paper');
+
+app.put('/current_vote',function(req,res,next){
+	console.log(req.body.vote_id);
+	res.send({success:'success'});
+	currentVoteId=req.body.vote_id;
+});
+
 
 app.listen(port);
 
