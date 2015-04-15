@@ -1,0 +1,3651 @@
+/*! Alopex UI - v2.2.30 - 2014-10-27
+* http://ui.alopex.io
+* Copyright (c) 2014 alopex.ui; Licensed Copyright. SK C&C. All rights reserved. */
+@CHARSET "UTF-8";
+/*
+classname이 지정되면 이 속성은 사라짐
+단, 원하는 경우 customizing은 가능할 수도 있음
+*/
+
+* {
+	-webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+table,tr,th,td {
+	border-collapse: collapse;
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+
+p{
+	margin:1em 0;
+	display:block;
+}
+
+label {
+	vertical-align: middle;	
+}
+
+
+/* Common Style */
+.af-accordion {
+	list-style: none;
+	margin:0px;
+	padding:0px;
+	position:relative;
+}
+
+.af-expandable {
+	cursor: pointer;
+}
+
+
+/* 대 메뉴 */
+
+/*******************대 메뉴 끝******************/
+
+.af-accordion a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+
+.af-accordion .af-accordion-sub > li { /* 세로로 display */
+	display: block;
+	width:100%;
+	list-style: none;
+}
+
+
+/********************** Mobile Only */
+.af-accordion li {
+	list-style:none ;	
+}
+
+.af-accordion ul {
+	width:100%;
+}
+
+.af-accordion  a {
+	padding:10px 20px;
+}
+
+.af-accordion > li {
+	width:auto;
+	line-height: 43px;
+}
+
+.af-accordion > li.af-accordion-expand {
+	
+}
+
+.af-accordion > li.af-expandable > a {
+
+}
+
+.af-accordion > li.af-accordion-expand > a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+.af-accordion > li:hover.af-accordion-expand > a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-accordion > li > .af-accordion-sub {
+	position:relative;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+.af-accordion .af-accordion-sub a {
+	width:100%;
+	line-height: 30px;
+	padding: 4px 30px;
+}
+
+.af-accordion .af-accordion-sub > li {
+	line-height: 32px;
+}
+
+.af-accordion .af-accordion-sub > li.af-accordion-expand {
+
+}
+
+.af-accordion .af-accordion-sub .af-expandable > a {
+	width:100%;
+	line-height: 30px;
+	padding: 4px 30px;
+}
+
+.af-accordion .af-accordion-sub > li.af-expandable.af-expand > a{
+
+}
+
+.af-accordion .af-icon {display:none;}
+.messagebox{
+	background-color: #FFF;
+	border-radius: 7px;
+	border: 1px solid #30496C;
+	min-height: 100px;
+	box-shadow: #000 1px 1px 5px 0px;
+	box-sizing: border-box;
+	color: #444;
+	display: block;
+	font-family: NanumGothic;
+	height: 141px;
+	line-height: 18px;
+	min-width:150px;
+	width: auto;
+}
+.messagebox .messageWrap{padding:19px 16px;}
+.messagebox .msg_icon{float:left; width:53px; height:53px;}
+.messagebox .msg_icon.info{background:url(./images/ico_msg_info.png) no-repeat center center;}
+.messagebox .msg_icon.error{background:url(./images/ico_msg_error.png) no-repeat center center;}
+.messagebox .msg_icon.confirm{background:url(./images/ico_msg_confirm.png) no-repeat center center;}
+.messagebox .msg_txt{color:#444444; float:left; font-size:12px; margin-left:20px; width:calc(100% - 73px);}
+.messagebox .msgBtnWrap{text-align:center}
+.messagebox button.btn_common{margin:0px; width:auto; min-width:60px;}
+.messagebox button.btn_common + button.btn_common{margin-left:5%;} 
+
+.af-button {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	text-align: center;
+	margin: 5px 5px;
+	padding: 0px 20px 0px 20px;
+	vertical-align: middle;
+	line-height: 33px;
+	min-height:35px;
+	text-decoration: none;
+	*zoom:1; /* for IE7 */
+	*display:inline; /* for IE7 */
+	
+	border-width: 1px;
+	border-style: solid;
+}
+.af-carousel {
+	position:relative;
+}
+.af-carousel > .af-paging {
+	position:absolute;
+	z-index:1;
+	width:100%;
+	bottom:0;
+}
+
+.af-carousel > .prev, .af-carousel > .next {
+	position:absolute;
+	width: 23px;
+	height:46px;
+	top:50%;
+	margin-top:-23px;
+	z-index:2;
+	line-height:30px;
+}
+
+.af-carousel > .prev {
+	left:0px;
+	background-image:url(images/carousel_prev.png);
+}
+
+.af-carousel > .next {
+	right:0px;
+	background:url(images/carousel_next.png) no-repeat;
+	
+}
+
+.af-checkbox {
+	overflow: hidden;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin: 8px;
+	padding:0px;
+	border:0px;
+}
+
+/* checkbox custom image for webkit browser */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.af-checkbox {
+		appearance:none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-khtml-appearance:none;
+	}
+}
+
+.af-dateinput {
+	overflow: hidden;
+	padding: 0px 8px ;
+	margin: 0 10px ;
+	line-height: 26px;
+	height:26px;
+	vertical-align: middle;
+}
+
+.af-dateinput-image {
+	vertical-align:middle;
+}
+
+.af-reset-button {
+	cursor: pointer;
+	margin-left: -28px;
+	margin-right:14px;
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border-radius: 10px;
+	background: #BBB;
+	text-align: center;
+	color: #FFF;
+	line-height: 14px;
+}
+.af-datepicker {
+	padding: 6px ;
+	width: 277px;
+	font-size: 12px;
+	border: 1px solid;
+}
+
+.af-datepicker a {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.af-datepicker .af-datepicker-header {
+	height:40px;
+	*height:29px;
+	border-bottom:1px solid;
+	padding:5px 4px;
+}
+
+.af-datepicker .af-datepicker-header .af-datepicker-control {
+	text-decoration: none;
+	display:inline-block;
+}
+
+.af-datepicker .af-subHeader-year {
+	width: 120px;
+	height: 100%;
+	float: left;
+	margin-right: 10px ;
+	text-align:center;
+}
+
+.af-datepicker .af-subHeader-year-wide {
+	width: 220px;
+	*width:210px;
+	height: 100%;
+	float: left;
+	text-align:center;
+}
+.af-datepicker.af-inline .af-subHeader-year-wide {
+	width: 100%;
+	*width:98%;
+	height: 100%;
+	float: left;
+}
+
+.af-datepicker .af-subHeader-month {
+	width: 100px;
+	height: 100%;
+	float: left;
+	text-align:center;
+}
+
+.af-datepicker.af-inline .af-subHeader-year, .af-datepicker.af-inline .af-subHeader-month {
+	width:120px;
+}
+
+.af-datepicker .af-prev-year,.af-datepicker .af-prev-month {
+	padding: 0 ;
+	display:inline-block;
+	float:left;
+	height:19px;
+	width:19px;
+}
+
+
+.af-datepicker .af-prev-year .af-datepicker-control,
+.af-datepicker .af-prev-month .af-datepicker-control {
+	width:19px;
+	height:19px;
+}
+
+.af-datepicker .af-next-year,
+.af-datepicker .af-next-month {
+	padding: 0 ;
+	display:inline-block;
+	float: right;
+	width:19px;
+	height:19px;
+}
+
+.af-datepicker .af-next-year .af-datepicker-control,
+.af-datepicker .af-next-month .af-datepicker-control {
+	width:19px;
+	height:19px;
+}
+
+.af-datepicker .af-btn-close {
+	position:absolute;
+	height:15px;
+	width:15px;
+	top:13px;
+	right:10px;
+	
+}
+
+.af-datepicker .af-btn-close .af-datepicker-control {
+	width:15px;
+	height:15px;
+	display:block;
+}
+
+.af-datepicker .af-current-year {
+	text-align: center;
+	width: 68%;
+	*width: 51%;
+	color:#ffffff;
+	font-weight: bold;
+	line-height:19px;
+	padding: 0 10px ;
+	display:inline-block;
+}
+
+.af-datepicker .af-current-month {
+	text-align: center;
+	width: 61%;
+	*width: 55%;
+	color:#ffffff;
+	font-weight: bold;
+	line-height:19px;
+	padding: 0px ;
+	display:inline-block;
+}
+
+.af-datepicker .af-current-year-select, .af-datepicker .af-current-month-select {
+	width: 56%;
+	*width: 54%;
+	margin-right:3px;
+	margin-left:3px;
+	display:inline-block;
+	line-height:16px;
+}
+	
+.af-datepicker .af-current-month-select {
+	width: 53%;
+	*width: 43%;
+}
+
+.af-datepicker.af-inline .af-current-year-select, .af-datepicker.af-inline .af-current-month-select {
+	width: 60%;
+	*width: 54%;
+}
+
+
+.af-datepicker.af-inline .af-current-year {
+	width: 65%;
+	*width: 36%;
+}
+
+.af-datepicker.af-inline .af-current-month {
+	width: 65%;
+	*width: 36%;
+}
+
+.af-datepicker .af-current-year-select, .af-datepicker .af-current-month-select {
+	height:19px;
+}
+
+.af-datepicker .af-datepicker-tableCell{
+	border: 1px solid;
+	width:37px;
+	height:22px;
+}
+
+.af-datepicker table {
+	border-collapse: collapse;
+	padding: 0 ;
+	width: 100%;
+}
+
+.af-datepicker .af-datepicker-day {
+	display: block;
+	height:22px;
+	text-align: right;
+	padding-right:5px;
+}
+
+.af-datepicker .af-datepicker-month {
+	display: block;
+	height:22px;
+	text-align: center;
+}
+
+
+.af-datepicker .af-datepicker-weekdays {
+	width:37px;
+	height: 23px;
+	text-align: center;
+}
+
+.af-datepicker .af-datepicker-prev-month-day,
+.af-datepicker .af-datepicker-next-month-day {
+    display: block;
+	height:22px;
+	text-align: right;
+	padding-right:5px;
+}
+
+.af-datepicker .af-datepicker-bottom {
+    display: block;
+    width:100%;
+    height:36px; 
+    border: 1px solid;
+}
+
+.af-datepicker .af-datepicker-childbottom {
+    text-align: center;
+}
+
+.af-datepicker .af-datepicker-bottom .af-datepicker-bottom-button {
+    margin:5px;
+}
+
+.af-datepicker .af-datepicker-bottom .af-datepicker-bottom-text {
+    vertical-align:middle;
+}
+
+.af-daterange {
+	display:inline-block;
+}
+
+.af-daterange .af-daterange-start-button, .af-daterange .af-daterange-end-button{
+	vertical-align:middle;
+}
+
+.af-daterange .af-daterange-start, .af-daterange .af-daterange-end{
+	overflow: hidden;
+	padding: 0px 8px ;
+	margin: 0 10px ;
+	line-height: 26px;
+	height:26px;
+	vertical-align: middle;
+}
+
+
+.af-daterange.af-disabled .af-daterange-start-button, 
+.af-daterange.af-disabled .af-daterange-end-button,
+.af-daterange.af-disabled .af-daterange-start, 
+.af-daterange.af-disabled .af-daterange-end {
+	opacity: 0.7;
+}
+.af-dialog {
+	display:none;
+}
+
+.af-dialog .dialog_header{
+	position:relative;
+	width:100%;
+	height:46px;
+	line-height:46px;
+	text-align: center;
+}
+
+.af-dialog .dialog_header .dialog_btn{
+	position:absolute;
+	width:25px; 
+	height:25px;
+	top:10px;
+	right:10px;
+	padding:0px ;
+	cursor:pointer;	
+}
+
+.af-dialog .dialog_btn{
+	position:absolute;
+	width:100%;
+	height:53px;
+	bottom:13px;
+	padding:10px 0px ;
+	border:0;
+	text-align: center;
+}
+
+.af-dialog .resizeBtn{
+	position:absolute;
+	right:4px;
+	bottom:4px;
+    width:8px;
+    height:8px;
+    cursor:se-resize;
+    background:url('./images/icon_inputbox_resizing.png') no-repeat center center;
+}
+
+/********* dialog mask *********/
+.af-dialog-mask {
+	
+}
+.af-dropdown, .af-dropdown .af-submenu {
+	z-index:10;
+	float: left;
+	padding: 5px 0;
+	margin: 2px 0 0;
+	background-clip: padding-box;
+}
+
+.af-dropdown, .af-dropdown * {
+	list-style:none !important;
+}
+
+.af-dropdown .af-submenu {
+	position:absolute;
+	left:100%;
+	top:0px;
+	display:none;
+}
+.af-dropdown .af-menuitem {position:relative;}
+.af-dropdown .af-menuitem > a{width:100%; height:100%;display:inline-block;}
+.af-dropdown .af-divider {}
+.af-dropdown.af-default .af-group-header {text-indent:5px;}
+.af-dropdown .af-expandable {position:relative;}
+.af-dropdown .af-expanded>.af-submenu { display:inline-block; }
+
+.af-group {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: hidden;
+	text-align: center;
+	margin: 5px 5px;
+	vertical-align: middle;
+	line-height: 33px;
+	min-height: 35px;
+	text-decoration: none;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.af-group .af-button {
+	margin:0px;
+	border:0px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	float:left;
+}
+
+.af-group .af-radio, .af-group .af-checkbox {
+	top:0;
+	left:0;
+	opacity:0;
+	position:absolute;
+}
+
+.af-group .af-radio-text, .af-group .af-checkbox-text {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	text-align: center;
+	padding: 0px 20px 0px 20px;
+	vertical-align: middle;
+	line-height: 33px;
+	min-height: 35px;
+	text-decoration: none;
+}
+
+.af-group.af-horizontal .af-radio-text, 
+.af-group.af-horizontal .af-checkbox-text {
+	float:left;
+	border-right-width: 1px;
+	border-right-style: solid;
+}
+
+.af-group.af-vertical .af-button,
+.af-group.af-vertical .af-radio-text, 
+.af-group.af-vertical .af-checkbox-text {
+	width:100%;
+	float:left;
+	clear:both;
+	border:0px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+.af-group .af-button:last-child,
+.af-group .af-radio-text:last-child, 
+.af-group .af-checkbox-text:last-child {
+	border-width: 0px;
+}
+
+.af-groupbutton {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: hidden;
+	text-align: center;
+	margin: 5px 5px;
+	vertical-align: middle;
+	line-height: 33px;
+	min-height: 35px;
+	text-decoration: none;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.af-groupbutton .af-button {
+	margin:0px;
+	border:0px;
+	border-right-width: 1px;
+	border-right-style: solid;
+	float:left;
+}
+
+.af-groupbutton .af-radio, .af-groupbutton .af-checkbox {
+	top:0;
+	left:0;
+	opacity:0;
+	position:absolute;
+}
+
+.af-groupbutton .af-radio-text, .af-groupbutton .af-checkbox-text {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	text-align: center;
+	padding: 0px 20px 0px 20px;
+	vertical-align: middle;
+	line-height: 33px;
+	min-height: 35px;
+	text-decoration: none;
+}
+
+
+.af-groupbutton.af-horizontal .af-radio-text, 
+.af-groupbutton.af-horizontal .af-checkbox-text {
+	float:left;
+	border-right-width: 1px;
+	border-right-style: solid;
+}
+
+
+.af-groupbutton.af-vertical .af-button, 
+.af-groupbutton.af-vertical .af-radio-text, 
+.af-groupbutton.af-vertical .af-checkbox-text {
+	width:100%;
+	float:left;
+	clear:both;
+	border:0px;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+.af-groupbutton .af-button:last-child,
+.af-groupbutton .af-radio-text:last-child, 
+.af-groupbutton .af-checkbox-text:last-child {
+	border-width: 0px;
+}
+
+
+.af-icon {
+	display:inline-block;
+	background-repeat:no-repeat;
+	vertical-align:middle;
+}
+.af-list {
+	list-style: none;
+	padding: 0px ;
+	margin: 0px ;
+	width: 100%;
+	height:auto;
+}
+
+.af-list span {
+	display:inline-block;
+}
+
+.af-list .af-list-row {
+	position:relative;
+	display:block;
+	margin:0 ;
+	height: auto;
+	padding: 0 20px;
+	overflow:hidden;
+	min-height:40px;
+	line-height:40px;
+}
+
+.af-list .af-list-text {
+	
+}
+
+.af-list .af-list-title {
+	margin:0px ;
+}
+
+.af-list .af-list-row .af-list-btn {
+/* 	float:left; */
+	display:inline-block;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	vertical-align:middle;
+	text-decoration:none;
+	cursor:pointer;
+	
+}
+
+.af-list .af-list-row .af-list-icon{
+	position: absolute;
+	right:15px;
+	top: 50%;
+	height:18px;
+	width:18px;
+	margin-top: -9px ;
+}
+
+.af-list .af-list-divider {
+	padding:0px 8px ;
+}
+
+/***********************************************/
+
+.af-list .af-list-row .af-list-btn.first {
+	width:80%;
+}
+
+.af-list .af-list-row .af-list-btn.split {
+	position:absolute;
+	width:20%;
+	right:0px;
+	z-index:2;
+	text-align: center;
+}
+
+.af-list .af-list-row .af-list-thumbnail{
+	float:left;
+	border:0;
+	display:table-cell;
+	vertical-align:middle;
+	margin:0 5px ;
+}
+
+.af-list .af-list-row .af-list-thumbnail-icon{
+/* 	float:left; */
+/* 	border:0; */
+/* 	display:table-cell; */
+/* 	vertical-align:middle; */
+/* 	margin:8px ; */
+}
+
+
+/* Common Style */
+.af-navmenu {
+	list-style: none;
+	margin:0px;
+	padding:0px;
+	position:relative;
+}
+
+.af-navmenu.af-desktop li {
+	position:relative;
+	cursor: pointer;
+	list-style: none ;
+}
+
+/* 대 메뉴 */
+
+.af-navmenu.af-desktop {
+	height:45px;
+}
+
+.af-navmenu.af-desktop > li {
+	padding: 0 20px;
+	width:auto;
+	line-height: 45px;
+	height: 45px;
+	display: inline-block;
+	float:left;
+}
+
+.af-navmenu.af-desktop > li > a {
+	text-decoration : none;
+	display:inline;
+	height:100%;
+}
+
+.af-navmenu.af-desktop > li.af-expandable > .af-navmenu-icon{
+	display:inline-block;
+	width:10px;
+	height:10px;
+	border:0;
+	margin-left:6px;
+}
+
+.af-navmenu.af-desktop > li.af-navmenu-expand > .af-navmenu-icon{
+	visibility: hidden;
+}
+
+.af-navmenu.af-desktop > li.af-navmenu-expand {
+
+}
+
+.af-navmenu.af-desktop > li.af-navmenu-expand > a {
+	text-decoration : none;
+	display:inline;
+	height:100%;
+}
+
+.af-navmenu.af-desktop > li:hover.af-navmenu-expand > a {
+	text-decoration : none;
+	display:inline;
+	height:100%;
+}
+
+/*******************대 메뉴 끝******************/
+
+.af-navmenu a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+
+.af-navmenu .af-navmenu-sub > li { /* 세로로 display */
+	display: block;
+	width:100%;
+	list-style: none;
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-navmenu.af-desktop > li > .af-navmenu-sub {
+	position:absolute;
+	top:98%;
+	left:60%;
+	margin:0px;
+	padding:0px;
+}
+
+/* 3 depth 이상 sub menu */
+.af-navmenu.af-desktop .af-navmenu-sub {
+	position:absolute;
+	top:3px;
+	left:102%;
+	margin:0px;
+	padding:0px;
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub > li {
+	line-height: 32px;
+	height:32px;
+	padding:0 20px;
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub > li.af-navmenu-expand {
+
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub > li.af-expandable > .af-navmenu-icon{
+	position:absolute;
+	display:inline-block;
+	width:10px;
+	height:20px;
+	margin-left:6px;
+	top:6px;
+	right:20px;
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub > li.af-navmenu-expand > .af-navmenu-icon{
+	visibility: hidden;
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub .af-expandable > a {
+	width:100%;
+	line-height: 32px;
+	height:32px;
+	display:inline;
+}
+
+.af-navmenu.af-desktop .af-navmenu-sub a {
+	width:100%;
+	line-height: 32px;
+	height:32px;
+}
+
+/********************** Mobile Only */
+.af-navmenu.af-mobile li {
+	list-style:none ;	
+}
+
+.af-navmenu.af-mobile ul {
+	width:100%;
+}
+
+.af-navmenu.af-mobile  a {
+	padding:10px 20px;
+}
+
+.af-navmenu.af-mobile > li {
+	width:auto;
+	line-height: 43px;
+}
+
+.af-navmenu.af-mobile > li.af-navmenu-expand {
+	
+}
+
+.af-navmenu.af-mobile > li.af-expandable > a {
+
+}
+
+.af-navmenu.af-mobile > li.af-navmenu-expand > a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+.af-navmenu.af-mobile > li:hover.af-navmenu-expand > a {
+	text-decoration : none;
+	display:block;
+	height:100%;
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-navmenu.af-mobile > li > .af-navmenu-sub {
+	position:relative;
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+.af-navmenu.af-mobile .af-navmenu-sub a {
+	width:100%;
+	line-height: 30px;
+	padding: 4px 30px;
+}
+
+.af-navmenu.af-mobile .af-navmenu-sub > li {
+	line-height: 32px;
+}
+
+.af-navmenu.af-mobile .af-navmenu-sub > li.af-navmenu-expand {
+
+}
+
+.af-navmenu.af-mobile .af-navmenu-sub .af-expandable > a {
+	width:100%;
+	line-height: 30px;
+	padding: 4px 30px;
+}
+
+.af-navmenu.af-mobile .af-navmenu-sub > li.af-expandable.af-expand > a{
+
+}
+
+
+.af-progress-sample {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -40px;
+	margin-left: -100px;
+	width: 80px;
+	height: 80px;
+	text-align: center;
+	z-index: 9999;
+	background-image: url(images/loading.gif);
+	background-size:100%;
+	-webkit-border-radius:8px; border-radius:8px; margin:10px auto;
+}
+
+.af-progress-sample-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.4;
+	z-index: 9997;
+}
+.af-pager {
+	cursor: pointer;
+	padding: 0px ;
+	margin: 0px ;
+	text-align: center;
+}
+
+.af-pager a{
+	display:inline-block;
+}
+
+.af-pager.af-mobile .af-pager-link {
+	width:12px;
+	height:12px;
+	margin:14px 7px ;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	-o-border-radius:6px;
+	border-radius:6px;
+}
+
+.af-pager .af-pager-link {
+	width:30px;
+	line-height:40px;
+}
+
+.af-pager .af-pager-prev,
+.af-pager .af-pager-prevgroup,
+.af-pager-next,
+.af-pager .af-pager-nextgroup {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	text-align: center;
+	margin: 5px 5px ;
+	border: 0;
+	padding: 0px 17px 0 17px ;
+	vertical-align: middle;
+	line-height: 25px;
+	text-decoration: none;
+	*zoom:1; /* for IE7*/
+	*display:inline; /* for IE7*/
+}
+
+.af-paging {
+	cursor: pointer;
+	padding: 0px ;
+	margin: 0px ;
+	text-align: center;
+}
+
+.af-paging a{
+	display:inline-block;
+}
+
+.af-paging .af-paging-mobile {
+	width:12px;
+	height:12px;
+	margin:14px 7px ;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	-o-border-radius:6px;
+	border-radius:6px;
+}
+
+.af-paging .af-paging-number {
+	width:30px;
+	line-height:40px;
+}
+
+.af-paging .af-paging-first,
+.af-paging .af-paging-prev,
+.af-paging .af-paging-prevgroup,
+.af-paging .af-paging-next,
+.af-paging .af-paging-nextgroup,
+.af-paging .af-paging-last {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	overflow: visible;
+	text-align: center;
+	margin: 5px 5px ;
+	border: 0;
+	padding: 0px 17px 0 17px ;
+	vertical-align: middle;
+	line-height: 25px;
+	text-decoration: none;
+	*zoom:1; /* for IE7*/
+	*display:inline; /* for IE7*/
+}
+
+.af-panel{
+/* 	display:inline-block;	 */
+}
+
+.af-progressbar {
+	border: 1px solid #AAA;
+}
+
+.af-progressbar div {
+	margin: -1px 0 0 -1px ;
+}
+
+
+
+.af-radio {
+	overflow: hidden;
+	vertical-align: middle;
+	width: 16px;
+	height: 16px;
+	margin: 8px ;
+	padding:0px ;
+	background: none;
+	border:0px;
+}
+
+
+/* radio button custom image for webkit browser */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.af-radio {
+		appearance:none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		-khtml-appearance:none;
+	}
+	
+}
+
+
+.af-select {
+	display: inline-block;
+	cursor: pointer;
+	position: relative;
+	text-align: center;
+	margin: 5px 5px;
+	line-height:normal;
+	vertical-align:middle;
+	*zoom:1; /* for IE7*/
+	*display:inline; /* for IE7*/
+	*height:25px; /* for IE7*/
+}
+
+.af-multiselect {
+	border-top: 1px solid #b2b2b2;
+	border-right: 1px solid #b2b2b2;
+	border-left: 1px solid #b2b2b2;
+	border-bottom: 2px solid #b2b2b2;
+	margin-bottom:-3px;
+	
+/* 	scrollbar-face-color: #ffffff; */
+/* 	scrollbar-shadow-color: #ffffff; */
+/* 	scrollbar-highlight-color: #ffffff; */
+/* 	scrollbar-3dlight-color: #eeeeee; */
+/* 	scrollbar-darkshadow-color: #eeeeee; */
+/* 	scrollbar-track-color: #eeeeee; */
+/* 	scrollbar-arrow-color: #a1a4a8; */
+}
+
+.af-slider {
+	
+}
+
+.af-slider div {
+	border: 1px solid lightGrey;
+	margin: -2px 0 0 0 ;
+}
+
+
+.af-spinner {
+	
+}
+
+.af-spinner-wrapper {
+	position:relative;
+	display:inline-block;
+    zoom: 1;
+    *display: inline;
+}
+.af-table-wrapper {
+	position:relative;
+	margin: 10px 0;
+}
+
+
+.af-table-wrapper th {
+	padding: 0px 10px;
+	vertical-align: middle;
+	height:31px;
+	line-height:31px;
+	*height:17px;
+	overflow:hidden;
+	position:relative;
+}
+
+.af-table-wrapper td {
+	padding: 0px 10px;
+	vertical-align: middle;
+	height:28px;
+	line-height:28px;
+	*height:17px;
+	overflow:hidden;
+	position:relative;
+/* 	white-space:nowrap; */
+}
+
+.af-table-wrapper .af-sort-ascending,.af-sort-descending {
+	position: relative;
+}
+
+.af-table .af-table-ascending .af-icon{
+	position:relative;
+	display:inline-block;
+	width:10px;
+	height:10px;
+	margin-top:0px;
+	margin-left:5px;
+	border:0;
+	background-repeat:no-repeat;
+}
+
+.af-table .af-table-descending .af-icon{
+	position:relative;
+	display:inline-block;
+	width:10px;
+	height:10px;
+	margin-top:0px;
+	margin-left:5px;
+	border:0;
+	background-repeat:no-repeat;
+}
+
+.af-table .af-table-resize {
+	position: absolute;
+	right: 1px;
+	bottom: 1px;
+	width: 0px;
+	height: 0px;
+	border-left: 5px solid transparent;
+	border-bottom: 5px solid black;
+}
+
+.af-table .af-table-editor {
+	cursor:text;
+}
+
+.af-table .af-table-editor.af-editing {
+	padding:0px ;
+	padding-left:10px ;
+}
+
+.af-table .af-table-editor.af-edited {
+	
+}
+
+.af-table .af-table-editor input {
+	overflow: hidden;
+	border:0px;
+	padding: 0px 0px ;
+	margin: 0px ;
+	line-height: 12px;
+	vertical-align: middle;
+	min-width:90%;
+}
+
+.af-table-scroller {
+	overflow:auto;
+	overflow-y:auto;
+	display:inline-block;
+	width:100%;
+}
+
+/* .af-table-scroller.body { */
+/* 	margin-top:30px; */
+/* } */
+
+.af-table-scroller .af-table-head {
+}
+
+.af-tabs {
+	width: 100%;
+	margin: 0 ;
+	padding: 0 ;
+}
+
+.af-tabs .af-tabs-button-group {
+	display:block;
+	width: 100%;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+}
+
+.af-tabs .af-tabs-button {
+	display:block;
+	float: left;
+	cursor: pointer;
+	margin: 0;
+	text-align: center;
+	padding: 0px 15px;
+	text-decoration: none;
+	line-height:33px;
+	position:relative;
+}
+
+.af-tabs .af-tabs-content {
+	padding: 20px 15px;
+	margin-top: -1px;
+	display:block;
+	border-top:1px solid #c3c3c3;
+}
+
+.af-tabs .af-tabs-button-icon{
+	display:block;
+	margin:auto ;
+	*margin:auto 0 ; /* for IE7*/ 
+	text-align:center;
+	border:0px;
+}
+
+
+.af-textarea {
+	padding: 8px ;
+	margin: 10px ;
+	line-height: 21px;
+	vertical-align: middle;
+	overflow:auto;
+	
+	border:1px solid;
+	
+	scrollbar-face-color: #ffffff;
+	scrollbar-shadow-color: #ffffff;
+	scrollbar-highlight-color: #ffffff;
+	scrollbar-3dlight-color: #eeeeee;
+	scrollbar-darkshadow-color: #eeeeee;
+	scrollbar-track-color: #eeeeee;
+	scrollbar-arrow-color: #a1a4a8;
+}
+
+.af-textinput {
+	overflow: hidden;
+	padding: 0px 8px ;
+	margin: 0 10px ;
+	line-height: 26px;
+	height:26px;
+	vertical-align: middle;
+}
+
+
+.af-tooltip {
+	z-index:10;
+	position:absolute;
+	padding: 5px 10px;
+}
+.af-tooltip:before, .af-tooltip:after {
+	z-index:10;
+	position:absolute;
+    display:block; 
+}
+
+.af-tree {
+  height:auto;
+  list-style:none ;
+  display:block;
+  padding-left:0px;
+}
+
+.af-tree .af-tree-node {
+	line-height:26px;
+}
+
+.af-tree > .af-tree-node {
+	list-style:none ;
+}
+
+.af-tree > .af-tree-node > ul{
+	margin-left:48px;
+}
+
+.af-tree ul{
+	margin-left:28px;
+}
+
+.af-tree .af-tree-expanded .af-tree-node{
+	line-height:22px;
+}
+
+.af-tree > .af-tree-node > .af-tree-icon {
+	width:15px;
+	height:15px;
+	margin-right:10px;
+	margin-left:0px;
+	margin-top:0px;
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.af-tree .af-tree-icon{
+	width:15px;
+	height:15px;
+	margin-right:5px;
+	margin-left:-20px;
+	margin-top:0px;
+	display:inline-block;
+	vertical-align: middle;
+}
+
+.af-tree .af-tree-expanded > .af-tree-icon{
+	background: url('./images/icon_tree_expand.png') no-repeat center center;
+}
+
+.af-tree .af-tree-group {
+	margin:15px 0 19px 0;
+	list-style:none;
+	padding-left:33px;
+}
+
+.af-tree .af-tree-link {
+  height:24px;
+  margin:3px 0;
+  display:inline-block;
+  width:auto;
+  cursor:pointer;
+  padding: 2px;
+}
+
+.af-tree .af-tree input[type="checkbox"]{
+  margin:0 7px 0 0px ;
+  vertical-align: middle;
+}
+
+.af-tree .af-tree-img{
+  width:20px;
+  height:20px;
+  display: inline-block;
+  margin-right: 3px;
+  vertical-align: middle;
+
+}
+
+.af-tree .af-tree-label{
+  display: inline-block;
+  height:100%;
+  vertical-align: middle;
+  line-height: 20px;
+  padding:0px 3px;
+  cursor:pointer;
+}
+
+/*! Alopex UI - v2.2.30 - 2014-10-27
+* http://ui.alopex.io
+* Copyright (c) 2014 alopex.ui; Licensed Copyright. SK C&C. All rights reserved. */
+@CHARSET "UTF-8";
+/*
+#####################################################
+default theme
+data-theme속성이 없는 경우
+#####################################################
+*/
+* {
+	font-family: Arial, Helvetica, 돋움, 굴림, sans-serif;
+	/* font-size: 12px;*/
+	line-height:21px; 
+	color:#000000;
+	
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+
+h1, h2, h3, h4, h5, h6{ font-weight: bold; color:#000000;}
+h1{ font-size: 40px; line-height:48px; margin: 40px 0 }
+h2{ font-size: 30px; line-height:38px; margin: 32px 0 }
+h3{ font-size: 24px; line-height:32px; margin: 29px 0 }
+h4{ font-size: 20px; line-height:26px; margin: 29px 0 }
+h5{ font-size: 16px; line-height:21px; margin: 27px 0 }
+h6{ font-size: 14px; line-height:20px; margin: 26px 0 }
+
+/* for label tag in IE browser */
+label.af-disabled{
+	display:inline-block;
+	color:#ababab;
+}
+
+ul.af-default, ol.af-default, li.af-default,
+.af-default ul, .af-default ol, .af-default li {
+	list-style:none;
+}
+
+.af-disabled {opacity:0.5;}
+
+/* Common Style */
+.af-accordion.af-default {
+	
+}
+
+
+
+/*******************대 메뉴 끝******************/
+
+.af-accordion.af-default a {
+	color:#000000;
+	font-size:12px;
+}
+
+
+.af-accordion.af-default .af-accordion-sub > li { /* 세로로 display */
+
+}
+
+/********************** Mobile Only */
+.af-accordion.af-default li {
+
+}
+
+.af-accordion.af-default ul {
+
+}
+
+.af-accordion.af-default  a {
+
+}
+
+.af-accordion.af-default  a.af-hover {
+	background: #00cfdc;
+	background: -ms-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -moz-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -o-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8BEEF4), color-stop(1, #2BD9E4));
+	background: -webkit-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: linear-gradient(to bottom, #8BEEF4 0%, #2BD9E4 100%);
+  	
+  	border-color:#00a0ae;
+}
+
+/*customizable */
+.af-accordion.af-default  a.af-pressed {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -moz-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -o-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #32D0EB), color-stop(1, #04BFE0));
+	background: -webkit-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: linear-gradient(to bottom, #32D0EB 0%, #04BFE0 100%);
+  	
+  	border-color:#007191;
+	color: #ffffff;
+}	
+
+.af-accordion.af-default  a.af-disabled{
+	border: 1px solid #c8c8c8;
+	color: #9a9a9a;
+	background: #e7e7e7;
+	
+}
+
+
+.af-accordion.af-default > li {
+	background: #e5e6e5;
+	background: -ms-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4 ), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4  0%, #e5e6e5 100%);
+	
+	border:1px solid #a6a6a6;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-accordion.af-default > li.af-hover {
+	background: #f1f1f1 ;
+	background: -ms-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -moz-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -o-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff  ), color-stop(1, #f1f1f1));
+	background: -webkit-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: linear-gradient(to bottom, #ffffff   0%, #f1f1f1 100%);
+	
+	border:1px solid #dadada;
+}
+
+.af-accordion.af-default > li.af-accordion-expand {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec ), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec  0%, #04bfe0 100%);
+	
+	border:1px solid #0099c6;
+}
+
+.af-accordion.af-default > li.af-expandable > a {
+/* 	background:url('./images/navibar_dropdown_normal.png') no-repeat 95% center; */
+}
+
+.af-accordion.af-default > li.af-accordion-expand > a {
+	color:#ffffff;
+	font-size:14px;
+	font-weight:bold;
+/* 	background: url('./images/navibar_dropdown_close_w.png') no-repeat 95% center; */
+}
+
+.af-accordion.af-default > li.af-hover.af-accordion-expand > a {
+	color:#474747;
+	font-size:14px;
+	font-weight:bold;
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-accordion.af-default > li > .af-accordion-sub {
+	background: #ffffff;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	border:1px solid #c3c3c3;
+}
+
+.af-accordion.af-default .af-accordion-sub a {
+	background:url(./images/navibar_child_normal.png) no-repeat 95% center;
+}
+
+.af-accordion.af-default .af-accordion-sub > li {
+	border-bottom: 1px solid #edeef0;
+	background: #ffffff;
+}
+
+.af-accordion.af-default .af-accordion-sub > li.af-hover {
+	background: #e5e6e5 ;
+	background: -ms-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4 0%, #e5e6e5 100%);
+}
+
+.af-accordion.af-default .af-accordion-sub > li.af-accordion-expand {
+	background: #a5e8f5 ;
+	background: -ms-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -moz-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -o-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #beedf6), color-stop(1, #a5e8f5));
+	background: -webkit-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: linear-gradient(to bottom, #beedf6 0%, #a5e8f5 100%);
+}
+
+.af-accordion.af-default .af-expandable > a {
+	background:url(./images/navibar_child_dropdown_normal.png) no-repeat 95% center;
+}
+
+.af-accordion.af-default .af-expandable > a.af-hover{
+	background: url('./images/navibar_child_dropdown_hover.png') no-repeat 95% center;
+}
+
+.af-accordion.af-default .af-expandable > a.af-expand{
+	background: url('./images/navibar_child_dropdown_close_w.png') no-repeat 95% center;
+}
+
+.af-button.af-default {
+	background: #d9e2e9;
+	background: -ms-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -moz-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -o-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F4F4F4), color-stop(1, #E5E6E5));
+	background: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: linear-gradient(to bottom, #F4F4F4 0%, #E5E6E5 100%);
+  	
+  	border-color:#a7a7a7;
+  	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+  	font-size: 12px;
+  	color: #000000;
+}
+
+
+
+/*customizable */
+.af-button.af-default.af-hover {
+	color: #ffffff;
+	
+	background: #00cfdc;
+	background: -ms-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -moz-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -o-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #8BEEF4), color-stop(1, #2BD9E4));
+	background: -webkit-linear-gradient(top, #8BEEF4 0%, #2BD9E4 100%);
+	background: linear-gradient(to bottom, #8BEEF4 0%, #2BD9E4 100%);
+  	
+  	border-color:#00a0ae;
+}
+
+/*customizable */
+.af-button.af-default.af-pressed, .af-button.af-default.af-checked {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -moz-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -o-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #32D0EB), color-stop(1, #04BFE0));
+	background: -webkit-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: linear-gradient(to bottom, #32D0EB 0%, #04BFE0 100%);
+  	
+  	border-color:#007191;
+	color: #ffffff;
+}	
+
+.af-button.af-default.af-disabled{
+	border: 1px solid #c8c8c8;
+	color: #9a9a9a;
+	background: #e7e7e7;
+	
+}
+
+
+/* checkbox custom image for webkit browser */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.af-checkbox.af-default {
+		background: url('./images/checkbox_unchecked.png') no-repeat center center;
+	}
+	
+	.af-checkbox.af-default:checked {
+		background: url('./images/checkbox_checked.png') no-repeat center center;
+	}
+	
+	.af-checkbox.af-default:checked.af-disabled{
+		background: url('./images/checkbox_disabled_checked.png') no-repeat center center;
+	}
+	
+	.af-checkbox.af-default.af-disabled {
+	    background: url('./images/checkbox_disabled_unchecked.png') no-repeat center center;
+	}
+	
+	.af-checkbox.af-default:indeterminate {
+		background: url('./images/checkbox_indeterminate_basic.png') no-repeat center center;
+	}
+}
+.af-dateinput.af-default {
+	border: 1px solid #bfc8cf;
+	background: #ffffff;
+	font-size: 12px;
+  	color: #000000;
+  	
+  	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-dateinput.af-default.af-hover{
+	border: 1px solid #00bede;
+	background: #ffffff;
+	
+}
+
+.af-dateinput.af-default:focus{
+	border: 1px solid #00bede;
+	background: #ffffff;
+	
+}
+
+.af-dateinput.af-default.af-disabled {
+    border: 1px solid #d7dadd;
+	background: #f2f2f2;
+	color: #9a9a9a;
+}
+
+.af-dateinput-image {
+	display:inline-block;
+	background-image: url(images/ico_calendar.png);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	width:24px;
+	height:24px;
+}
+
+/* .af-dateinput-image ~ .af-dateinput.af-default { */
+/* 	margin-right:3px; */
+/* } */
+.af-datepicker.af-default {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #34d0ea 0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #34d0ea 0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #34d0ea 0%, #04bfe0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #34d0ea), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #34d0ea 0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #34d0ea 0%, #04bfe0 100%);
+	
+	border-color: #61dcf0;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	box-shadow: 1px 1px 5px #000000;
+}
+
+.af-datepicker.af-default .af-datepicker-header {
+	color: #FFF;
+	border-bottom-color: #00b5d4;
+}
+
+.af-datepicker.af-default .af-datepicker-header .af-datepicker-control {
+	color: #FFF;
+	background-color: transparent;
+}
+
+.af-datepicker.af-default .af-prev-year .af-datepicker-control,
+.af-datepicker.af-default .af-prev-month .af-datepicker-control {
+	background:url('./images/datepicker_prev_normal.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-prev-year .af-datepicker-control.af-hover,
+.af-datepicker.af-default .af-prev-month .af-datepicker-control.af-hover {
+	background:url('./images/datepicker_prev_hover.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-prev-year .af-datepicker-control.af-pressed,
+.af-datepicker.af-default .af-prev-month .af-datepicker-control.af-pressed {
+	background:url('./images/datepicker_prev_pressed.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-prev-year .af-datepicker-control.af-disabled,
+.af-datepicker.af-default .af-prev-month .af-datepicker-control.af-disabled {
+	background:url('./images/datepicker_btn_prev_disabled.png') no-repeat center center;
+	cursor: default;
+}
+
+.af-datepicker.af-default .af-next-year .af-datepicker-control,
+.af-datepicker.af-default .af-next-month .af-datepicker-control {
+	background:url('./images/datepicker_next_normal.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-next-year .af-datepicker-control.af-hover,
+.af-datepicker.af-default .af-next-month .af-datepicker-control.af-hover {
+	background:url('./images/datepicker_next_hover.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-next-year .af-datepicker-control.af-pressed,
+.af-datepicker.af-default .af-next-month .af-datepicker-control.af-pressed {
+	background:url('./images/datepicker_next_pressed.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-next-year .af-datepicker-control.af-disabled,
+.af-datepicker.af-default .af-next-month .af-datepicker-control.af-disabled {
+	background:url('./images/datepicker_btn_next_disabled.png') no-repeat center center;
+	cursor: default;
+}
+
+.af-datepicker.af-default .af-btn-close .af-datepicker-control {
+	background:url('./images/datepicker_close_normal.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-btn-close .af-datepicker-control.af-hover {
+	background:url('./images/datepicker_close_hover.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-btn-close .af-datepicker-control.af-pressed {
+	background:url('./images/datepicker_close_pressed.png') no-repeat center center;
+}
+
+.af-datepicker.af-default .af-datepicker-tableCell{
+	border-color: #04bfe0;
+	background-color: #ffffff;
+}
+
+.af-datepicker.af-default .af-datepicker-day,
+.af-datepicker.af-default .af-datepicker-month {
+	color: #000000;
+	background-color: #ffffff;
+}
+
+.af-datepicker.af-default .af-datepicker-day.holiday {
+	color: #000000;
+	background-color: #e9edf0;
+}
+
+.af-datepicker.af-default .af-datepicker-day.saturday {
+	color: #000000;
+}
+
+.af-datepicker.af-default .af-datepicker-day.af-hover,
+.af-datepicker.af-default .af-datepicker-month.af-hover {
+	color: #000000;
+	background-color: #00bede;
+}
+
+.af-datepicker.af-default .af-datepicker-day.af-pressed, 
+.af-datepicker.af-default .af-datepicker-month.af-pressed {
+	color: #ffffff;
+	background-color: #0099c5;
+}
+
+.af-datepicker.af-default .af-datepicker-day.af-disabled{
+	color: #d3d3d3;
+	cursor: default;
+}
+
+.af-datepicker.af-default .af-today{
+	color: #ffffff;
+	background-color: #b7bcbf;
+}
+
+.af-datepicker.af-default .af-datepicker-weekdays {
+	color: #ffffff;
+}
+
+.af-datepicker.af-default .af-datepicker-weekdays.holiday {
+	color: #ffffff;
+}
+.af-datepicker.af-default .af-datepicker-weekdays.saturday {
+	color: #ffffff;
+}
+
+.af-datepicker.af-default .af-datepicker-prev-month-day,
+.af-datepicker.af-default .af-datepicker-next-month-day {
+	color: #afafaf;
+	background-color: #e9edf0;
+}
+.af-datepicker.af-default .af-datepicker-prev-month-day.af-hover,
+.af-datepicker.af-default .af-datepicker-next-month-day.af-hover {
+    color: #afafaf;
+	background-color: #00bede;
+}
+.af-datepicker.af-default .af-datepicker-prev-month-day.af-pressed,
+.af-datepicker.af-default .af-datepicker-next-month-day.af-pressed {
+    color: #ffffff;
+	background-color: #0099c5;
+}
+
+.af-datepicker.af-default .af-datepicker-bottom {
+    border-color: #04bfe0;  
+    background-color: #ffffff;
+}
+
+.af-datepicker.af-default .af-datepicker-bottom .af-datepicker-bottom-button {
+    width:30%;
+}
+
+.af-datepicker.af-default .af-datepicker-bottom .af-datepicker-bottom-text {
+    color: red;
+}
+
+.af-daterange.af-default .af-daterange-start, .af-daterange.af-default .af-daterange-end{
+	border: 1px solid #bfc8cf;
+	background: #ffffff;
+	font-size: 12px;
+  	color: #000000;
+  	
+  	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-daterange.af-default .af-daterange-start.af-hover, .af-daterange.af-default .af-daterange-end.af-hover{
+	border: 1px solid #00bede;
+	background: #ffffff;
+}
+.af-dialog.af-default {
+	width:277px;
+	height:300px;
+	background-color:#FFF;
+	border:1px solid #61dcf0;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	box-shadow: 1px 1px 5px #000000;
+}
+
+.af-dialog.af-default .dialog_header{
+	font-size:20px;
+	font-weight:bold; 
+	color:#ffffff;
+	
+	background: #04bfe0;
+	background: -ms-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec 0%, #04bfe0 100%);
+}
+.af-dialog.af-default .dialog_header .dialog_btn{
+	background:url('./images/datepicker_close_normal.png') no-repeat center center; 
+}
+
+.af-dialog.af-default  .dialog_header .dialog_btn.af-hover{
+	background:url('./images/datepicker_close_hover.png') no-repeat center center;
+}	
+.af-dialog.af-default  .dialog_header .dialog_btn.af-pressed{
+	background:url('./images/datepicker_close_pressed.png') no-repeat center center;
+}
+
+/********* dialog mask *********/
+.af-dialog-mask {
+	background-color: black;
+}
+
+.af-dropdown.af-default, .af-dropdown.af-default .af-submenu {
+	background:#fff;
+	min-width: 160px;
+	border: 1px solid #CCC;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+	box-shadow: 59 5px 10px rgba(0, 0, 0, 0.2);
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding;
+	
+} 
+
+
+.af-dropdown.af-default .af-menuitem > a{text-indent:10px;line-height:30px;}
+.af-dropdown.af-default .af-menuitem.af-focused{background:#DEDEDE;}
+.af-dropdown.af-default .af-menuitem.af-disabled, .af-dropdown.af-default .af-menuitem.af-disabled * {color: #AAA;}
+.af-dropdown.af-default .af-expandable:after {content:">"; position:absolute;right:5px;top:50%;margin-top:-10px;}
+.af-dropdown.af-default .af-group-header {font-size:1.3em;font-weight:bold;}
+
+
+.af-dropdownbutton.af-button.af-default {
+	padding-right:40px;
+}
+.af-dropdownbutton.af-button.af-default:after {
+	content:"";
+	display:inline-block;
+	width: 14px;
+	height: 14px;
+	background-repeat:no-repeat;
+	vertical-align:middle;
+	background-image:url(./images/glyphicons-halflings.png);
+	background-position: -313px -119px;
+	position:absolute;
+	right:15px;
+	top:50%;
+	margin-top:-9px;
+}
+
+.af-group.af-default {
+	border-color: #A7A7A7;
+	border-radius: 5px;
+}
+
+.af-group.af-default .af-button {
+	border-color: #007191;
+	border-radius: 0px;
+}
+
+.af-group.af-default .af-radio-text, 
+.af-group.af-default .af-checkbox-text {
+	background: #D9E2E9;
+	background: -ms-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -moz-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -o-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F4F4F4), color-stop(1, #E5E6E5));
+	background: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: linear-gradient(to bottom, #F4F4F4 0%, #E5E6E5 100%);
+	border-color: #A7A7A7;
+	font-size: 12px;
+	color: #000;
+}
+
+.af-group.af-default .af-radio-text.af-checked, 
+.af-group.af-default .af-checkbox-text.af-checked {
+	background: #00BEDE;
+	background: -ms-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -moz-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -o-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #32D0EB), color-stop(1, #04BFE0));
+	background: -webkit-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: linear-gradient(to bottom, #32D0EB 0%, #04BFE0 100%);
+	color: #FFF;
+}
+.af-groupbutton.af-default {
+	border-color: #A7A7A7;
+	border-radius: 5px;
+}
+
+.af-groupbutton.af-default .af-button {
+	border-color: #007191;
+	border-radius: 0px;
+}
+
+.af-groupbutton.af-default .af-radio-text, 
+.af-groupbutton.af-default .af-checkbox-text {
+	background: #D9E2E9;
+	background: -ms-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -moz-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -o-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F4F4F4), color-stop(1, #E5E6E5));
+	background: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: linear-gradient(to bottom, #F4F4F4 0%, #E5E6E5 100%);
+	border-color: #A7A7A7;
+	font-size: 12px;
+	color: #000;
+}
+
+.af-groupbutton.af-default .af-radio-text.af-checked, 
+.af-groupbutton.af-default .af-checkbox-text.af-checked {
+	background: #00BEDE;
+	background: -ms-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -moz-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -o-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #32D0EB), color-stop(1, #04BFE0));
+	background: -webkit-linear-gradient(top, #32D0EB 0%, #04BFE0 100%);
+	background: linear-gradient(to bottom, #32D0EB 0%, #04BFE0 100%);
+	color: #FFF;
+}
+
+
+
+
+.af-icon.af-default {
+	width: 14px;
+	height: 14px;
+	background-image:url(./images/glyphicons-halflings.png);
+}
+
+
+.af-icon.af-default.glass {
+  background-position: 0 0;
+}
+
+.af-icon.af-default.music {
+  background-position: -24px 0;
+}
+
+.af-icon.af-default.search {
+  background-position: -48px 0;
+}
+
+.af-icon.af-default.envelope {
+  background-position: -72px 0;
+}
+
+.af-icon.af-default.heart {
+  background-position: -96px 0;
+}
+
+.af-icon.af-default.star {
+  background-position: -120px 0;
+}
+
+.af-icon.af-default.star-empty {
+  background-position: -144px 0;
+}
+
+.af-icon.af-default.user {
+  background-position: -168px 0;
+}
+
+.af-icon.af-default.film {
+  background-position: -192px 0;
+}
+
+.af-icon.af-default.th-large {
+  background-position: -216px 0;
+}
+
+.af-icon.af-default.th {
+  background-position: -240px 0;
+}
+
+.af-icon.af-default.th-list {
+  background-position: -264px 0;
+}
+
+.af-icon.af-default.ok {
+  background-position: -288px 0;
+}
+
+.af-icon.af-default.remove {
+  background-position: -312px 0;
+}
+
+.af-icon.af-default.zoom-in {
+  background-position: -336px 0;
+}
+
+.af-icon.af-default.zoom-out {
+  background-position: -360px 0;
+}
+
+.af-icon.af-default.off {
+  background-position: -384px 0;
+}
+
+.af-icon.af-default.signal {
+  background-position: -408px 0;
+}
+
+.af-icon.af-default.cog {
+  background-position: -432px 0;
+}
+
+.af-icon.af-default.trash {
+  background-position: -456px 0;
+}
+
+.af-icon.af-default.home {
+  background-position: 0 -24px;
+}
+
+.af-icon.af-default.file {
+  background-position: -24px -24px;
+}
+
+.af-icon.af-default.time {
+  background-position: -48px -24px;
+}
+
+.af-icon.af-default.road {
+  background-position: -72px -24px;
+}
+
+.af-icon.af-default.download-alt {
+  background-position: -96px -24px;
+}
+
+.af-icon.af-default.download {
+  background-position: -120px -24px;
+}
+
+.af-icon.af-default.upload {
+  background-position: -144px -24px;
+}
+
+.af-icon.af-default.inbox {
+  background-position: -168px -24px;
+}
+
+.af-icon.af-default.play-circle {
+  background-position: -192px -24px;
+}
+
+.af-icon.af-default.repeat {
+  background-position: -216px -24px;
+}
+
+.af-icon.af-default.refresh {
+  background-position: -240px -24px;
+}
+
+.af-icon.af-default.list-alt {
+  background-position: -264px -24px;
+}
+
+.af-icon.af-default.lock {
+  background-position: -287px -24px;
+}
+
+.af-icon.af-default.flag {
+  background-position: -312px -24px;
+}
+
+.af-icon.af-default.headphones {
+  background-position: -336px -24px;
+}
+
+.af-icon.af-default.volume-off {
+  background-position: -360px -24px;
+}
+
+.af-icon.af-default.volume-down {
+  background-position: -384px -24px;
+}
+
+.af-icon.af-default.volume-up {
+  background-position: -408px -24px;
+}
+
+.af-icon.af-default.qrcode {
+  background-position: -432px -24px;
+}
+
+.af-icon.af-default.barcode {
+  background-position: -456px -24px;
+}
+
+.af-icon.af-default.tag {
+  background-position: 0 -48px;
+}
+
+.af-icon.af-default.tags {
+  background-position: -25px -48px;
+}
+
+.af-icon.af-default.book {
+  background-position: -48px -48px;
+}
+
+.af-icon.af-default.bookmark {
+  background-position: -72px -48px;
+}
+
+.af-icon.af-default.print {
+  background-position: -96px -48px;
+}
+
+.af-icon.af-default.camera {
+  background-position: -120px -48px;
+}
+
+.af-icon.af-default.font {
+  background-position: -144px -48px;
+}
+
+.af-icon.af-default.bold {
+  background-position: -167px -48px;
+}
+
+.af-icon.af-default.italic {
+  background-position: -192px -48px;
+}
+
+.af-icon.af-default.text-height {
+  background-position: -216px -48px;
+}
+
+.af-icon.af-default.text-width {
+  background-position: -240px -48px;
+}
+
+.af-icon.af-default.align-left {
+  background-position: -264px -48px;
+}
+
+.af-icon.af-default.align-center {
+  background-position: -288px -48px;
+}
+
+.af-icon.af-default.align-right {
+  background-position: -312px -48px;
+}
+
+.af-icon.af-default.align-justify {
+  background-position: -336px -48px;
+}
+
+.af-icon.af-default.list {
+  background-position: -360px -48px;
+}
+
+.af-icon.af-default.indent-left {
+  background-position: -384px -48px;
+}
+
+.af-icon.af-default.indent-right {
+  background-position: -408px -48px;
+}
+
+.af-icon.af-default.facetime-video {
+  background-position: -432px -48px;
+}
+
+.af-icon.af-default.picture {
+  background-position: -456px -48px;
+}
+
+.af-icon.af-default.pencil {
+  background-position: 0 -72px;
+}
+
+.af-icon.af-default.map-marker {
+  background-position: -24px -72px;
+}
+
+.af-icon.af-default.adjust {
+  background-position: -48px -72px;
+}
+
+.af-icon.af-default.tint {
+  background-position: -72px -72px;
+}
+
+.af-icon.af-default.edit {
+  background-position: -96px -72px;
+}
+
+.af-icon.af-default.share {
+  background-position: -120px -72px;
+}
+
+.af-icon.af-default.check {
+  background-position: -144px -72px;
+}
+
+.af-icon.af-default.move {
+  background-position: -168px -72px;
+}
+
+.af-icon.af-default.step-backward {
+  background-position: -192px -72px;
+}
+
+.af-icon.af-default.fast-backward {
+  background-position: -216px -72px;
+}
+
+.af-icon.af-default.backward {
+  background-position: -240px -72px;
+}
+
+.af-icon.af-default.play {
+  background-position: -264px -72px;
+}
+
+.af-icon.af-default.pause {
+  background-position: -288px -72px;
+}
+
+.af-icon.af-default.stop {
+  background-position: -312px -72px;
+}
+
+.af-icon.af-default.forward {
+  background-position: -336px -72px;
+}
+
+.af-icon.af-default.fast-forward {
+  background-position: -360px -72px;
+}
+
+.af-icon.af-default.step-forward {
+  background-position: -384px -72px;
+}
+
+.af-icon.af-default.eject {
+  background-position: -408px -72px;
+}
+
+.af-icon.af-default.chevron-left {
+  background-position: -432px -72px;
+}
+
+.af-icon.af-default.chevron-right {
+  background-position: -456px -72px;
+}
+
+.af-icon.af-default.plus-sign {
+  background-position: 0 -96px;
+}
+
+.af-icon.af-default.minus-sign {
+  background-position: -24px -96px;
+}
+
+.af-icon.af-default.remove-sign {
+  background-position: -48px -96px;
+}
+
+.af-icon.af-default.ok-sign {
+  background-position: -72px -96px;
+}
+
+.af-icon.af-default.question-sign {
+  background-position: -96px -96px;
+}
+
+.af-icon.af-default.info-sign {
+  background-position: -120px -96px;
+}
+
+.af-icon.af-default.screenshot {
+  background-position: -144px -96px;
+}
+
+.af-icon.af-default.remove-circle {
+  background-position: -168px -96px;
+}
+
+.af-icon.af-default.ok-circle {
+  background-position: -192px -96px;
+}
+
+.af-icon.af-default.ban-circle {
+  background-position: -216px -96px;
+}
+
+.af-icon.af-default.arrow-left {
+  background-position: -240px -96px;
+}
+
+.af-icon.af-default.arrow-right {
+  background-position: -264px -96px;
+}
+
+.af-icon.af-default.arrow-up {
+  background-position: -289px -96px;
+}
+
+.af-icon.af-default.arrow-down {
+  background-position: -312px -96px;
+}
+
+.af-icon.af-default.share-alt {
+  background-position: -336px -96px;
+}
+
+.af-icon.af-default.resize-full {
+  background-position: -360px -96px;
+}
+
+.af-icon.af-default.resize-small {
+  background-position: -384px -96px;
+}
+
+.af-icon.af-default.plus {
+  background-position: -408px -96px;
+}
+
+.af-icon.af-default.minus {
+  background-position: -433px -96px;
+}
+
+.af-icon.af-default.asterisk {
+  background-position: -456px -96px;
+}
+
+.af-icon.af-default.exclamation-sign {
+  background-position: 0 -120px;
+}
+
+.af-icon.af-default.gift {
+  background-position: -24px -120px;
+}
+
+.af-icon.af-default.leaf {
+  background-position: -48px -120px;
+}
+
+.af-icon.af-default.fire {
+  background-position: -72px -120px;
+}
+
+.af-icon.af-default.eye-open {
+  background-position: -96px -120px;
+}
+
+.af-icon.af-default.eye-close {
+  background-position: -120px -120px;
+}
+
+.af-icon.af-default.warning-sign {
+  background-position: -144px -120px;
+}
+
+.af-icon.af-default.plane {
+  background-position: -168px -120px;
+}
+
+.af-icon.af-default.calendar {
+  background-position: -192px -120px;
+}
+
+.af-icon.af-default.random {
+  width: 16px;
+  background-position: -216px -120px;
+}
+
+.af-icon.af-default.comment {
+  background-position: -240px -120px;
+}
+
+.af-icon.af-default.magnet {
+  background-position: -264px -120px;
+}
+
+.af-icon.af-default.chevron-up {
+  background-position: -288px -120px;
+}
+
+.af-icon.af-default.chevron-down {
+  background-position: -313px -119px;
+}
+
+.af-icon.af-default.retweet {
+  background-position: -336px -120px;
+}
+
+.af-icon.af-default.shopping-cart {
+  background-position: -360px -120px;
+}
+
+.af-icon.af-default.folder-close {
+  width: 16px;
+  background-position: -384px -120px;
+}
+
+.af-icon.af-default.folder-open {
+  width: 16px;
+  background-position: -408px -120px;
+}
+
+.af-icon.af-default.resize-vertical {
+  background-position: -432px -119px;
+}
+
+.af-icon.af-default.resize-horizontal {
+  background-position: -456px -118px;
+}
+
+.af-icon.af-default.hdd {
+  background-position: 0 -144px;
+}
+
+.af-icon.af-default.bullhorn {
+  background-position: -24px -144px;
+}
+
+.af-icon.af-default.bell {
+  background-position: -48px -144px;
+}
+
+.af-icon.af-default.certificate {
+  background-position: -72px -144px;
+}
+
+.af-icon.af-default.thumbs-up {
+  background-position: -96px -144px;
+}
+
+.af-icon.af-default.thumbs-down {
+  background-position: -120px -144px;
+}
+
+.af-icon.af-default.hand-right {
+  background-position: -144px -144px;
+}
+
+.af-icon.af-default.hand-left {
+  background-position: -168px -144px;
+}
+
+.af-icon.af-default.hand-up {
+  background-position: -192px -144px;
+}
+
+.af-icon.af-default.hand-down {
+  background-position: -216px -144px;
+}
+
+.af-icon.af-default.circle-arrow-right {
+  background-position: -240px -144px;
+}
+
+.af-icon.af-default.circle-arrow-left {
+  background-position: -264px -144px;
+}
+
+.af-icon.af-default.circle-arrow-up {
+  background-position: -288px -144px;
+}
+
+.af-icon.af-default.circle-arrow-down {
+  background-position: -312px -144px;
+}
+
+.af-icon.af-default.globe {
+  background-position: -336px -144px;
+}
+
+.af-icon.af-default.wrench {
+  background-position: -360px -144px;
+}
+
+.af-icon.af-default.tasks {
+  background-position: -384px -144px;
+}
+
+.af-icon.af-default.filter {
+  background-position: -408px -144px;
+}
+
+.af-icon.af-default.briefcase {
+  background-position: -432px -144px;
+}
+
+.af-icon.af-default.fullscreen {
+  background-position: -456px -144px;
+}
+
+.af-icon.af-default.down-arrow {
+  background-position: -264px -72px;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.af-list.af-default {
+	background: #ffffff;
+	border:1px solid #e2e2e2;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-list.af-default .af-list-row {
+	border-bottom: 1px solid #edeef0;
+	background: #ffffff;
+	font-size: 12px;
+	color: #000000;
+}
+
+
+.af-list.af-default .af-list-title {
+	font-size:15px;
+	color: #000000;
+}
+
+.af-list.af-default .af-list-row.af-hover {
+	background: #edeef0;
+	background: -ms-linear-gradient(top, #f4f4f4  0%, #e5e6e5  100%);
+	background: -moz-linear-gradient(top, #f4f4f4  0%, #e5e6e5  100%);
+	background: -o-linear-gradient(top, #f4f4f4  0%, #e5e6e5  100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4 ), color-stop(1, #e5e6e5 ));
+	background: -webkit-linear-gradient(top, #f4f4f4  0%, #e5e6e5  100%);
+	background: linear-gradient(to bottom, #f4f4f4  0%, #e5e6e5  100%);
+	
+	font-weight: bold;
+}
+
+.af-list.af-default .af-list-row.af-pressed {
+	background: #43d3eb;
+	background: -ms-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec 0%, #2BD9E4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec 0%, #04bfe0 100%);
+	
+	font-weight: bold;
+	color:#ffffff;
+	
+	border:1px solid #00b5d4;
+}
+
+.af-list.af-default .af-list-row .af-list-btn {
+	background:url(./images/navibar_child_normal.png) no-repeat center right;
+}
+
+.af-list.af-default .af-list-row.af-hover .af-list-btn {
+	background:url(./images/navibar_child_hover.png) no-repeat center right;
+}
+
+.af-list.af-default .af-list-row.af-pressed .af-list-btn {
+	background:url(./images/navibar_child_click.png) no-repeat center right;
+}
+
+.af-list.af-default .af-list-row .af-list-icon-arrow-r {
+	background:url(./images/navibar_child_normal.png) no-repeat center center;
+}
+.af-list.af-default .af-list-row.af-hover .af-list-icon-arrow-r {
+	background:url(./images/navibar_child_hover.png) no-repeat center center;
+}
+.af-list.af-default .af-list-row.af-pressed .af-list-icon-arrow-r {
+	background:url(./images/navibar_child_click.png) no-repeat center center;
+}
+
+.af-list.af-default .af-list-divider {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec 0%, #2BD9E4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec 0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec 0%, #04bfe0 100%);
+	
+	color: #ffffff;
+	font-weight: bold;
+}
+
+/***********************************************/
+
+.af-list.af-default .af-list-row .af-list-btn.split {
+	font-weight:bold;
+	border-left:1px solid #eee;
+	color:#000000;
+	background:none;
+}
+
+.af-list.af-default .af-list-row .af-list-btn.split.af-hover {
+	background-color:#e7fbee;
+	color: #000000;
+}
+
+.af-list.af-default .af-list-row .af-list-btn.split.af-pressed {
+	background-color:#8DEEEE;
+	color: #000000;
+}
+
+.af-list.af-default .af-list-row .af-list-thumbnail{
+	height:50px;
+	width:50px;
+}
+
+.af-list.af-default .af-list-row .af-list-thumbnail-icon{
+	min-height:16px;
+	min-width:16px;
+	max-height:24px;
+	max-width:24px; 
+}
+
+.af-list.af-default .af-list-icon-plus {
+	background: rgb(102, 102, 102) /*{global-icon-color}*/;
+	background-image: url(http://jquerymobile.com/demos/1.2.0/css/themes/default/images/icons-18-white.png) /*{global-icon-set}*/;
+	background-repeat: no-repeat;
+	background-position: 0px 50%;
+}
+
+.af-list.af-default .af-list-icon-x {
+	background: rgb(102, 102, 102) /*{global-icon-color}*/;
+	background-image: url(http://jquerymobile.com/demos/1.2.0/css/themes/default/images/icons-18-white.png) /*{global-icon-set}*/;
+	background-repeat: no-repeat;
+	background-position: -72px 50%;
+}
+
+
+/* Common Style */
+.af-navmenu.af-default {
+	
+}
+
+.af-navmenu.af-default.af-desktop li {
+
+}
+
+/* 대 메뉴 */
+
+.af-navmenu.af-default.af-desktop {
+	background: #e5e6e5;
+	background: -ms-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4 ), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4  0%, #e5e6e5 100%);
+	
+	border:1px solid #a6a6a6;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	box-shadow: 0px 2px 0px #e9e9e9;
+}
+
+.af-navmenu.af-default.af-desktop > li {
+	border-right:1px solid #dadada;
+}
+
+.af-navmenu.af-default.af-desktop > li.af-hover {
+	background: #f1f1f1 ;
+	background: -ms-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -moz-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -o-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff  ), color-stop(1, #f1f1f1));
+	background: -webkit-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: linear-gradient(to bottom, #ffffff   0%, #f1f1f1 100%);
+	
+	border:1px solid #dadada;
+}
+
+.af-navmenu.af-default.af-desktop > li > a {
+	color:#474747;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.af-navmenu.af-default.af-desktop > li.af-expandable > .af-navmenu-icon{
+	background:url('./images/navibar_dropdown_normal.png') no-repeat center center;
+}
+
+.af-navmenu.af-default.af-desktop > li.af-navmenu-expand > .af-navmenu-icon{
+
+}
+
+.af-navmenu.af-default.af-desktop > li.af-navmenu-expand {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec ), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec  0%, #04bfe0 100%);
+	
+	border:1px solid #0099c6;
+}
+
+.af-navmenu.af-default.af-desktop > li.af-navmenu-expand > a {
+	color:#ffffff;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.af-navmenu.af-default.af-desktop > li.af-hover.af-navmenu-expand > a {
+	color:#474747;
+	font-size:14px;
+	font-weight:bold;
+}
+
+/*******************대 메뉴 끝******************/
+
+.af-navmenu.af-default a {
+	color:#000000;
+	font-size:12px;
+}
+
+
+.af-navmenu.af-default .af-navmenu-sub > li { /* 세로로 display */
+
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-navmenu.af-default.af-desktop > li > .af-navmenu-sub {
+	background: #ffffff;
+	border:1px solid #c3c3c3;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	box-shadow: 1px 1px 3px #000000;
+}
+
+/* 3 depth 이상 sub menu */
+.af-navmenu.af-default.af-desktop .af-navmenu-sub {
+	background: #ffffff;
+	border:1px solid #c3c3c3;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	box-shadow: 1px 1px 3px #000000;
+	width:auto;
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub > li {
+	border-bottom: 1px solid #edeef0;
+	background: #ffffff;
+	width:150px;
+	*width:110px;
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub > li.af-hover {
+	background: #e5e6e5 ;
+	background: -ms-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4 0%, #e5e6e5 100%);
+	
+	/* border:1px solid #dadada; */
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub > li.af-navmenu-expand {
+	background: #e5e6e5 ;
+	background: -ms-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4 0%, #e5e6e5 100%);
+	
+	/* border:1px solid #dadada; */
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub > li.af-expandable > .af-navmenu-icon{
+	background:url('./images/navibar_child_normal.png') no-repeat center center;
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub > li.af-navmenu-expand > .af-navmenu-icon{
+
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub .af-expandable > a {
+
+}
+
+.af-navmenu.af-default.af-desktop .af-navmenu-sub a {
+
+}
+
+/********************** Mobile Only */
+.af-navmenu.af-default.af-mobile li {
+
+}
+
+.af-navmenu.af-default.af-mobile ul {
+
+}
+
+.af-navmenu.af-default.af-mobile  a {
+
+}
+
+.af-navmenu.af-default.af-mobile > li {
+	background: #e5e6e5;
+	background: -ms-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4 ), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4  0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4  0%, #e5e6e5 100%);
+	
+	border:1px solid #a6a6a6;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-navmenu.af-default.af-mobile > li.af-hover {
+	background: #f1f1f1 ;
+	background: -ms-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -moz-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -o-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff  ), color-stop(1, #f1f1f1));
+	background: -webkit-linear-gradient(top, #ffffff   0%, #f1f1f1 100%);
+	background: linear-gradient(to bottom, #ffffff   0%, #f1f1f1 100%);
+	
+	border:1px solid #dadada;
+}
+
+.af-navmenu.af-default.af-mobile > li.af-navmenu-expand {
+	background: #00bede;
+	background: -ms-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -moz-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -o-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #65d9ec ), color-stop(1, #04bfe0));
+	background: -webkit-linear-gradient(top, #65d9ec  0%, #04bfe0 100%);
+	background: linear-gradient(to bottom, #65d9ec  0%, #04bfe0 100%);
+	
+	border:1px solid #0099c6;
+}
+
+.af-navmenu.af-default.af-mobile > li.af-expandable > a {
+	background:url('./images/navibar_dropdown_normal.png') no-repeat 95% center;
+}
+
+.af-navmenu.af-default.af-mobile > li.af-navmenu-expand > a {
+	color:#ffffff;
+	font-size:14px;
+	font-weight:bold;
+	background: url('./images/navibar_dropdown_close_w.png') no-repeat 95% center;
+}
+
+.af-navmenu.af-default.af-mobile > li.af-hover.af-navmenu-expand > a {
+	color:#474747;
+	font-size:14px;
+	font-weight:bold;
+}
+
+/* 대 메뉴 바로 아래 sub menu */
+.af-navmenu.af-default.af-mobile > li > .af-navmenu-sub {
+	background: #ffffff;
+	
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	
+	border:1px solid #c3c3c3;
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub a {
+	background:url(./images/navibar_child_normal.png) no-repeat 95% center;
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub > li {
+	border-bottom: 1px solid #edeef0;
+	background: #ffffff;
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub > li.af-hover {
+	background: #e5e6e5 ;
+	background: -ms-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -moz-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -o-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f4f4f4), color-stop(1, #e5e6e5));
+	background: -webkit-linear-gradient(top, #f4f4f4 0%, #e5e6e5 100%);
+	background: linear-gradient(to bottom, #f4f4f4 0%, #e5e6e5 100%);
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub > li.af-navmenu-expand {
+	background: #a5e8f5 ;
+	background: -ms-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -moz-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -o-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #beedf6), color-stop(1, #a5e8f5));
+	background: -webkit-linear-gradient(top, #beedf6 0%, #a5e8f5 100%);
+	background: linear-gradient(to bottom, #beedf6 0%, #a5e8f5 100%);
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub .af-expandable > a {
+	background:url(./images/navibar_child_dropdown_normal.png) no-repeat 95% center;
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub > li.af-expandable.af-hover > a{
+	background: url('./images/navibar_child_dropdown_hover.png') no-repeat 95% center;
+}
+
+.af-navmenu.af-default.af-mobile .af-navmenu-sub > li.af-expandable.af-expand > a{
+	background: url('./images/navibar_child_dropdown_close_w.png') no-repeat 95% center;
+}
+
+
+.af-pager.af-default {
+	height:40px;
+}
+
+.af-pager.af-default.af-mobile .af-pager-link {
+	background:#777;
+	font-size:0;
+}
+
+.af-pager.af-default.af-mobile .af-pager-link.af-selected {
+	background:#00AEEF;
+}
+
+.af-pager.af-default .af-pager-link {
+	
+}
+
+.af-pager.af-default .af-pager-link.af-selected {
+	font-weight:bold;
+	color: red;
+}
+
+.af-pager.af-default .af-pager-prev,
+.af-pager.af-default .af-pager-prevgroup,
+.af-pager.af-default .af-pager-next,
+.af-pager.af-default .af-pager-nextgroup {
+	background-color: #d9e1e9;
+	color: #161616;
+	font-size: 12px;
+}
+.af-paging.af-default {
+	height:40px;
+}
+
+.af-paging.af-default .af-paging-mobile {
+	background:#777;
+}
+
+.af-paging.af-default .af-paging-mobile.af-paging-selected {
+	background:#00AEEF;
+}
+
+.af-paging.af-default .af-paging-number {
+	
+}
+
+.af-paging.af-default .af-paging-number.af-paging-selected {
+	font-weight:bold;
+	color: red;
+}
+
+.af-paging.af-default .af-paging-first,
+.af-paging.af-default .af-paging-prev,
+.af-paging.af-default .af-paging-prevgroup,
+.af-paging.af-default .af-paging-next,
+.af-paging.af-default .af-paging-nextgroup,
+.af-paging.af-default .af-paging-last {
+	background-color: #d9e1e9;
+	color: #161616;
+	font-size: 12px;
+}
+
+.af-progressbar.af-default {
+ width: 500px;
+ height: 17px;
+ border-color: #AAA;
+}
+.af-progressbar.af-default span {
+ font-weight: bold;
+}
+.af-progressbar.af-default div {
+ background-color: #CCC;
+ /* background: url(./images/progressbar.gif); */
+}
+ 
+
+
+
+/* radio button custom image for webkit browser */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	.af-radio.af-default {
+		background: url('./images/radiobtn_unchecked.png') no-repeat center center;
+	}
+	.af-radio.af-default:checked {
+		background: url('./images/radiobtn_checked.png') no-repeat center center;
+	}
+	
+	.af-radio.af-default:checked.af-disabled {
+		background: url('./images/radiobtn_disabled_checked.png') no-repeat center center;
+	}
+	
+	.af-radio.af-default.af-disabled {
+	    background: url('./images/radiobtn_disabled_unchecked.png') no-repeat center center;
+	}
+}
+
+.af-select.af-default {
+	color: #000000;
+	*width:60px; /* for IE7*/
+}
+
+.af-select.af-default.af-hover {
+	color: #000000;
+	/* background: url('./select_iconOver.png') no-repeat right; */
+}
+
+.af-select.af-default.af-pressed {
+	color: #000000;
+	/* background: url('./select_iconOver.png') no-repeat right; */
+}
+
+div.af-select.af-default {
+	border-top: 1px solid #DADADA;
+	border-left: 1px solid #DADADA;
+	border-right: 1px solid #DADADA;
+	border-bottom: 1px solid #A8A8A8;
+	min-width: 100px;
+	height: 32px;
+	line-height: 32px;
+	-webkit-border-radius: 5px;
+	background: url(./images/ico_selected.png), url(./images/bg_btnSearch.png);
+	background-position: right 10px, left top;
+	background-origin: conent- box, padding-box;
+	background-repeat: no-repeat, repeat;
+	text-align:left;
+	text-indent:10px;
+}
+
+
+div.af-select.af-default.af-disabled {
+	opacity:0.6;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; 
+    filter: alpha(opacity=60); 
+}
+	
+	
+div.af-select.af-default > select {
+	position:absolute;
+	left:0;top:0;
+	opacity:0;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; 
+    filter: alpha(opacity=0);
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-o-appearance: none;
+	-ms-appearance: none;
+	
+	background:transparent;
+	border:0;
+	width:100%;
+	height:100%;
+	display:inline-block;
+}
+
+
+/* .af-select.af-default.af-disabled {
+    opacity: 0.5;  all-browser
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; IE-8
+    filter: alpha(opacity=50); IE-7 
+} */
+
+.af-slider.af-default {
+	width: 300px;
+	height: 17px;
+	border: 1px solid #AAA;
+	background-color: #FFF;
+}
+
+.af-slider.af-default div {
+	width: 20px;
+	height: 20px;
+	color: #555;
+	background-color: lightGrey;
+	border-color: lightGrey;
+}
+
+/*customizable */
+.af-slider.af-default.af-pressed {
+	color: #999 ;
+	border: 2px solid red ;
+}
+.af-spinner.af-default.af-spinner-wrapper {
+	border: 1px solid #bfc8cf;
+	background: #ffffff;
+	font-size: 12px;
+	color: #000000;
+	padding-right:20px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-spinner.af-default.af-spinner-wrapper.af-hover {
+	border: 1px solid #00bede;
+	background: #ffffff;
+}
+
+.af-spinner.af-default.af-spinner-wrapper:focus {
+	border: 1px solid #00bede;
+	background: #ffffff;
+}
+
+.af-spinner.af-default.af-spinner-wrapper.af-disabled {
+	border: 1px solid #d7dadd;
+	background: #f2f2f2;
+	color: #9a9a9a;
+}
+
+.af-spinner.af-default {
+	border: none;
+	margin: 0;
+}
+/* .af-spinner.af-default::-ms-clear {display: none;} */
+
+.af-spinner-wrapper>.af-spinner-button-up {
+	background: url(images/spinner_up.png) no-repeat;
+	background-size: 100% 100%;
+}
+
+.af-spinner-wrapper>.af-spinner-button-down {
+	background: url(images/spinner_down.png) no-repeat;
+	background-size: 100% 100%;
+}
+.af-table-wrapper.af-default {
+	border-top:1px solid #c0c7cf;
+	border-bottom:1px solid #c0c7cf;
+}
+
+.af-table-wrapper.af-default {
+	
+}
+
+.af-table-wrapper.af-default th {
+	border-bottom:1px solid #c0c7cf;
+}
+
+.af-table-wrapper.af-default td {
+	border-bottom: 1px solid #edeef0;
+}
+
+.af-table-wrapper.af-default .af-table-ascending .af-icon{
+/* 	background-image:url(arrow_up.png); */
+}
+
+.af-table-wrapper.af-default .af-table-descending .af-icon{
+/* 	background-image:url(arrow_down.png); */
+}
+
+.af-table-wrapper.af-default .af-table-editor {
+	background: url('./images/icon_table_edit_normal.png') no-repeat 93% center;
+}
+
+.af-table-wrapper.af-default .af-table-editor.af-editing {
+	background: none;
+}
+
+.af-table-wrapper.af-default .af-table-editor.af-edited {
+	background: url('./images/icon_table_edit_done.png') no-repeat 93% center;
+}
+
+
+.af-tabs.af-default {
+	
+}
+
+.af-tabs.af-default .af-tabs-button-group {
+	
+}
+
+.af-tabs.af-default .af-tabs-button {
+	background: #d9e2e9;
+	background: -ms-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -moz-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -o-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F4F4F4), color-stop(1, #E5E6E5));
+	background: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E6E5 100%);
+	background: linear-gradient(to bottom, #F4F4F4 0%, #E5E6E5 100%);
+	
+	color: #919191;
+	font-size: 12px;
+	
+	border:1px solid #e0e0e0;
+	border-bottom-color : #c3c3c3;
+	
+	border-top-left-radius :3px;
+	border-top-right-radius :3px;
+}
+
+.af-tabs.af-default .af-tabs-button.af-hover {
+	background: #ffffff;
+	color: #000000;
+	border:1px solid #e0e0e0;
+	border-bottom-color : #c3c3c3;
+}
+
+
+.af-tabs.af-default .af-tabs-button.af-pressed {
+	background: #ffffff;
+	color: #00bede;
+	border:1px solid #c3c3c3;
+}
+
+.af-tabs.af-default .af-tabs-button.af-selected {
+	background: #ffffff;
+	color: #00bede;
+	border:1px solid #c3c3c3;
+	border-bottom-color : #ffffff;
+}
+
+.af-tabs.af-default .af-tabs-button.af-disabled {
+	background: #d9e2e9;
+	background: -ms-linear-gradient(top, #e5e6e5 0%, #f4f4f4 100%);
+	background: -moz-linear-gradient(top, #e5e6e5 0%, #f4f4f4 100%);
+	background: -o-linear-gradient(top, #e5e6e5 0%, #f4f4f4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #e5e6e5), color-stop(1, #f4f4f4));
+	background: -webkit-linear-gradient(top, #e5e6e5 0%, #f4f4f4 100%);
+	background: linear-gradient(to bottom, #e5e6e5 0%, #f4f4f4 100%);
+	
+	color: #d3d4d4;
+	border:1px solid #e0e0e0;
+	border-bottom-color : #c3c3c3;
+}
+
+.af-tabs.af-default .af-tabs-button-icon{
+	height:30px;
+}
+
+
+
+.af-textarea.af-default {
+	background-color: #ffffff;
+	border-color: #bfc8cf;
+	font-size: 12px;
+  	color: #000000;
+  	
+  	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-textarea.af-default.af-hover{
+	background-color: #ffffff;
+	border-color: #00bede;
+}
+
+.af-textarea.af-default:focus{
+	background-color: #ffffff;
+	border-color: #00bede;
+}
+
+.af-textarea.af-default.af-disabled {
+    background-color: #f2f2f2;
+	border-color: #d7dadd;
+	color: #9a9a9a;
+}
+.af-textinput.af-default {
+	border: 1px solid #bfc8cf;
+	background: #ffffff;
+	font-size: 12px;
+  	color: #000000;
+  	
+  	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.af-textinput.af-default.af-hover{
+	border: 1px solid #00bede;
+	background: #ffffff;
+	
+}
+
+.af-textinput.af-default:focus{
+	border: 1px solid #00bede;
+	background: #ffffff;
+	
+}
+
+.af-textinput.af-default.af-disabled {
+    border: 1px solid #d7dadd;
+	background: #f2f2f2;
+	color: #9a9a9a;
+}
+
+
+.af-tooltip.af-default {
+	color:#FFF; 
+	background:#333;
+	border-radius:5px;
+}
+
+.af-tooltip.af-default:before {
+	content:"";
+}
+
+.af-tooltip.af-default.top:before {
+	top:100%;
+	left:50%;
+	margin-left:-6px;
+	border-top: 6px solid #333;
+	border-right:6px solid transparent;
+	border-bottom: 0px;
+	border-left: 6px solid transparent;
+}
+
+
+.af-tooltip.af-default.bottom:before {
+	top:-5px;
+	border-width:0px 6px 6px; 
+	left:50%;
+	margin-left:-6px;
+	border-top: 0px;
+	border-right:6px solid transparent;
+	border-bottom: 6px solid #333;
+	border-left: 6px solid transparent;
+}
+
+.af-tooltip.af-default.left:before {
+	left:100%;
+	top:50%;
+	margin-top:-6px;
+	border-top: 6px solid transparent;
+	border-right:0px;
+	border-bottom: 6px solid transparent;
+	border-left: 6px solid #333;
+}
+
+.af-tooltip.af-default.right:before {
+	left:-5px;
+	top:50%;
+	margin-top:-6px;
+	border:0;
+	border-top: 6px solid transparent;
+	border-right:6px solid #333;
+	border-bottom: 6px solid transparent;
+	border-left:0px; 
+}
+
+.af-tree.af-default {
+ 
+}
+
+.af-tree.af-default .af-tree-node {
+
+}
+
+.af-tree.af-default > .af-tree-node {
+
+}
+
+.af-tree.af-default > .af-tree-node > ul{
+
+}
+
+.af-tree.af-default ul{
+	
+}
+
+.af-tree.af-default .af-tree-expanded .af-tree-node{
+	
+}
+
+.af-tree.af-default > .af-tree-node > .af-tree-icon {
+	background: url('./images/icon_tree_expand_close.png') no-repeat center center;
+}
+
+.af-tree.af-default .af-tree-icon{
+	background: url('./images/icon_tree_expand_close.png') no-repeat center center;
+}
+
+.af-tree.af-default .af-tree-expanded > .af-tree-icon{
+	background: url('./images/icon_tree_expand.png') no-repeat center center;
+}
+
+.af-tree.af-default .af-tree-group {
+	
+}
+
+.af-tree.af-default .af-tree-link {
+
+}
+
+.af-tree.af-default .af-tree-link.af-hover {
+	background:#000000;
+	color:#ffffff;
+}
+
+.af-tree.af-default .af-tree-link.af-pressed {
+	background:#00bede;
+	color:#ffffff;
+}
+
+.af-tree.af-default .af-tree input[type="checkbox"]{
+
+}
+
+.af-tree.af-default .af-tree-img{
+
+}
+
+.af-tree.af-default .af-tree-label{
+  font-size:12px;
+}

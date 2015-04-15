@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="../../alopex/css/alopex-ui.css">
+    <link rel="stylesheet" href="../../css/app/common/common.css">
+    <script type="text/javascript" src="../../js/lib/jquery/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="../../alopex/script/alopex_controller.js"></script>
+    <script type="text/javascript" src="../../alopex/script/alopex-ui.js"></script>
+</head>
+
+<body>
+    <div data-type="panel" class="Panel" style="position: absolute; width: 100%; background-color: rgb(255, 255, 255); bottom: 100px; top: 70px; text-align: center; padding-top: 200px;">
+        <label data-type="label" style="position: absolute; left: 23px; top: 24px; display: inline-block; color: rgb(255, 255, 255);">VoteNow</label>
+        <label data-type="label" style="position: relative; display: inline-block;">Enter Your Nick</label>
+        <br>
+        <input type="text" data-type="textinput" class="Textinput" style="position: relative; width: 300px;" id="nick">
+        <br>
+        <button data-type="button" class="Button" style="position: relative; width: 296.8125px; margin-top: 10px;"  id="btnEnter">Enter</button>
+    </div>
+    <div data-type="panel" class="Panel" style="position: absolute; width: 100%; height: 100px; background-color: rgb(102, 102, 102); bottom: 0; left: 0px;">
+    </div>
+    <div data-type="panel" class="Panel"></div>
+    <div data-type="panel" class="Panel" style="position: absolute; width: 100%; height: 70px; left: 0px; top: 0px; background-color: rgb(72, 125, 57);">
+        <label data-type="label" style="position: absolute; left: 35px; top: 24px; display: inline-block; color: rgb(255, 255, 255);">VoteNow</label>
+    </div>
+    <script>
+        var nick;
+        var _id;
+        var nickChanged=false;
+        var server='http://localhost:8000/'
+        
+        $(document).ready(function() {
+            nick = preference.get('nick');
+            _id = preference.get('_id');           
+            if (nick) {
+                $('#nick').val(nick);
+            }
+            
+            $('#nick').change(function(e){            	
+            	if(_id){
+            		nickChanged=true;
+            	}
+            })
+            
+            $('#btnEnter').on('click',function(){
+            	if(!$('#nick').val()){
+            		$('#nick').focus();
+            		alert('please enter your nickname');
+            		return;
+            	}
+            	
+            	if(nickChanged){
+            		updateNick();
+            	}else{
+            		checkNick();
+            	} 
+            });
+        })
+        
+        function updateNick(){
+        	$.put(server+'users/'+_id,{
+        	}).done(function(data){
+        		alert('updated');
+        		preference.put('_id',data._id);
+        		preference.put('nick',data.nick);        		
+        		navigation.navigate('/html/main/group.html');
+        	}).fail(function(err){
+        		alert('update failed.');
+        	});
+        }
+        
+        function checkNick(){
+         	$.get(server+'users/',{nick:nick
+        	}).done(function(data){
+        		if(data._id){
+        			if(data._id!=_id){
+	        			alert('already exists');
+	        			$('#nick').focus();
+	        		}else{
+	        			login();
+	        		}
+        		}else{
+        			signin();
+        		}     	
+        	}).fail(function(err){
+        		alert('server error.');
+        	});            
+        }
+        
+        function login(){
+          	$.get(server+'login/',{
+        	}).done(function(data){
+        		preference.put('_id',data._id);
+        		preference.put('nick',data.nick);
+        		navigation.navigate('/html/main/group.html');
+        	}).fail(function(err){
+        		alert('login error.');
+        	});         
+        }
+        
+        function signin(){
+            $.post(server+'user/',{
+            	nick:$('#nick').val()
+        	}).done(function(data){
+        		navigation.navigate('/html/main/group.html');
+        	}).fail(function(err){
+        		alert('login error.');
+        	});        
+        }
+    </script>
+</body>
+
+</html>

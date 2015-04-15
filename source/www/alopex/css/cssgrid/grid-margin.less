@@ -1,0 +1,222 @@
+/**
+ * Copyright (c) 2012 SK C&C Co., Ltd. All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SK C&C.
+ * You shall not disclose such confidential information and shall use it
+ * only in accordance with the terms of the license agreement you entered into
+ * with SK C&C.
+ */
+
+@total: 16;
+@margin-width: 0%;
+@margin-num:@total + 1;
+@width: (100 - (@margin-width * @margin-num) ) / @total;
+
+
+.grid1, .grid2, .grid3, .grid4,
+.grid5, .grid6, .grid7, .grid8,
+.grid9, .grid10, .grid11, .grid12,
+.grid13, .grid14, .grid15, .grid16 {
+	min-height:10px;
+	float:left;
+	margin: 2px;
+	margin-right:0px;
+	margin-left:@margin-width;
+	background:#FAF6C3;
+	box-sizing: border-box; 
+	*behavior: url(boxsizing.htc);
+	-webkit-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+
+
+.grid(@number:0) when (@number < @total){
+	width: @width * @number + @margin-width * ( @number - 1);
+}
+.grid(@number:0) when (@number >= @total){
+	width: 100 - (@margin-width * 2);
+}
+
+.container {
+
+	width:100%;overflow:hidden;
+
+	.grid1 {
+		.grid(1);
+	}
+	.grid2 {
+		.grid(2);
+	}
+	.grid3 {
+		.grid(3);
+	}
+	.grid4 {
+		.grid(4);
+	}
+	.grid5 {
+		.grid(5);
+	}
+	.grid6 {
+		.grid(6);
+	}
+	.grid7 {
+		.grid(7);
+	}
+	.grid8 {
+		.grid(8);
+	}
+	.grid9 {
+		.grid(9);
+	}
+	.grid10 {
+		.grid(10);
+	}
+	.grid11 {
+		.grid(11);
+	}
+	.grid12 {
+		.grid(12);
+	}
+	.grid13 {
+		.grid(13);
+	}
+	.grid14 {
+		.grid(14);
+	}
+	.grid15 {
+		.grid(15);
+	}
+	.grid16 {
+		.grid(16);
+	}
+}
+
+.prefix(@number:0) when (@number < @total){
+	margin-left:@width * @number + @margin-width * (@number+1);
+}
+.prefix(@number:0) when (@number = @total){
+	@number: @total - 1;
+	margin-left:@width * @number + @margin-width * (@number+1);
+}
+.prefix(@number:0) when (@number > @total){
+	@number: @total - 1;
+	margin-left:@width * @number + @margin-width * (@number+1);
+}
+
+
+.container {
+	.prefix1 {
+		.prefix(1);
+	}
+	.prefix2 {
+		.prefix(2);
+	}
+	.prefix3 {
+		.prefix(3);
+	}
+	.prefix4 {
+		.prefix(4);
+	}
+	.prefix5 {
+		.prefix(5);
+	}
+	.prefix6 {
+		.prefix(6);
+	}
+	.prefix7 {
+		.prefix(7);
+	}
+	.prefix8 {
+		.prefix(8);
+	}
+	.prefix9 {
+		.prefix(9);
+	}
+	.prefix10 {
+		.prefix(10);
+	}
+	.prefix11 {
+		.prefix(11);
+	}
+	.prefix12 {
+		.prefix(12);
+	}
+	.prefix13 {
+		.prefix(13);
+	}
+	.prefix14 {
+		.prefix(14);
+	}
+	.prefix15 {
+		.prefix(15);
+	}
+	.prefix16 {
+		.prefix(16);
+	}
+}
+
+
+.suffix(@number:0) when (@number < @total){
+	margin-right:@width * @number + @margin-width * (@number+1);
+}
+.suffix(@number:0) when (@number = @total){
+	@number: @total - 1;
+	margin-right:@width * @number + @margin-width * (@number+1);
+}
+.suffix(@number:0) when (@number > @total){
+	@number: @total - 1;
+	margin-right:@width * @number + @margin-width * (@number+1);
+}
+
+
+.container {
+	.suffix1 {
+		.suffix(1);
+	}
+	.suffix2 {
+		.suffix(2);
+	}
+	.suffix3 {
+		.suffix(3);
+	}
+	.suffix4 {
+		.suffix(4);
+	}
+	.suffix5 {
+		.suffix(5);
+	}
+	.suffix6 {
+		.suffix(6);
+	}
+	.suffix7 {
+		.suffix(7);
+	}
+	.suffix8 {
+		.suffix(8);
+	}
+	.suffix9 {
+		.suffix(9);
+	}
+	.suffix10 {
+		.suffix(10);
+	}
+	.suffix11 {
+		.suffix(11);
+	}
+	.suffix12 {
+		.suffix(12);
+	}
+	.suffix13 {
+		.suffix(13);
+	}
+	.suffix14 {
+		.suffix(14);
+	}
+	.suffix15 {
+		.suffix(15);
+	}
+	.suffix16 {
+		.suffix(16);
+	}
+}

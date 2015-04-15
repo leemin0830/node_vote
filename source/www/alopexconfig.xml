@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alopexconfig>
+  <projectInfo>   
+    <appName><![CDATA[appName]]></appName>
+    <vendor><![CDATA[SKCC]]></vendor>
+    <version><![CDATA[]]></version>
+    <description><![CDATA[설명]]></description>
+    <pageInfo startPage="/html/main/main.html" orientation="portrait|reversePortrait"></pageInfo>
+  </projectInfo>
+</alopexconfig>
+

@@ -1,0 +1,11 @@
+/**
+ * Copyright (c) 2012 SK C&C Co., Ltd. All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SK C&C.
+ * You shall not disclose such confidential information and shall use it
+ * only in accordance with the terms of the license agreement you entered into
+ * with SK C&C.
+ */
+@import url('grid-16.css');
+@import url('grid-8.css') screen and (min-width: 600px) and (max-width:900px);
+@import url('grid-4.css') screen and (max-width:599px);

@@ -1,0 +1,182 @@
+/**
+ * Copyright (c) 2012 SK C&C Co., Ltd. All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SK C&C.
+ * You shall not disclose such confidential information and shall use it
+ * only in accordance with the terms of the license agreement you entered into
+ * with SK C&C.
+ */
+.grid1,
+.grid2,
+.grid3,
+.grid4,
+.grid5,
+.grid6,
+.grid7,
+.grid8,
+.grid9,
+.grid10,
+.grid11,
+.grid12,
+.grid13,
+.grid14,
+.grid15,
+.grid16 {
+  min-height: 10px;
+  float: left;
+  margin: 0.52083333333%;
+  background: #FAF6C3;
+  box-sizing: border-box;
+  *behavior: url(boxsizing.htc);
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.responsive-container {
+  width: 100%;
+  overflow: hidden;
+}
+.responsive-container .grid1 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid2 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid3 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid4 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid5 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid6 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid7 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid8 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid9 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid10 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid11 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid12 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid13 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid14 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid15 {
+  width: 98.95833333334%;
+}
+.responsive-container .grid16 {
+  width: 98.95833333334%;
+}
+.responsive-container .prefix1 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix2 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix3 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix4 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix5 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix6 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix7 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix8 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix9 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix10 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix11 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix12 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix13 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix14 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix15 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .prefix16 {
+  margin-left: 0.52083333333%;
+}
+.responsive-container .suffix1 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix2 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix3 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix4 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix5 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix6 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix7 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix8 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix9 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix10 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix11 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix12 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix13 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix14 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix15 {
+  margin-right: 0.52083333333%;
+}
+.responsive-container .suffix16 {
+  margin-right: 0.52083333333%;
+}

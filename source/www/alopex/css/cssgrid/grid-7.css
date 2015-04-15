@@ -1,0 +1,182 @@
+/**
+ * Copyright (c) 2012 SK C&C Co., Ltd. All rights reserved.
+ *
+ * This software is the confidential and proprietary information of SK C&C.
+ * You shall not disclose such confidential information and shall use it
+ * only in accordance with the terms of the license agreement you entered into
+ * with SK C&C.
+ */
+.grid1,
+.grid2,
+.grid3,
+.grid4,
+.grid5,
+.grid6,
+.grid7,
+.grid8,
+.grid9,
+.grid10,
+.grid11,
+.grid12,
+.grid13,
+.grid14,
+.grid15,
+.grid16 {
+  min-height: 10px;
+  float: left;
+  margin: 0.52083333333%;
+  background: #FAF6C3;
+  box-sizing: border-box;
+  *behavior: url(boxsizing.htc);
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.container {
+  width: 100%;
+  overflow: hidden;
+}
+.container .grid1 {
+  width: 13.244047619054285%;
+}
+.container .grid2 {
+  width: 27.52976190476857%;
+}
+.container .grid3 {
+  width: 41.815476190482855%;
+}
+.container .grid4 {
+  width: 56.10119047619714%;
+}
+.container .grid5 {
+  width: 70.38690476191142%;
+}
+.container .grid6 {
+  width: 84.67261904762572%;
+}
+.container .grid7 {
+  width: 98.95833333334%;
+}
+.container .grid8 {
+  width: 98.95833333334%;
+}
+.container .grid9 {
+  width: 98.95833333334%;
+}
+.container .grid10 {
+  width: 98.95833333334%;
+}
+.container .grid11 {
+  width: 98.95833333334%;
+}
+.container .grid12 {
+  width: 98.95833333334%;
+}
+.container .grid13 {
+  width: 98.95833333334%;
+}
+.container .grid14 {
+  width: 98.95833333334%;
+}
+.container .grid15 {
+  width: 98.95833333334%;
+}
+.container .grid16 {
+  width: 98.95833333334%;
+}
+.container .prefix1 {
+  margin-left: 14.806547619044284%;
+}
+.container .prefix2 {
+  margin-left: 29.092261904758573%;
+}
+.container .prefix3 {
+  margin-left: 43.37797619047286%;
+}
+.container .prefix4 {
+  margin-left: 57.66369047618714%;
+}
+.container .prefix5 {
+  margin-left: 71.94940476190143%;
+}
+.container .prefix6 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix7 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix8 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix9 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix10 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix11 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix12 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix13 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix14 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix15 {
+  margin-left: 86.23511904761571%;
+}
+.container .prefix16 {
+  margin-left: 86.23511904761571%;
+}
+.container .suffix1 {
+  margin-right: 14.806547619044284%;
+}
+.container .suffix2 {
+  margin-right: 29.092261904758573%;
+}
+.container .suffix3 {
+  margin-right: 43.37797619047286%;
+}
+.container .suffix4 {
+  margin-right: 57.66369047618714%;
+}
+.container .suffix5 {
+  margin-right: 71.94940476190143%;
+}
+.container .suffix6 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix7 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix8 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix9 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix10 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix11 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix12 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix13 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix14 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix15 {
+  margin-right: 86.23511904761571%;
+}
+.container .suffix16 {
+  margin-right: 86.23511904761571%;
+}
