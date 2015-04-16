@@ -32,6 +32,8 @@
     "express": "*",
     "body-parser":"*",
     "node-restful":"*",
-    "mongoose":"*"
-  }
+    "mongoose":"*",
+    "socket.io":"*",
+    "http":"*"
+   }
 }

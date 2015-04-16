@@ -18,10 +18,9 @@
     </div>
     <div data-type="panel" class="Panel"></div>
     <div data-type="panel" class="Panel" style="position: absolute; width: 100%; height: 70px; left: 0px; top: 0px; background-color: rgb(72, 125, 57);">
-        <label data-type="label" style="position: absolute; left: 35px; top: 24px; display: inline-block; color: rgb(255, 255, 255);">VoteNow</label>
     </div>
-    <div data-type="vbox" style="position: absolute; width: 100%; display: -webkit-box; -webkit-box-orient: vertical; left: 0px; top: 70px; bottom: 100px; -webkit-box-align: center; -webkit-box-pack: center; background-color: rgb(255, 255, 255);">
-        <button data-type="button" class="Button" style="position: relative; display: -webkit-box; width: 80%; height: 317px; font-size: 34px;" _selected="">Vote Now!</button>
+    <div data-type="vbox" style="position: absolute; width: 100%; display: -webkit-box; -webkit-box-orient: vertical; left: 0px; top: 70px; bottom: 100px; -webkit-box-align: center; -webkit-box-pack: center; background-color: rgb(255, 255, 255);" _selected="">
+        <button data-type="button" class="Button" style="position: relative; display: -webkit-box; width: 80%; height: 317px; font-size: 40px;" id="btnVote">좋아요!</button>
     </div>
     <script>
         var nick;
@@ -29,77 +28,38 @@
         var nickChanged = false;
         var server = 'http://localhost:8000/'
         $(document).ready(function() {
-            nick = preference.get('nick');
-            _id = preference.get('_id');
-            if (nick) {
-                $('#nick').val(nick);
+            user_id = preference.get('user_id');
+            if (!user_id) {
+                requestUser();
             }
-            $('#nick').change(function(e) {
-                if (_id) {
-                    nickChanged = true;
-                }
-            })
-            $('#btnEnter').on('click', function() {
-                if (!$('#nick').val()) {
-                    $('#nick').focus();
-                    alert('please enter your nickname');
-                    return;
-                }
-                if (nickChanged) {
-                    updateNick();
+            $('#btnVote').on('click', function() {
+                if (!user_id) {
+                    requestUser(requestVote);
                 } else {
-                    checkNick();
+                    requestVote();
                 }
             });
         })
 
-        function updateNick() {
-            $.put(server + 'users/' + _id, {}).done(function(data) {
-                alert('updated');
-                preference.put('_id', data._id);
-                preference.put('nick', data.nick);
-                navigation.navigate('/html/main/group.html');
-            }).fail(function(err) {
-                alert('update failed.');
-            });
-        }
-
-        function checkNick() {
-            $.get(server + 'users/', {
-                nick: nick
-            }).done(function(data) {
-                if (data._id) {
-                    if (data._id != _id) {
-                        alert('already exists');
-                        $('#nick').focus();
-                    } else {
-                        login();
-                    }
-                } else {
-                    signin();
+        function requestUser(callback) {
+            $.post(server + 'users/', {}).done(function(data) {
+                user_id = data._id;
+                preference.put('user_id', data._id);
+                if (callback) {
+                    callback();
                 }
             }).fail(function(err) {
-                alert('server error.');
+                alert(err.responseText);
             });
         }
 
-        function login() {
-            $.get(server + 'login/', {}).done(function(data) {
-                preference.put('_id', data._id);
-                preference.put('nick', data.nick);
-                navigation.navigate('/html/main/group.html');
-            }).fail(function(err) {
-                alert('login error.');
-            });
-        }
-
-        function signin() {
-            $.post(server + 'user/', {
-                nick: $('#nick').val()
+        function requestVote() {
+            $.post(server + 'voting_papers/', {
+                user_id: user_id
             }).done(function(data) {
-                navigation.navigate('/html/main/group.html');
+                alert('voted!!!')
             }).fail(function(err) {
-                alert('login error.');
+                alert(err.responseText);
             });
         }
     </script>

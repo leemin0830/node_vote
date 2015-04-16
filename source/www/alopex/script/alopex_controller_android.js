@@ -7,74 +7,37 @@
  * with SK C&C. 
  */
 /**
- * @version 3.0.5
+ * @version 3.0.11
  */
 var _anomFunkMap = {};
 var _anomFunkMapNextId = 0;
 var alopexready = false;
 
-//function anomToNameFunk(fun) {
-//	var funkId = "f" + _anomFunkMapNextId++;
-//	var funk = function() {
-////	  alert('anomToNameFunk');
-//		_anomFunkMap[funkId].apply(this, arguments);
-//		_anomFunkMap[funkId] = null;
-//		
-//		delete _anomFunkMap[funkId];
-//	};
-//	
-//	_anomFunkMap[funkId] = funk;
-//	
-//	return "_anomFunkMap." + funkId;
-//}
-//
-//function GetFunctionName(fn) {
-//  
-//	if(fn) {
-//		var m = fn.toString().match(/^\s*function\s+([^\s\(]+)/);
-//		
-//		console.log('m = ' + m);
-//		console.log('m[1] = ' + m[1]);
-//		
-//		
-//		return m ? m[1] : anomToNameFunk(fn);
-//	} else
-//		return null;
-//}
-
-function anomToNameFunk(fun) {
-  var funkId = "f" + _anomFunkMapNextId++;
-  var funk = function(id, f) {
-    return function() {
-      _anomFunkMap[id] = null;
-      delete _anomFunkMap[id];
-      return f.apply(this, arguments);
-    };
-  }(funkId, fun);
-  
-  _anomFunkMap[funkId] = funk;
-  return "_anomFunkMap." + funkId;
+function anomToNameFunk(fun, isPermanent) {
+	var funkId = "f" + _anomFunkMapNextId++;
+	var funk = function(id, f) {
+		return function() {
+			if(!isPermanent) {
+				_anomFunkMap[id] = null;
+				delete _anomFunkMap[id];
+			}
+			return f.apply(this, arguments);
+		};
+	}(funkId, fun, isPermanent);
+	
+	_anomFunkMap[funkId] = funk;
+	return "_anomFunkMap." + funkId;
 }
 
-function GetFunctionName(fn) {
-  if(fn) {
-    return anomToNameFunk(fn);
-  } else
-    return null;
+function GetFunctionName(fn, isPermanent) {
+	if(fn) {
+		return anomToNameFunk(fn, isPermanent);
+	} else {
+		return null;
+	}
 }
 
 function isValid(arg) {
-	// var currentScreen = alopexControllerD.getCurrentScreen();//sy
-	//	
-	// if(ownerScreen != undefined) {
-	// if(ownerScreen != currentScreen) {
-	// logD.warn("ownerScreen = " + ownerScreen);
-	// logD.warn("getCurrentScreen = " + currentScreen);
-	//			
-	// return false;
-	// }
-	// }
-	
 	if(arg == undefined || arg == null) {
 		log.warn("There are invalid arguements.");
 		
@@ -105,13 +68,14 @@ function deprecated(functionName, alternative) {
 
 (function() {
 	var timer = setInterval(function() {
-		try{
+		try {
 			if(alopexready == true) {
 				clearInterval(timer);
 				
 				setAlopexEvent("alopexready");
 			}
-		} catch(e){}
+		} catch(e) {
+		}
 	}, 1);
 })();
 
@@ -130,8 +94,7 @@ Alopex.exec = function() {
 };
 
 /**
- * Custom Javascript Delegator를 호출을 관장하는 클래스.
- * 호출 예> jsniCaller.invoke(.);
+ * Custom Javascript Delegator를 호출을 관장하는 클래스. 호출 예> jsniCaller.invoke(.);
  * 
  * @constructor
  */
@@ -139,23 +102,25 @@ function JSNICaller() {
 }
 
 /**
- * Custom Javascript Delegator를 호출 하는 함수.
- * 함수의 첫 번째 파라미터는 호출할 Custom JavascriptDelegatorClass.Function.
- * 파라미터의 갯수는 제한이 없으며 첫번째 파라미터 이후의 파라미터는 호출할 Custom Javascript Delegator 함수에 전달된다.
+ * Custom Javascript Delegator를 호출 하는 함수. 함수의 첫 번째 파라미터는 호출할 Custom
+ * JavascriptDelegatorClass.Function. 파라미터의 갯수는 제한이 없으며 첫번째 파라미터 이후의 파라미터는 호출할
+ * Custom Javascript Delegator 함수에 전달된다.
  * 
- * @param {String} target 호출할 Custom JavascriptDelegatorClass.Function
- * @param {String|number|booean..} ... 호출할 함수에 전달 될 parameter로 개수에 제한없음.
+ * @param {String}
+ *            target 호출할 Custom JavascriptDelegatorClass.Function
+ * @param {String|number|booean..}
+ *            ... 호출할 함수에 전달 될 parameter로 개수에 제한없음.
  * 
- * @example
- * javasScript : jsniCaller.invoke("SampleJSNI.sampleFunction", "stringParams", 1, true);
- * Native : public void sampleFunction(String stringParams, int intParams, boolean booleanParams)
+ * @example javasScript : jsniCaller.invoke("SampleJSNI.sampleFunction",
+ *          "stringParams", 1, true); Native : public void sampleFunction(String
+ *          stringParams, int intParams, boolean booleanParams)
  */
 JSNICaller.prototype.invoke = function() {
 	var script = arguments[0] + "(";
-	for(var i = 1 ; i < arguments.length ; i++) {
+	for(var i = 1; i < arguments.length; i++) {
 		script += "arguments[" + i + "]";
 		
-		if(i < arguments.length -1)
+		if(i < arguments.length - 1)
 			script += ",";
 	}
 	
@@ -167,24 +132,17 @@ JSNICaller.prototype.invoke = function() {
 var jsniCaller = new JSNICaller();
 
 /**
- * 어플리케이션의 네비게이션, 라이프사이클 등을 관리하는 클래스.
- * 전역으로 선언된 alopexController 를 이용해서 사용 
- * 호출 예> alopexController.goHome(); 
- *
+ * 어플리케이션의 네비게이션, 라이프사이클 등을 관리하는 클래스. 전역으로 선언된 alopexController 를 이용해서 사용 호출 예>
+ * alopexController.goHome();
+ * 
  * @constructor
  * @property {json} parameters 이전 페이지에서 전달받은 데이터.
  * @property {json} results alopexController.back(results) 를 통해서 전달받은 데이터.
- * @example
- * A페이지에서 B페이지로 이동 시 parameters를 B페이지에서 다음과 같이 사용.
- * var param = alopexController.parameters.key
- * A페이지에서 B페이지로 이동 후 back을 통해 다시 A페이지로 이동시 results를 다음과 같이 사용.
- * var param = alopexController.results.key
+ * @example A페이지에서 B페이지로 이동 시 parameters를 B페이지에서 다음과 같이 사용. var param =
+ *          alopexController.parameters.key A페이지에서 B페이지로 이동 후 back을 통해 다시 A페이지로
+ *          이동시 results를 다음과 같이 사용. var param = alopexController.results.key
  * 
- * var params = {
- * 	"key1" : "value1",
- * 	"key2" : "value2",
- * 	"key3" : "value3"
- * }
+ * var params = { "key1" : "value1", "key2" : "value2", "key3" : "value3" }
  */
 function AlopexController() {
 	this.parameters = null;
@@ -194,19 +152,15 @@ function AlopexController() {
 }
 
 /**
- * 이전 페이지로 이동하는 함수. 
- * 이동시 전달할 데이터가 있으면 json 형식으로, 없으면 생략가능.
+ * 이전 페이지로 이동하는 함수. 이동시 전달할 데이터가 있으면 json 형식으로, 없으면 생략가능.
  * 
  * @deprecated alopexController.back is deprecated. Use navigation.back instead.
- * @param {json|empty} results 이전 페이지로 이동시 전달할 데이터, 없으면 생략가능.
- * @example
- * var results = {
- * 	"key1" : "value1",
- * 	"key2" : "value2",
- * 	"key3" : "value3"
- * };
+ * @param {json|empty}
+ *            results 이전 페이지로 이동시 전달할 데이터, 없으면 생략가능.
+ * @example var results = { "key1" : "value1", "key2" : "value2", "key3" :
+ *          "value3" };
  * 
- * -android 플랫폼 고유 기능- 시작 페이지에서 back호출 시 앱종료 
+ * -android 플랫폼 고유 기능- 시작 페이지에서 back호출 시 앱종료
  */
 AlopexController.prototype.back = function(results) {
 	navigation.back(results);
@@ -215,26 +169,23 @@ AlopexController.prototype.back = function(results) {
 };
 
 /**
- * 특정 페이지로 이동하는 함수.
- * 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의 history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우 navigation함수를 통해 페이지 이동.
+ * 특정 페이지로 이동하는 함수. 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의
+ * history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우
+ * navigation함수를 통해 페이지 이동.
  * 
- * @deprecated alopexController.backTo is deprecated. Use navigation.backToOrNavigate instead.
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "page id",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * };
+ * @deprecated alopexController.backTo is deprecated. Use
+ *             navigation.backToOrNavigate instead.
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "page id", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } };
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters : optional
+ * pageId : required (이동할 페이지의 id) parameters : optional
  * 
- * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기 때문에 히스토리에서 B를 삭제하고 A로이동
- * C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로 동작함
+ * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기
+ * 때문에 히스토리에서 B를 삭제하고 A로이동 C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로
+ * 동작함
  */
 AlopexController.prototype.backTo = function(navigationRule) {
 	navigation.backToOrNavigate(navigationRule);
@@ -243,26 +194,23 @@ AlopexController.prototype.backTo = function(navigationRule) {
 };
 
 /**
- * 특정 페이지로 이동하는 함수.
- * 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의 history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우 navigation함수를 통해 페이지 이동.
+ * 특정 페이지로 이동하는 함수. 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의
+ * history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우
+ * navigation함수를 통해 페이지 이동.
  * 
- * @deprecated alopexController.backToOrNavigate is deprecated. Use navigation.backToOrNavigate instead.
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "page id",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * };
+ * @deprecated alopexController.backToOrNavigate is deprecated. Use
+ *             navigation.backToOrNavigate instead.
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "page id", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } };
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters : optional
+ * pageId : required (이동할 페이지의 id) parameters : optional
  * 
- * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기 때문에 히스토리에서 B를 삭제하고 A로이동
- * C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로 동작함
+ * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기
+ * 때문에 히스토리에서 B를 삭제하고 A로이동 C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로
+ * 동작함
  */
 AlopexController.prototype.backToOrNavigate = function(navigationRule) {
 	navigation.backToOrNavigate(navigationRule);
@@ -271,17 +219,16 @@ AlopexController.prototype.backToOrNavigate = function(navigationRule) {
 };
 
 /**
-* 웹뷰가 로딩되기 전에, 표시되도록 설정해 놓은 로딩이미지를 dismiss시키는 함수
-* 로딩이미지를 설정할때 autoDismiss설정을 false로 해놓은 경우에 사용. 
-*/
+ * 웹뷰가 로딩되기 전에, 표시되도록 설정해 놓은 로딩이미지를 dismiss시키는 함수 로딩이미지를 설정할때 autoDismiss설정을
+ * false로 해놓은 경우에 사용.
+ */
 AlopexController.prototype.dismissLoadImage = function() {
 	alopexControllerD.dismissLoadImage();
 	
 };
 
 /**
- * -android 플렛폼 고유 함수(apple정책상 강제로 어플리케이션 종료 시킬수 없음)-
- * 어플리케이션을 종료 시키는 함수.
+ * -android 플렛폼 고유 함수(apple정책상 강제로 어플리케이션 종료 시킬수 없음)- 어플리케이션을 종료 시키는 함수.
  * 
  * @deprecated alopexController.goHome is exit. Use navigation.exit instead.
  */
@@ -294,7 +241,8 @@ AlopexController.prototype.exit = function() {
 /**
  * 어플리케이션의 Navigate History의 root screen 으로 이동하는 함수.
  * 
- * @deprecated alopexController.goHome is deprecated. Use navigation.goHome instead.
+ * @deprecated alopexController.goHome is deprecated. Use navigation.goHome
+ *             instead.
  */
 AlopexController.prototype.goHome = function() {
 	navigation.goHome();
@@ -305,22 +253,15 @@ AlopexController.prototype.goHome = function() {
 /**
  * 어플리케이션 screen 이동 하는 함수.
  * 
- * @deprecated alopexController.navigate is deprecated. Use navigation.navigate instead.
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "pageid",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * 	"loadImage": "image url",
- * 	"autoDismiss" : true | false
- * }
+ * @deprecated alopexController.navigate is deprecated. Use navigation.navigate
+ *             instead.
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "pageid", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } "loadImage": "image url", "autoDismiss" : true | false }
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters, loadImage, autoDismiss : optional
+ * pageId : required (이동할 페이지의 id) parameters, loadImage, autoDismiss : optional
  * loadImage가 있으면 네비게이션 중간에 이미지를 로드함. loadImage가 있는데 autoDismiss가 없으면 자동으로 true
  */
 AlopexController.prototype.navigate = function(navigationRule) {
@@ -330,25 +271,27 @@ AlopexController.prototype.navigate = function(navigationRule) {
 };
 
 /**
- * -android 플랫폼 고유 함수-
- * 하드웨어 back 버튼이 눌렸을 때 호출될 사용자 지정 함수 설정하는 함수.
+ * -android 플랫폼 고유 함수- 하드웨어 back 버튼이 눌렸을 때 호출될 사용자 지정 함수 설정하는 함수.
  * 
- * @param {function} callback back 버튼이 눌렸을때 동작할 callback 함수.
+ * @param {function}
+ *            callback back 버튼이 눌렸을때 동작할 callback 함수.
  */
 AlopexController.prototype.setCustomizedBack = function(callback) {
 	if(isValid(callback))
-		alopexControllerD.setCustomizedBack(GetFunctionName(callback));
+		alopexControllerD.setCustomizedBack(GetFunctionName(callback, true));
 };
 
 /**
  * 어플리케이션의 정지시 호출될 사용자 지정 함수를 설정하는 함수.
  * 
- * @deprecated alopexController.setOnPause is deprecated. Use setonpause event instead.
- * @param {function} callback 어플리케이션의 정지 시 호출될 함수.
+ * @deprecated alopexController.setOnPause is deprecated. Use setonpause event
+ *             instead.
+ * @param {function}
+ *            callback 어플리케이션의 정지 시 호출될 함수.
  */
 AlopexController.prototype.setOnPause = function(callback) {
 	if(isValid(callback))
-		alopexControllerD.setOnPause(GetFunctionName(callback));
+		alopexControllerD.setOnPause(GetFunctionName(callback, true));
 	
 	deprecated("alopexController.setOnPause", "onpause event");
 };
@@ -356,12 +299,14 @@ AlopexController.prototype.setOnPause = function(callback) {
 /**
  * 어플리케이션의 다시 시작될때 호출될 사용자 지정 함수를 설정하는 함수.
  * 
- * @deprecated alopexController.setOnResume is deprecated. Use setonresume event instead.
- * @param {function} callback 어플리케이션의 다시 시작될 때 호출될 함수.
+ * @deprecated alopexController.setOnResume is deprecated. Use setonresume event
+ *             instead.
+ * @param {function}
+ *            callback 어플리케이션의 다시 시작될 때 호출될 함수.
  */
 AlopexController.prototype.setOnResume = function(callback) {
 	if(isValid(callback))
-		alopexControllerD.setOnResume(GetFunctionName(callback));
+		alopexControllerD.setOnResume(GetFunctionName(callback, true));
 	
 	deprecated("alopexController.setOnResume", "onresume event");
 };
@@ -369,20 +314,22 @@ AlopexController.prototype.setOnResume = function(callback) {
 /**
  * alopexScreen의 webview가 touch 될때 호출될 사용자 지정 함수를 설정하는 함수.
  * 
- * @param {function} callback alopexScreen의 webview가 touch 될때 호출될 함수.
+ * @param {function}
+ *            callback alopexScreen의 webview가 touch 될때 호출될 함수.
  */
 AlopexController.prototype.setOnScreenTouch = function(callback) {
 	if(isValid(callback))
-		alopexControllerD.setOnScreenTouch(GetFunctionName(callback));
+		alopexControllerD.setOnScreenTouch(GetFunctionName(callback, true));
 };
 
-/***
- * screen이 시작될 시 처음으로 불려져야할 함수를 설정하는 함수.
- * alopex_ui에서 연계되는 함수로 사용자가 사용할 필요 없음.
+/*******************************************************************************
+ * screen이 시작될 시 처음으로 불려져야할 함수를 설정하는 함수. alopex_ui에서 연계되는 함수로 사용자가 사용할 필요 없음.
  * 
- * @deprecated alopexController.start is deprecated. Use alopexready event instead.
- * @param {string} initHandler 처음 실행이 될 함수명
- **/
+ * @deprecated alopexController.start is deprecated. Use alopexready event
+ *             instead.
+ * @param {string}
+ *            initHandler 처음 실행이 될 함수명
+ */
 AlopexController.prototype.start = function(initHandler) {
 	if(isValid(initHandler)) {
 		if(alopexready == true) {
@@ -404,9 +351,8 @@ AlopexController.prototype.start = function(initHandler) {
 var alopexController = new AlopexController();
 
 /**
- * 다른 어플리케이션을 호출 및 정보를 가져오기 위한 클래스.
- * 전역으로 선언된 application 를 이용해서 사용 
- * 호출 예> application.startApplication("com.skcc.app");
+ * 다른 어플리케이션을 호출 및 정보를 가져오기 위한 클래스. 전역으로 선언된 application 를 이용해서 사용 호출 예>
+ * application.startApplication("com.skcc.app");
  * 
  * @constructor
  * @property {string} appId 안드로이드는 패키지명, iOS는 URL Scheme.
@@ -422,7 +368,8 @@ function Application() {
 /**
  * identifier(Android : Package name, iPhone : URLScheme) 어플리케이션 버전을 가져오는 함수.
  * 
- * @param {string} identifier 버전을 가져올 어플리케이션 identifier.
+ * @param {string}
+ *            identifier 버전을 가져올 어플리케이션 identifier.
  * @returns {string} Returns identifier의 appVersion.
  */
 Application.prototype.getVersion = function(identifier) {
@@ -431,14 +378,14 @@ Application.prototype.getVersion = function(identifier) {
 };
 
 /**
- * identifier(Android : Package name, iPhone : URL Scheme)가 디바이스에 설치되어 있는지 확인 하는 함수.
+ * identifier(Android : Package name, iPhone : URL Scheme)가 디바이스에 설치되어 있는지 확인 하는
+ * 함수.
  * 
- * @param {string} identifier 설치 유무를 판단할 어플리케이션 identifier.
- * @param {function} callback 앱의 설치 유무를 확인할 callback 함수.
- * @example
- * function callback(hasIt) {
- * 	alert(hasIt);
- * }
+ * @param {string}
+ *            identifier 설치 유무를 판단할 어플리케이션 identifier.
+ * @param {function}
+ *            callback 앱의 설치 유무를 확인할 callback 함수.
+ * @example function callback(hasIt) { alert(hasIt); }
  * 
  * hasIt : true | false
  */
@@ -452,12 +399,11 @@ Application.prototype.hasApp = function(identifier, callback) {
 };
 
 /**
- * -android 플랫폼 고유 함수-
- * filePath의 apk를 실행하여 앱을 설치하는 함수.
+ * -android 플랫폼 고유 함수- filePath의 apk를 실행하여 앱을 설치하는 함수.
  * 
- * @param {string} filePath apk의 경로.
- * @exsample
- * appication.installApplication("file:///mnt/sdcard/....../skcc.apk");
+ * @param {string}
+ *            filePath apk의 경로.
+ * @exsample appication.installApplication("file:///mnt/sdcard/....../skcc.apk");
  */
 Application.prototype.installApplication = function(filePath) {
 	if(isValid(filePath))
@@ -467,12 +413,10 @@ Application.prototype.installApplication = function(filePath) {
 /**
  * RemoteContens기능을 사용하여 다운받은 Contents를 삭제 하는 기능.
  * 
- * @param {function} callback contents삭제 성공 여부를 전달 받을 함수.
- * @exsample
- * function removeCallback(result) {
- * 	if(result)
- * 		alert("contents 삭제 완료");
- * }
+ * @param {function}
+ *            callback contents삭제 성공 여부를 전달 받을 함수.
+ * @exsample function removeCallback(result) { if(result) alert("contents 삭제
+ *           완료"); }
  * 
  * result : true|false
  */
@@ -482,27 +426,25 @@ Application.prototype.removeContents = function(callback) {
 };
 
 /**
- * identifier(Android : Package name, iPhone : URL Scheme + ://) 어플리케이션을 실행 시키는 함수.
+ * identifier(Android : Package name, iPhone : URL Scheme + ://) 어플리케이션을 실행 시키는
+ * 함수.
  * 
- * @param {string} identifier 시작할 어플리케이션의 identifier.
- * @param {json} parameters 전달될 데이터.
- * @example
- * application.startApplication("com.skcc.app");
+ * @param {string}
+ *            identifier 시작할 어플리케이션의 identifier.
+ * @param {json}
+ *            parameters 전달될 데이터.
+ * @example application.startApplication("com.skcc.app");
  * 
- * iOS에서는 URL Scheme 뒤에 "://"를 추가해야함
- * 호출 예> application.startApplication("com.skcc.app://");
- * or
+ * iOS에서는 URL Scheme 뒤에 "://"를 추가해야함 호출 예>
+ * application.startApplication("com.skcc.app://"); or
  * 
- * var parameters = {
- * 	"boolean" : {"booleanKey1" : true, "booleanKey2" : false},
- * 	"float" : {"floatKey1" : 37.123456, "floatKey2" : 128.123456},
- * 	"int" : {"intKey1" : 1, "intKey2" : 2},
- * 	"string" : {"stringKey1" : "value1", "stringKey1" : "value2"}
- * };
- * application.startApplication("com.skcc.app", parameters);
+ * var parameters = { "boolean" : {"booleanKey1" : true, "booleanKey2" : false},
+ * "float" : {"floatKey1" : 37.123456, "floatKey2" : 128.123456}, "int" :
+ * {"intKey1" : 1, "intKey2" : 2}, "string" : {"stringKey1" : "value1",
+ * "stringKey1" : "value2"} }; application.startApplication("com.skcc.app",
+ * parameters);
  * 
- * identifier : required
- * parameters : optional
+ * identifier : required parameters : optional
  */
 Application.prototype.startApplication = function(identifier, parameters) {
 	if(isValid(identifier)) {
@@ -514,25 +456,23 @@ Application.prototype.startApplication = function(identifier, parameters) {
 };
 
 /**
- * identifier(Android : Package name, iPhone : URLScheme) Alopex 어플리케이션을 실행 시키는 함수.
+ * identifier(Android : Package name, iPhone : URLScheme) Alopex 어플리케이션을 실행 시키는
+ * 함수.
  * 
- * @param {string} identifier 시작할 어플리케이션의 identifier.
- * @param {string} pageId 실행할 page id in alopexconfig.xml file.
- * @param {json} parameters 전달될 데이터.
- * @example
- * application.startAlopexApplication("com.skcc.app", "samplePage");
+ * @param {string}
+ *            identifier 시작할 어플리케이션의 identifier.
+ * @param {string}
+ *            pageId 실행할 page id in alopexconfig.xml file.
+ * @param {json}
+ *            parameters 전달될 데이터.
+ * @example application.startAlopexApplication("com.skcc.app", "samplePage");
  * 
  * or
  * 
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2"
- * 	};
+ * "parameters" : { "parameter1" : "value1", "parameter2" : "value2" };
  * application.startAlopexApplication("com.skcc.app", "samplePage", parameters);
  * 
- * identifier : required
- * pageId : required
- * parameters : optional
+ * identifier : required pageId : required parameters : optional
  */
 Application.prototype.startAlopexApplication = function(identifier, pageId, parameters) {
 	if(isValid(identifier) && isValid(pageId)) {
@@ -546,9 +486,9 @@ Application.prototype.startAlopexApplication = function(identifier, pageId, para
 /**
  * 디바이스 기본 웹 브라우저를 실행 시키는 함수.
  * 
- * @param {string} url 웹 브라우저를 실행시 시작할 url.
- * @example
- * application.startWebBrowser("http://m.naver.com");
+ * @param {string}
+ *            url 웹 브라우저를 실행시 시작할 url.
+ * @example application.startWebBrowser("http://m.naver.com");
  */
 Application.prototype.startWebBrowser = function(url) {
 	if(isValid(url))
@@ -558,10 +498,8 @@ Application.prototype.startWebBrowser = function(url) {
 var application = new Application();
 
 /**
- * 어플리케이션의 전화번호부를 관리하는 클래스
- * 전역으로 선언된 contact 를 이용해서 사용
- * 호출 예> navigation.add();
- *
+ * 어플리케이션의 전화번호부를 관리하는 클래스 전역으로 선언된 contact 를 이용해서 사용 호출 예> navigation.add();
+ * 
  * @constructor
  */
 function Contact() {
@@ -570,30 +508,23 @@ function Contact() {
 /**
  * contact를 추가하는 함수
  * 
- * @param {json} contactInfo 저장할 contact의 정보
- * @param {function} successCallback add 성공시 호출될 함수
- * @param {function} errorCallback add 실패시 호출될 함수
+ * @param {json}
+ *            contactInfo 저장할 contact의 정보
+ * @param {function}
+ *            successCallback add 성공시 호출될 함수
+ * @param {function}
+ *            errorCallback add 실패시 호출될 함수
  * 
- * @example
- * var contactInfo = {
- * 	"firstName" : "이름",
- * 	"lastName" : "성",
- * 	"mobilePhone" : "01012345678"
- *  "workPhone" : "0264001234"
- *  "email" :  "abcd@sk.com"
- *  "organization" : "skcc"
- *  "department" :"solutionD"
- *  "jobTitle" : "assistance"
- * }
+ * @example var contactInfo = { "firstName" : "이름", "lastName" : "성",
+ *          "mobilePhone" : "01012345678" "workPhone" : "0264001234" "email" :
+ *          "abcd@sk.com" "organization" : "skcc" "department" :"solutionD"
+ *          "jobTitle" : "assistance" }
  * 
  * contact.add(contactInfo, successCallback, errorCallback);
  * 
- * function successCallback() {
- * }
+ * function successCallback() { }
  * 
- * function errorCallback(errorMessage : string) {
- * 	log.log(errorMessage);
- * }
+ * function errorCallback(errorMessage : string) { log.log(errorMessage); }
  * 
  */
 Contact.prototype.add = function(contactInfo, successCallback, errorCallback) {
@@ -604,37 +535,24 @@ Contact.prototype.add = function(contactInfo, successCallback, errorCallback) {
 /**
  * 입력받은 contactId에 해당하는 contact정보를 얻는 함수
  * 
- * @param {int} contactId 정보를 가져올 contact의 고유 ID
- * @param {function} successCallback get성공시 호출될 함수
- * @param {function} errorCallback get실패시 호출될 함수
+ * @param {int}
+ *            contactId 정보를 가져올 contact의 고유 ID
+ * @param {function}
+ *            successCallback get성공시 호출될 함수
+ * @param {function}
+ *            errorCallback get실패시 호출될 함수
  * 
- * @example
- * function successCallback(contactInfo :json) {
- * 	log.log(contactInfo.firstName);
- * 	log.log(contactInfo.lastName);
- * 	log.log(contactInfo.mobilePhone);
- * 	log.log(contactInfo.workPhone);
- * 	log.log(contactInfo.email);
- * 	log.log(contactInfo.organization);
- * 	log.log(contactInfo.department);
- * 	log.log(contactInfo.jobTitle);
- * }
+ * @example function successCallback(contactInfo :json) {
+ *          log.log(contactInfo.firstName); log.log(contactInfo.lastName);
+ *          log.log(contactInfo.mobilePhone); log.log(contactInfo.workPhone);
+ *          log.log(contactInfo.email); log.log(contactInfo.organization);
+ *          log.log(contactInfo.department); log.log(contactInfo.jobTitle); }
  * 
- * @example
- * var contactInfo = {
- * "firstName" : string
- * "lastName" : string,
- * "mobilePhone" : string,
- * "workPhone" : string
- * "email" : string
- * "organization" : string
- * "department" : string,
- * "jobTitle" : string
- * };
+ * @example var contactInfo = { "firstName" : string "lastName" : string,
+ *          "mobilePhone" : string, "workPhone" : string "email" : string
+ *          "organization" : string "department" : string, "jobTitle" : string };
  * 
- * function errorCallback(errorMessage : string) {
- * 	log.log(errorMessage);
- * }
+ * function errorCallback(errorMessage : string) { log.log(errorMessage); }
  * 
  */
 Contact.prototype.get = function(contactId, successCallback, errorCallback) {
@@ -645,17 +563,16 @@ Contact.prototype.get = function(contactId, successCallback, errorCallback) {
 /**
  * 입력받은 contactId에 해당하는 contact를 삭제하는 함수
  * 
- * @param {int} contactId 삭제할 contact의 고유ID
- * @param {function} successCallback 삭제 성공시 호출될 함수
- * @param {function} errorCallback 삭제 실패시 호출될 함수
+ * @param {int}
+ *            contactId 삭제할 contact의 고유ID
+ * @param {function}
+ *            successCallback 삭제 성공시 호출될 함수
+ * @param {function}
+ *            errorCallback 삭제 실패시 호출될 함수
  * 
- * @example
- * function successCallback() {
- * }
+ * @example function successCallback() { }
  * 
- * function errorCallback(errorMessage : string) {
- * 	log.log(errorMessage);
- * }
+ * function errorCallback(errorMessage : string) { log.log(errorMessage); }
  * 
  */
 Contact.prototype.remove = function(contactId, successCallback, errorCallback) {
@@ -666,58 +583,41 @@ Contact.prototype.remove = function(contactId, successCallback, errorCallback) {
 /**
  * 입력받은 값으로 저장된 contact를 검색하는 함수
  * 
- * @param {json} filter 검색조건들의 집합
- * @param {function} successCallback 검색 성공시 호출될 함수
- * @param {function} errorCallback 검색 실패시 호출될 함수
+ * @param {json}
+ *            filter 검색조건들의 집합
+ * @param {function}
+ *            successCallback 검색 성공시 호출될 함수
+ * @param {function}
+ *            errorCallback 검색 실패시 호출될 함수
  * 
- * @example
- * var filter = {
- * 	"firstName" : string,
- *	"lastName" : string,
- *	"mobilePhone" : string,
- *	"workPhone" : string,
- *	"email" : string,
- *	"organization" : string,
- *	"department" : string,
- *	"jobTitle" : string,
- * };
+ * @example var filter = { "firstName" : string, "lastName" : string,
+ *          "mobilePhone" : string, "workPhone" : string, "email" : string,
+ *          "organization" : string, "department" : string, "jobTitle" : string, };
  * 
- * var searchOption = {
- * 	"filter" : filter,
- * 	"andOption" : false
- * };
+ * var searchOption = { "filter" : filter, "andOption" : false };
  * 
- * 검색에 필요하지 않은 항목은 생략 가능. andOption은 필수
- * andOption이 true이면, 검색조건을 모두 만족시키는 항목 찾음. false면 검색 조건 중 하나라도 만족하는 항목 찾음.
- * 전화번호부 전체를 가져오려면 filter에 ""을 넣으면 됨
+ * 검색에 필요하지 않은 항목은 생략 가능. andOption은 필수 andOption이 true이면, 검색조건을 모두 만족시키는 항목 찾음.
+ * false면 검색 조건 중 하나라도 만족하는 항목 찾음. 전화번호부 전체를 가져오려면 filter에 ""을 넣으면 됨
  * 
  * contact.search(searchOption, successCallback, errorCallback);
  * 
- * function successCallback(contactList :jsonList) {
- *	for(var i = 0 ;i < contactList.length ; i++) {
- * 		log.log(contactList[i].contactId);
- * 		log.log(contactList[i].firstName);
- * 		log.log(contactList[i].lastName);
- * 		log.log(contactList[i].mobilePhone);
- * 		log.log(contactList[i].workPhone);
- * 		log.log(contactList[i].email);
- * 		log.log(contactList[i].organization);
- * 		log.log(contactList[i].jobTitle);
- * 		log.log(contactList[i].organization);
- *	}
+ * function successCallback(contactList :jsonList) { for(var i = 0 ;i <
+ * contactList.length ; i++) { log.log(contactList[i].contactId);
+ * log.log(contactList[i].firstName); log.log(contactList[i].lastName);
+ * log.log(contactList[i].mobilePhone); log.log(contactList[i].workPhone);
+ * log.log(contactList[i].email); log.log(contactList[i].organization);
+ * log.log(contactList[i].jobTitle); log.log(contactList[i].organization); }
  * 
- * function errorCallback(errorMessage : string) {
- * 	log.log(errorMessage);
- * }
+ * function errorCallback(errorMessage : string) { log.log(errorMessage); }
  * 
  */
 Contact.prototype.search = function(option, successCallback, errorCallback) {
 	if(isValid(option) && option != "") {
-		if(isValid(successCallback) && isValid(errorCallback)){
+		if(isValid(successCallback) && isValid(errorCallback)) {
 			contactJSNI.search(JSON.stringify(option), GetFunctionName(successCallback), GetFunctionName(errorCallback));
 		}
 	} else {
-		if(isValid(successCallback) && isValid(errorCallback)){
+		if(isValid(successCallback) && isValid(errorCallback)) {
 			contactJSNI.search(null, GetFunctionName(successCallback), GetFunctionName(errorCallback));
 		}
 	}
@@ -726,32 +626,23 @@ Contact.prototype.search = function(option, successCallback, errorCallback) {
 /**
  * 입력받은 contactId에 해당하는 contact를 업데이트 하는 함수
  * 
- * @param {json} contactInfo 업데이트할 contact의 정보
- * @param {function} successCallback 업데이트 성공시 호출될 함수
- * @param {function} errorCallback 업데이트 실패시 호출될 함수
+ * @param {json}
+ *            contactInfo 업데이트할 contact의 정보
+ * @param {function}
+ *            successCallback 업데이트 성공시 호출될 함수
+ * @param {function}
+ *            errorCallback 업데이트 실패시 호출될 함수
  * 
- * @example
- * var contactInfo = {
- * 	"contactId" : int
- * 	"firstName" : string,
- *	"lastName" : string,
- *	"mobilePhone" : string,
- *	"workPhone" : string,
- *	"email" : string,
- *	"organization" : string,
- *	"department" : string,
- *	"jobTitle" : string,
- *	"andOption" : boolean
- * };
+ * @example var contactInfo = { "contactId" : int "firstName" : string,
+ *          "lastName" : string, "mobilePhone" : string, "workPhone" : string,
+ *          "email" : string, "organization" : string, "department" : string,
+ *          "jobTitle" : string, "andOption" : boolean };
  * 
  * contact.update(contactInfo, successCallback, errorCallback);
  * 
- * function successCallback() {
- * }
+ * function successCallback() { }
  * 
- * function errorCallback(errorMessage : string) {
- * 	log.log(errorMessage);
- * }
+ * function errorCallback(errorMessage : string) { log.log(errorMessage); }
  * 
  */
 Contact.prototype.update = function(contactInfo, successCallback, errorCallback) {
@@ -762,10 +653,9 @@ Contact.prototype.update = function(contactInfo, successCallback, errorCallback)
 var contact = new Contact();
 
 /**
- * 디바이스 내장 Database에 접근 하는 클래스
- * 전역으로 선언된 database를 이용해서 사용
- * 호출 예> database.insert();
- *
+ * 디바이스 내장 Database에 접근 하는 클래스 전역으로 선언된 database를 이용해서 사용 호출 예>
+ * database.insert();
+ * 
  * @constructor
  */
 function Database() {
@@ -774,20 +664,18 @@ function Database() {
 }
 
 /**
- * 등록된 query들을 실행 하는 함수
- * insert, uptate, delete, execQuery함수가 등록한 query문을 실행
+ * 등록된 query들을 실행 하는 함수 insert, uptate, delete, execQuery함수가 등록한 query문을 실행
  * 
  * 
- * @param {string} databaseName commit을 실행할 database의 이름
- * @param {function} successCallback 등록된 query실행이 성공할 경우 호출될 함수
- * @param {function} errorCallback 등록된 query실행이 실패할 경우 호출될 함수
+ * @param {string}
+ *            databaseName commit을 실행할 database의 이름
+ * @param {function}
+ *            successCallback 등록된 query실행이 성공할 경우 호출될 함수
+ * @param {function}
+ *            errorCallback 등록된 query실행이 실패할 경우 호출될 함수
  * 
- * @example
- * successCallback(resultArray){
- * 		for( var i = 0; i < resultArray.length; i++) {
- * 			log.log(resultArray[i]);
- * 		}
- * }
+ * @example successCallback(resultArray){ for( var i = 0; i <
+ *          resultArray.length; i++) { log.log(resultArray[i]); } }
  * 
  * errorCallback(){errorMsg : string}
  * 
@@ -799,23 +687,18 @@ Database.prototype.commit = function(databaseName, successCallback, errorCallbac
 };
 
 /**
- * 삭제 query를 등록하는 함수.
- * 등록된 query는 commit이 호출 되었을 때 실행
+ * 삭제 query를 등록하는 함수. 등록된 query는 commit이 호출 되었을 때 실행
  * 
- * @param {json} query 실행할 query의 정보
+ * @param {json}
+ *            query 실행할 query의 정보
  * 
- * @example
- * var query = {
- * "tableName" : string,
- * "whereClause" : string,
- * "args" : array
- * }
+ * @example var query = { "tableName" : string, "whereClause" : string, "args" :
+ *          array }
  * 
  * database.deleteRow(query);
  * 
- * tableName : query를 수행할 테이블명
- * whereClause : query의 where조건문
- * args : whereCluse의 ?에 해당하는 data
+ * tableName : query를 수행할 테이블명 whereClause : query의 where조건문 args : whereCluse의
+ * ?에 해당하는 data
  * 
  * returnValue : 삭제된 row의 개수 /삭제된 row가 없다면 0 (commit의 successCallback으로 전달)
  */
@@ -826,21 +709,16 @@ Database.prototype.deleteRow = function(query) {
 };
 
 /**
- * query를 등록하는 함수.
- * 등록된 query는 commit이 호출 되었을 때 실행
+ * query를 등록하는 함수. 등록된 query는 commit이 호출 되었을 때 실행
  * 
- * @param {json} query 실행할 query의 정보
+ * @param {json}
+ *            query 실행할 query의 정보
  * 
- * @example
- * var query = {
- * "sql" : string,
- * "args" : array
- * }
+ * @example var query = { "sql" : string, "args" : array }
  * 
  * database.execQuery(query);
  * 
- * sql : 실행할 sql문
- * args : sql문의 ?에 해당하는 data
+ * sql : 실행할 sql문 args : sql문의 ?에 해당하는 data
  * 
  * returnValue : 0 (고정값으로 commit의 successCallback으로 전달)
  */
@@ -851,21 +729,17 @@ Database.prototype.execQuery = function(query) {
 };
 
 /**
- * 삽입 query를 등록하는 함수.
- * 등록된 query는 commit이 호출 되었을 때 실행
+ * 삽입 query를 등록하는 함수. 등록된 query는 commit이 호출 되었을 때 실행
  * 
- * @param {json} query 실행할 query의 정보
+ * @param {json}
+ *            query 실행할 query의 정보
  * 
- * @example
- * var query = {
- * "tableName" : string,
- * "insertValues" : json
- * }
+ * @example var query = { "tableName" : string, "insertValues" : json }
  * 
  * database.insert(query);
  * 
- * tableName : query를 수행할 테이블명
- * insertValues : insert할 data / 내부 json은 column명 : value
+ * tableName : query를 수행할 테이블명 insertValues : insert할 data / 내부 json은 column명 :
+ * value
  * 
  * returnValue: insert된 row의 id, insert실패시 -1 (commit의 successCallback으로 전달)
  */
@@ -878,33 +752,28 @@ Database.prototype.insert = function(query) {
 /**
  * 입력받은 query를 실행하여 Database를 검색하는 함수
  * 
- * @param {string} databaseName select query를 실행할 database의 이름
- * @param {json} query 실행할 query의 정보
- * @param {function} successCallback 성공시 호출될 함수
- * @param {function} errorCallback 실패시 호출될 함수
+ * @param {string}
+ *            databaseName select query를 실행할 database의 이름
+ * @param {json}
+ *            query 실행할 query의 정보
+ * @param {function}
+ *            successCallback 성공시 호출될 함수
+ * @param {function}
+ *            errorCallback 실패시 호출될 함수
  * 
- * @example
- * var query = {
- * "sql" : string,
- * "args" : array
- * }
+ * @example var query = { "sql" : string, "args" : array }
  * 
  * database.select("databaseName", query, successCallback, errorCallback);
  * 
- * successCallback(var result){
- * for( var i = 0; i < result.length; i++) {
- * log.log(result[i].columnName);
- * }
- * }
+ * successCallback(var result){ for( var i = 0; i < result.length; i++) {
+ * log.log(result[i].columnName); } }
  * 
- * errorCallback(errorMsg : string){
- * log.log(errorMsg);
- * }
+ * errorCallback(errorMsg : string){ log.log(errorMsg); }
  * 
- * sql : 실행할 sql문
- * args : sql문의 ?에 해당하는 data
+ * sql : 실행할 sql문 args : sql문의 ?에 해당하는 data
  * 
- * result : 검색 결과 배열.배열 하나의 항목이 하나의 Row에 해당. 인덱스를 통해 검색 결과의 Row에 접근하고 Column명을 통해 value를 사용할 수 있다.
+ * result : 검색 결과 배열.배열 하나의 항목이 하나의 Row에 해당. 인덱스를 통해 검색 결과의 Row에 접근하고 Column명을
+ * 통해 value를 사용할 수 있다.
  */
 Database.prototype.select = function(databaseName, query, successCallback, errorCallback) {
 	if(isValid(databaseName) && isValid(query) && isValid(successCallback) && isValid(errorCallback))
@@ -912,27 +781,21 @@ Database.prototype.select = function(databaseName, query, successCallback, error
 };
 
 /**
- * 수정 query를 등록하는 함수.
- * 등록된 query는 commit이 호출 되었을 때 실행
+ * 수정 query를 등록하는 함수. 등록된 query는 commit이 호출 되었을 때 실행
  * 
- * @param {json} query 실행할 query의 정보
+ * @param {json}
+ *            query 실행할 query의 정보
  * 
- * @example
- * var query = {
- * "tableName" : string
- * "whereClause" : string,
- * "args" : array,
- * "updateValues" : json
- * }
+ * @example var query = { "tableName" : string "whereClause" : string, "args" :
+ *          array, "updateValues" : json }
  * 
  * database.update(query);
  * 
- * tableName : query를 수행할 테이블명
- * whereClause : query의 where조건문
- * args : whereCluse의 ?에 해당하는 data
- * updateValues : updateValues data / 내부 json은 column명 : value
+ * tableName : query를 수행할 테이블명 whereClause : query의 where조건문 args : whereCluse의
+ * ?에 해당하는 data updateValues : updateValues data / 내부 json은 column명 : value
  * 
- * returnValue : update된 row의 개수 /update row가 없다면 0(commit의 successCallback으로 전달)
+ * returnValue : update된 row의 개수 /update row가 없다면 0(commit의 successCallback으로
+ * 전달)
  */
 Database.prototype.update = function(query) {
 	if(isValid(query)) {
@@ -943,14 +806,13 @@ Database.prototype.update = function(query) {
 var database = new Database();
 
 /**
- * 디바이스 상태정보를 가지고 있는 클래스.
- * 전역으로 선언된 device 를 이용해서 사용 
- * 호출 예>  device.getLanguage(callback);
- *
+ * 디바이스 상태정보를 가지고 있는 클래스. 전역으로 선언된 device 를 이용해서 사용 호출 예>
+ * device.getLanguage(callback);
+ * 
  * @constructor
  * @property {boolean} isTablet Table PC 인지 Phone 인지 알려주는 프로퍼티.
  * @property {boolean} isTV Table PC 인지 Phone, TV 인지 알려주는 프로퍼티.
- * @property {string} platformName 플랫폼 종류를 구분.(Android, iPhone)
+ * @property {string} platform 플랫폼 종류를 구분.(Android, iOS)
  * @property {string} deviceId 디바이스 고유 아이디.
  * @property {string} deviceModel 디바이스 모델 번호.
  * @property {string} deviceManufacturer 디바이스 제조사.
@@ -958,6 +820,7 @@ var database = new Database();
  * @property {string} mobileEquipmentId 안드로이드 디바이스 고유 아이디(not recommended)
  */
 function Device() {
+	this.carrier = deviceJSNI.getCarrier();
 	this.isTablet = deviceJSNI.isTablet();
 	this.isTV = deviceJSNI.isTV();
 	this.platformName = deviceJSNI.getPlatformName();
@@ -971,8 +834,8 @@ function Device() {
 }
 
 /**
- * -android 플랫폼 고유 함수-
- * 디바이스의 dpi를 구하는 함수.
+ * -android 플랫폼 고유 함수- 디바이스의 dpi를 구하는 함수.
+ * 
  * @returns {string} 디바이스 dpi.
  */
 Device.prototype.getDeviceDpi = function() {
@@ -982,11 +845,9 @@ Device.prototype.getDeviceDpi = function() {
 /**
  * 디바이스에 설정된 언어를 알려주는 함수.
  * 
- * @param {string} callback
- * @example
- * function callback(language) {
- * 	alert(language);
- * }
+ * @param {string}
+ *            callback
+ * @example function callback(language) { alert(language); }
  * 
  * language = "ko", "en", etc
  */
@@ -998,13 +859,12 @@ Device.prototype.getLanguage = function(callback) {
 /**
  * 현재 연결되어 있는 네트워크 타입을 알려주는 함수.
  * 
- * @param {string} callback
- * @example
- * function callback(type) {
- * 	alert(type);
- * }
+ * @param {string}
+ *            callback
+ * @example function callback(type) { alert(type); }
  * 
- * type = "wifi", "mobile", or "null" : mobile could be 2g, 3g or 4g while null means no connection.
+ * type = "wifi", "mobile", or "null" : mobile could be 2g, 3g or 4g while null
+ * means no connection.
  */
 Device.prototype.getNetworkType = function(callback) {
 	if(isValid(callback))
@@ -1014,10 +874,8 @@ Device.prototype.getNetworkType = function(callback) {
 var device = new Device();
 
 /**
- * 파일을 관리하는 클래스
- * 전역으로 선언된 file변수를 이용해서 사용
- * 호출 예> file.copy();
- *
+ * 파일을 관리하는 클래스 전역으로 선언된 file변수를 이용해서 사용 호출 예> file.copy();
+ * 
  * @constructor
  */
 function File() {
@@ -1026,15 +884,14 @@ function File() {
 /**
  * 파일 및 디렉토리를 복사하는 함수.
  * 
- * @param {string} from 복사의 대상이 되는 파일/디렉토리의 경로.
- * @param {string} to 복사본을 저장할 디렉토리의 경로.
- * @param {string} callback 복사 성공/실패시 호출될 함수.
+ * @param {string}
+ *            from 복사의 대상이 되는 파일/디렉토리의 경로.
+ * @param {string}
+ *            to 복사본을 저장할 디렉토리의 경로.
+ * @param {string}
+ *            callback 복사 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * @example function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1047,18 +904,15 @@ File.prototype.copy = function(from, to, callback) {
 /**
  * 새로운 파일을 생성하는 함수
  * 
- * @param {string} path 생성된 파일이 저장될 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            path 생성된 파일이 저장될 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * 입력받은 파일의 경로 중 존재하는 않는 디렉토리가 있는 경우 자동으로 생성됨.
- * dir1존재 dir2가 존재 하지 않을 경우 dir2 자동 생성.
- * file.createNewFile("dir1/dir2/newFile", callback);
+ * @example 입력받은 파일의 경로 중 존재하는 않는 디렉토리가 있는 경우 자동으로 생성됨. dir1존재 dir2가 존재 하지 않을 경우
+ *          dir2 자동 생성. file.createNewFile("dir1/dir2/newFile", callback);
  * 
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1071,14 +925,12 @@ File.prototype.createNewFile = function(path, callback) {
 /**
  * 파일 및 디렉토리를 삭제하는 함수.
  * 
- * @param {string} from 삭제할 파일/디렉토리의 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            from 삭제할 파일/디렉토리의 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * @example function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1091,14 +943,12 @@ File.prototype.deleteFile = function(from, callback) {
 /**
  * 파일 및 디렉토리가 존재하는 확인하는 함수.
  * 
- * @param {string} path 존재를 확인할 파일/디렉토리의 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            path 존재를 확인할 파일/디렉토리의 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("exist");
- * }
+ * @example function callback(result) { if(result) alert("exist"); }
  * 
  * result : 파일이 존재하는지 여부(true|false)
  * 
@@ -1111,13 +961,12 @@ File.prototype.exists = function(path, callback) {
 /**
  * 저장소의 경로를 가져오는 함수.
  * 
- * @param {string} callback 성공/실패시 호출될 함수.
- * @param {string} onPrivate 내장 메모리(true) or 외장 메모리(false) 사용 android only
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            onPrivate 내장 메모리(true) or 외장 메모리(false) 사용 android only
  * 
- * @example
- * function callback(path) {
- * 	alert(path);
- * }
+ * @example function callback(path) { alert(path); }
  * 
  * path : 저장소의 경로(string)
  * 
@@ -1130,14 +979,12 @@ File.prototype.getStoragePath = function(callback, onPrivate) {
 /**
  * 특정 파일이 디렉토리인지 확인
  * 
- * @param {string} path 디렉토리인지 확인할 파일/디렉토리의 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            path 디렉토리인지 확인할 파일/디렉토리의 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("directory");
- * }
+ * @example function callback(result) { if(result) alert("directory"); }
  * 
  * result : directory 여부(true|false)
  * 
@@ -1150,18 +997,15 @@ File.prototype.isDirectory = function(path, callback) {
 /**
  * 새로운 디렉토리를 생성하는 함수.
  * 
- * @param {string} path 새로 생성할 디렉토리의 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            path 새로 생성할 디렉토리의 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * 입력받은 경로에 존재하지 않는 디렉토리는 모두 생성.
- * 다음과 같은 경로중 dir1만 존재할 경우 dir2, dir3, dir4모두 생성됨.
- * file.mkdirs("dir1/dir2/di3/dir4", callback);
+ * @example 입력받은 경로에 존재하지 않는 디렉토리는 모두 생성. 다음과 같은 경로중 dir1만 존재할 경우 dir2, dir3,
+ *          dir4모두 생성됨. file.mkdirs("dir1/dir2/di3/dir4", callback);
  * 
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1174,15 +1018,14 @@ File.prototype.mkdirs = function(path, callback) {
 /**
  * 파일 및 디렉토리를 이동하는 함수.
  * 
- * @param {string} from 이동할 파일/디렉토리의 경로.
- * @param {string} to 이동될 디렉토리의 경로.
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            from 이동할 파일/디렉토리의 경로.
+ * @param {string}
+ *            to 이동될 디렉토리의 경로.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * @example function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1195,15 +1038,14 @@ File.prototype.move = function(from, to, callback) {
 /**
  * 파일 및 디렉토리의 이름을 변경하는 함수.
  * 
- * @param {string} path 이름을 변경할 파일/디렉토리의 경로.
- * @param {string} name 변경될 파일/디렉토리 명. 
- * @param {string} callback 성공/실패시 호출될 함수.
+ * @param {string}
+ *            path 이름을 변경할 파일/디렉토리의 경로.
+ * @param {string}
+ *            name 변경될 파일/디렉토리 명.
+ * @param {string}
+ *            callback 성공/실패시 호출될 함수.
  * 
- * @example
- * function callback(result) {
- * 	if(result)
- * 		alert("success");
- * }
+ * @example function callback(result) { if(result) alert("success"); }
  * 
  * result : 성공 여부(true|false)
  * 
@@ -1216,9 +1058,9 @@ File.prototype.rename = function(path, name, callback) {
 var file = new File();
 
 /**
- * HTML5의 geolocation에 제어하는 클래스
- * 호출 예> geolocation.getLocation(successCallback, errorCallback);
- *
+ * HTML5의 geolocation에 제어하는 클래스 호출 예> k.getLocation(successCallback,
+ * errorCallback);
+ * 
  * @constructor
  */
 function Geolocation() {
@@ -1232,52 +1074,45 @@ function Geolocation() {
 /**
  * 현재 위치값(Latitude, Longitude)을 가져오는 함수
  * 
- * @param {function} successCallback 위치값을 성공적으로 가져왔을 경우 호출될 함수
- * @param {function} errorCallback 위치값 가져오기에 실패한 경우 호출될 함수
+ * @param {function}
+ *            successCallback 위치값을 성공적으로 가져왔을 경우 호출될 함수
+ * @param {function}
+ *            errorCallback 위치값 가져오기에 실패한 경우 호출될 함수
  * 
- * @example
- * function successCallback(position) {
- * 	alert("Latitude: " + position.coords.latitude +" \nLongitude: " + position.coords.longitude);
- * }
+ * @example function successCallback(position) { alert("Latitude: " +
+ *          position.coords.latitude +" \nLongitude: " +
+ *          position.coords.longitude); }
  * 
- * function errorCallback(error) {
- * 	switch(error.code) {
- * 		case error.PERMISSION_DENIED:
- * 			alert("User denied the request for Geolocation.");
- * 		break;
+ * function errorCallback(error) { switch(error.code) { case
+ * error.PERMISSION_DENIED: alert("User denied the request for Geolocation.");
+ * break;
  * 
- *		case error.POSITION_UNAVAILABLE:
- *			alert("Location information is unavailable.");
- *		break;
- *
- *		case error.TIMEOUT:
- *			alert("The request to get user location timed out.");
- *		break;
- *
- *		case error.UNKNOWN_ERROR:
- *			alert("An unknown error occurred.");
- *		break;
- *
- *		case error.NETWORK_UNAVAILABLE:
- *			alert("Network is not available.");
- *		break;
- *
- *		case error.DEVICE_NOT_SUPPORTED:
- *			alert("Device is not support geolocation.");
- *		break;
- *	}
- *}
- *
+ * case error.POSITION_UNAVAILABLE: alert("Location information is
+ * unavailable."); break;
+ * 
+ * case error.TIMEOUT: alert("The request to get user location timed out.");
+ * break;
+ * 
+ * case error.UNKNOWN_ERROR: alert("An unknown error occurred."); break;
+ * 
+ * case error.NETWORK_UNAVAILABLE: alert("Network is not available."); break;
+ * 
+ * case error.DEVICE_NOT_SUPPORTED: alert("Device is not support geolocation.");
+ * break; } }
+ * 
  * HTML5 geolocation return value를 그대로 전달.
  */
 Geolocation.prototype.getLocation = function(successCallback, errorCallback) {
 	if(isValid(successCallback) && isValid(errorCallback)) {
+		console.log("##getLocation() navigator.geolocation=" + navigator.geolocation);
+		console.log("##");
 		if(navigator.geolocation) {
 			this.successCallback = successCallback;
 			this.errorCallback = errorCallback;
 			
 			device.getNetworkType(AlopexGeolocationNetworkCheckCallback);
 		} else {
+			console.log("##getLocation() navigator.geolocation-> false");
 			this.geolocationError.code = this.geolocationError.DEVICE_NOT_SUPPORTED;
 			
 			errorCallback(this.geolocationError);
@@ -1286,9 +1121,11 @@ Geolocation.prototype.getLocation = function(successCallback, errorCallback) {
 };
 
 function AlopexGeolocationNetworkCheckCallback(networkType) {
-	if(networkType != "null")
+	console.log("##AlopexGeolocationNetworkCheckCallback() networkType=" + networkType);
+	if(networkType != "null") {
+		console.log("## geolocation.errorCallback=" + geolocation.errorCallback);
 		navigator.geolocation.getCurrentPosition(geolocation.successCallback, geolocation.errorCallback);
-	else {
+	} else {
 		geolocation.geolocationError.code = geolocation.geolocationError.NETWORK_UNAVAILABLE;
 		errorCallback(geolocation.geolocationError);
 	}
@@ -1297,10 +1134,9 @@ function AlopexGeolocationNetworkCheckCallback(networkType) {
 var geolocation = new Geolocation();
 
 /**
- * 다른 어플리케이션들과 공유하는 영구 저장소 클래스.
- * 전역으로 선언된 globalPreference 를 이용해서 사용 
- * 호출 예> globalPreference.contains(key);
- *
+ * 다른 어플리케이션들과 공유하는 영구 저장소 클래스. 전역으로 선언된 globalPreference 를 이용해서 사용 호출 예>
+ * globalPreference.contains(key);
+ * 
  * @constructor
  */
 function GlobalPreference() {
@@ -1309,8 +1145,10 @@ function GlobalPreference() {
 /**
  * GlobalPreference 해당 key가 존재하는 알아보는 함수.
  * 
- * @param {string} key 존재 유무를 확인할 key.
- * @returns {boolean} Returns GlobalPreference 해당키가 존재하면 true, 존재 하지 않으면 false리턴.
+ * @param {string}
+ *            key 존재 유무를 확인할 key.
+ * @returns {boolean} Returns GlobalPreference 해당키가 존재하면 true, 존재 하지 않으면
+ *          false리턴.
  */
 GlobalPreference.prototype.contains = function(key) {
 	if(isValid(key))
@@ -1320,7 +1158,8 @@ GlobalPreference.prototype.contains = function(key) {
 /**
  * GlobalPreference value를 가져오는 함수.
  * 
- * @param {string} key Preference에서 가져올 value의 key.
+ * @param {string}
+ *            key Preference에서 가져올 value의 key.
  * @returns {string} Value key에 해당하는 value.
  */
 GlobalPreference.prototype.get = function(key) {
@@ -1333,10 +1172,13 @@ GlobalPreference.prototype.get = function(key) {
 /**
  * GlobalPreference value를 저장 하는 함수.
  * 
- * @param {string} key 저장할 value의 key.
- * @param {string} value 저장할 value.
+ * @param {string}
+ *            key 저장할 value의 key.
+ * @param {string}
+ *            value 저장할 value.
  * 
- * GlobalPreference key가 중복 될 수 없다. 때문에 GlobalPreference에 이미 존재하는 key라면 value가 수정됨.
+ * GlobalPreference key가 중복 될 수 없다. 때문에 GlobalPreference에 이미 존재하는 key라면 value가
+ * 수정됨.
  */
 GlobalPreference.prototype.put = function(key, value) {
 	if(isValid(key) && isValid(value))
@@ -1346,7 +1188,8 @@ GlobalPreference.prototype.put = function(key, value) {
 /**
  * GlobalPreference key, value를 제거하는 함수.
  * 
- * @param {string} key GlobalPreference 제거하기 원하는 key.
+ * @param {string}
+ *            key GlobalPreference 제거하기 원하는 key.
  */
 GlobalPreference.prototype.remove = function(key) {
 	if(isValid(key))
@@ -1360,12 +1203,10 @@ var httpObjects = new Array();
 /**
  * http 통신을 관리하는 클래스.
  * 
- * @example
- * Http 클래스는 다른 API 들과 다르게 미리 정의 되어 있는 전역 변수가 없음.
- * Http 클래스를 사용하기 전에 다음과 같이 선언해야함.
+ * @example Http 클래스는 다른 API 들과 다르게 미리 정의 되어 있는 전역 변수가 없음. Http 클래스를 사용하기 전에 다음과
+ *          같이 선언해야함.
  * 
- * var http = new Http();
- * var myHttp = new Http();
+ * var http = new Http(); var myHttp = new Http();
  * 
  * @constructor
  * @property {number} errorCode error code
@@ -1389,7 +1230,6 @@ Http.prototype.cancelDownload = function() {
 	httpJSNI.cancelDownload(this.index);
 };
 
-
 /**
  * 리퀘스트를 취소하는 함수.
  */
@@ -1406,50 +1246,39 @@ Http.prototype.cancelUpload = function() {
 
 /**
  * 파일을 다운로드하는 함수.
- * @param {json} entity
- * @param {function} successCallback download 성공 시 불려질 함수.
- * @param {function} errorCallback download 실패 시 불려질 함수.
- * @param {function} progressCallback download가 진행이 될때 불려질 함수 0 ~ 100 사이 값.
- * @param {function} cancelCallback download가 취소 시 불려질 함수.
  * 
- * @example
- * var entity = {
- * 	"url" : "http://localhost:8080/a.zip",
- * 	"fileName" : "file name on SDCard"
- * };
+ * @param {json}
+ *            entity
+ * @param {function}
+ *            successCallback download 성공 시 불려질 함수.
+ * @param {function}
+ *            errorCallback download 실패 시 불려질 함수.
+ * @param {function}
+ *            progressCallback download가 진행이 될때 불려질 함수 0 ~ 100 사이 값.
+ * @param {function}
+ *            cancelCallback download가 취소 시 불려질 함수.
  * 
- * url : required
- * fileName : optional, 파일 이름이 없으면 url에서 마지막 패스(a.zip)가 파일이름으로 잡힘
+ * @example var entity = { "url" : "http://localhost:8080/a.zip", "fileName" :
+ *          "file name on SDCard" };
  * 
- * @example
- * function successCallback(filePath) {
- * 	alert(filePath);
- * }
+ * url : required fileName : optional, 파일 이름이 없으면 url에서 마지막 패스(a.zip)가 파일이름으로 잡힘
+ * 
+ * @example function successCallback(filePath) { alert(filePath); }
  * 
  * filePath : 다운받은 파일이 저장된 절대 경로.
  * 
- * @example
- * function errorCallback(http) {
- * 	alert("error = " + http.errorCode + " : " + http.errorMessage);
- * }
+ * @example function errorCallback(http) { alert("error = " + http.errorCode + " : " +
+ *          http.errorMessage); }
  * 
- * @example
- * function cancelCallback(http) {
- * 	// do something....
- * }
+ * @example function cancelCallback(http) { // do something.... }
  * 
  * callback 함수에 전달되는 http는 request에 사용된 http객체임.
  * 
- * errorCode:
- * 3: External Storage is not available *android only
- * 4 : TimeoutException
- * 1004 : 사용 가능한 통신수단이 없는 경우(3g, wifi 등등)
- * 1012 : SSL 인증이 실패 
- *  
- * @example
- * function progressCallback(progress) {
- * 	platformUIComponent.setProgress(progress);
- * }
+ * errorCode: 3: External Storage is not available *android only 4 :
+ * TimeoutException 1004 : 사용 가능한 통신수단이 없는 경우(3g, wifi 등등) 1012 : SSL 인증이 실패
+ * 
+ * @example function progressCallback(progress) {
+ *          platformUIComponent.setProgress(progress); }
  * 
  * progress : percentage of progress(0 ~ 100)
  * 
@@ -1457,13 +1286,16 @@ Http.prototype.cancelUpload = function() {
  */
 Http.prototype.download = function(entity, successCallback, errorCallback, progressCallback, cancelCallback) {
 	if(isValid(entity) && isValid(successCallback) && isValid(errorCallback) && isValid(progressCallback) && isValid(cancelCallback))
-		httpJSNI.download(JSON.stringify(entity), GetFunctionName(successCallback), GetFunctionName(errorCallback), GetFunctionName(progressCallback), GetFunctionName(cancelCallback), this.index);
+		httpJSNI.download(JSON.stringify(entity), GetFunctionName(successCallback), GetFunctionName(errorCallback), GetFunctionName(progressCallback, true), GetFunctionName(cancelCallback), this.index);
 };
 
 /**
  * 인자로 넘어온 header에 해당하는 value를 header field에서 가져오는 함수
- * @param {string} header header field에서 가져올 header의 이름
- * @returns {string} returns header field에 해당 header의 value. header값이 존재 하지 않을 경우 undefined.
+ * 
+ * @param {string}
+ *            header header field에서 가져올 header의 이름
+ * @returns {string} returns header field에 해당 header의 value. header값이 존재 하지 않을
+ *          경우 undefined.
  */
 Http.prototype.getResponseHeader = function(header) {
 	if(isValid(header))
@@ -1473,45 +1305,31 @@ Http.prototype.getResponseHeader = function(header) {
 /**
  * 서버에 request를 보내는 함수.
  * 
- * @param {json} entity request 정보
- * @param {function} successCallback success callback method
- * @param {function} errorCallback error callback method
+ * @param {json}
+ *            entity request 정보
+ * @param {function}
+ *            successCallback success callback method
+ * @param {function}
+ *            errorCallback error callback method
  * 
- * @example
- * var entity = {
- * 	"url" : "http://serverURL.com",
- * 	"method" : "POST",
- * 	"onBody" : false,
- * 	"content" : "바디에 들어갈 내용",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2"
- * 	}
- * };
+ * @example var entity = { "url" : "http://serverURL.com", "method" : "POST",
+ *          "onBody" : false, "content" : "바디에 들어갈 내용", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2" } };
  * 
- * url {string} : required
- * method {string} : required, "get" | "post" | "GET" | "POST"
- * onBody {boolean} : optional, post방식 사용시 사용. ture설정시 content가 바디 영역에 들어감, false 일경우 content는 무시됨
- * content {string} : optional, post방식 시 body영역에 넣을 내용
- * parameters {json} : optional
+ * url {string} : required method {string} : required, "get" | "post" | "GET" |
+ * "POST" onBody {boolean} : optional, post방식 사용시 사용. ture설정시 content가 바디 영역에
+ * 들어감, false 일경우 content는 무시됨 content {string} : optional, post방식 시 body영역에 넣을
+ * 내용 parameters {json} : optional
  * 
- * @example
- * function successCallback(http) {
- * 	alert(http.response);
- * }
+ * @example function successCallback(http) { alert(http.response); }
  * 
  * callback 함수에 전달되는 http는 request에 사용된 http객체임.
  * 
- * @example
- * function errorCallback(http) {
- * 	alert(http.errorCode + " : " + http.errorMessage);
- * }
+ * @example function errorCallback(http) { alert(http.errorCode + " : " +
+ *          http.errorMessage); }
  * 
- * errorCode:
- * 3: External Storage is not available *android only
- * 4 : TimeoutException
- * 1004 : 사용 가능한 통신수단이 없는 경우(3g, wifi 등등)
- * 1012 : SSL 인증이 실패 
+ * errorCode: 3: External Storage is not available *android only 4 :
+ * TimeoutException 1004 : 사용 가능한 통신수단이 없는 경우(3g, wifi 등등) 1012 : SSL 인증이 실패
  * 
  * callback 함수에 전달되는 http는 request에 사용된 http객체임.
  */
@@ -1521,11 +1339,12 @@ Http.prototype.request = function(entity, successCallback, errorCallback) {
 };
 
 /**
- * request property를 셋팅 하는 함수.
- * property가 이미 존재하는 경우 덮어 씌여짐.
+ * request property를 셋팅 하는 함수. property가 이미 존재하는 경우 덮어 씌여짐.
  * 
- * @param {string} header 일반적으로 http통신에서 사용되는 header의 key에 해당됨 (e.g., "accept").
- * @param {string} value header에 셋팅할 value
+ * @param {string}
+ *            header 일반적으로 http통신에서 사용되는 header의 key에 해당됨 (e.g., "accept").
+ * @param {string}
+ *            value header에 셋팅할 value
  */
 Http.prototype.setRequestHeader = function(header, value) {
 	if(isValid(header) && isValid(value))
@@ -1533,9 +1352,10 @@ Http.prototype.setRequestHeader = function(header, value) {
 };
 
 /**
- * timeout시간을 셋팅 하는 함수
- * milliseconds를 기본 단위로 하며 request전에 설정 되어야 함
- * @param {number} timeout timeout의 시간으로 milliseconds를 기본 단위로 함
+ * timeout시간을 셋팅 하는 함수 milliseconds를 기본 단위로 하며 request전에 설정 되어야 함
+ * 
+ * @param {number}
+ *            timeout timeout의 시간으로 milliseconds를 기본 단위로 함
  * 
  * default time out 10 second
  */
@@ -1549,49 +1369,40 @@ Http.prototype.setTimeout = function(timeout) {
 /**
  * file을 서버로 upload하는 함수
  * 
- * @param {json} entity upload request information
- * @param {function} successCallback success callback method
- * @param {function} errorCallback error callback method
- * @param {function} progressCallback progress callback method
- * @param {function} cancelCallback cancel callback method
+ * @param {json}
+ *            entity upload request information
+ * @param {function}
+ *            successCallback success callback method
+ * @param {function}
+ *            errorCallback error callback method
+ * @param {function}
+ *            progressCallback progress callback method
+ * @param {function}
+ *            cancelCallback cancel callback method
  * 
- * @exaple
- * var entity = {
- * 	"url" : "http://serverURL.com/upload",
- * 	"filePath" : "file:///mnt/sdcard/........"
- * };
+ * @exaple var entity = { "url" : "http://serverURL.com/upload", "filePath" :
+ *         "file:///mnt/sdcard/........" };
  * 
- * url : required
- * filePath : required
+ * url : required filePath : required
  * 
- * @example
- * function successCallback() {
- * 	alert("upload success");
- * }
+ * @example function successCallback() { alert("upload success"); }
  * 
- * @example
- * function errorCallback(http) {
- * 	alert(http.errorCode + " : " + http.errorMessage);
- * }
+ * @example function errorCallback(http) { alert(http.errorCode + " : " +
+ *          http.errorMessage); }
  * 
  * http is Http object that is called for request.
  * 
- * @example
- * function progressCallback(progress) {
- * 	platformUIComponent.setProgress(progress);
- * }
+ * @example function progressCallback(progress) {
+ *          platformUIComponent.setProgress(progress); }
  * 
  * progress : percentage of progress(0 ~ 100)
  * 
- * @example
- * function cancelCallback(http) {
- * 	// do something....
- * }
+ * @example function cancelCallback(http) { // do something.... }
  */
 Http.prototype.upload = function(entity, successCallback, errorCallback, progressCallback, cancelCallback) {
 	if(isValid(entity) && isValid(successCallback) && isValid(errorCallback) && isValid(progressCallback) && isValid(cancelCallback)) {
 		if(typeof (successCallback) == "function" && typeof (errorCallback) == "function" && typeof (progressCallback) == "function" && typeof (cancelCallback) == "function")
-			httpJSNI.upload(JSON.stringify(entity), GetFunctionName(successCallback), GetFunctionName(errorCallback), GetFunctionName(progressCallback), GetFunctionName(cancelCallback), this.index);
+			httpJSNI.upload(JSON.stringify(entity), GetFunctionName(successCallback), GetFunctionName(errorCallback), GetFunctionName(progressCallback, true), GetFunctionName(cancelCallback), this.index);
 		else if(typeof (successCallback) == "string" && typeof (errorCallback) == "string" && typeof (progressCallback) == "string" && typeof (cancelCallback) == "string") {
 			httpJSNI.upload(JSON.stringify(entity), successCallback, errorCallback, progressCallback, cancelCallback, this.index);
 		}
@@ -1600,10 +1411,9 @@ Http.prototype.upload = function(entity, successCallback, errorCallback, progres
 };
 
 /**
- * localNotification을 관장하는 클래스
- * 전역으로 선언된 localNotification 를 이용해서 사용
- * 호출 예> localNotification.addNotification();
- *
+ * localNotification을 관장하는 클래스 전역으로 선언된 localNotification 를 이용해서 사용 호출 예>
+ * localNotification.addNotification();
+ * 
  * @constructor
  */
 function LocalNotification() {
@@ -1612,35 +1422,23 @@ function LocalNotification() {
 /**
  * localNotification을 추가하는 함수
  * 
- * @param {int} id 등록할 notifition의 고유 ID. required.
- * @param {json} time notification이 발생할 시간. required.
- * @param {json} action notification발생 시 동작. required.
+ * @param {int}
+ *            id 등록할 notifition의 고유 ID. required.
+ * @param {json}
+ *            time notification이 발생할 시간. required.
+ * @param {json}
+ *            action notification발생 시 동작. required.
  * 
- * @example
- * var time = {
- * 	"year" : 2012, 
- * 	"month" : 7, 
- * 	"date" : 12, 
- * 	"hour" : 1 ~ 12, 
- * 	"ampm" : "am" | "pm" | "AM" | "PM", 
- * 	"minute" : 0~59, 
- * 	"second" : 0~59
- * }
+ * @example var time = { "year" : 2012, "month" : 7, "date" : 12, "hour" : 1 ~
+ *          12, "ampm" : "am" | "pm" | "AM" | "PM", "minute" : 0~59, "second" :
+ *          0~59 }
  * 
- * var action = {
- * 	"pageId" : "pageId value",
- * 	"parameters" : {"param1" : "value1", "param2" : "value2"},
- * 	"title" : "Notification Title",
- * 	"alert" : "Notification Content",
- * 	"useMultiMessages" : "true",
- * 	"aps" : {
- * 	"sound" : "true | false",
- * 	"badge" : 1
- * 	}
- * }
+ * var action = { "pageId" : "pageId value", "parameters" : {"param1" :
+ * "value1", "param2" : "value2"}, "title" : "Notification Title", "alert" :
+ * "Notification Content", "useMultiMessages" : "true", "aps" : { "sound" :
+ * "true | false", "badge" : 1 } }
  * 
- * action.parameters: optional
- * aps는 iOS만 사용 
+ * action.parameters: optional aps는 iOS만 사용
  * 
  * localNotification.addNotification(999, time, action);
  * 
@@ -1653,16 +1451,13 @@ LocalNotification.prototype.addNotification = function(id, time, action) {
 /**
  * 저장된 모든 unreadNotification을 가져오는 함수.
  * 
- * @param {function} callback callback method
+ * @param {function}
+ *            callback callback method
  * 
- * @example
- * localNotification.getUnreadNotifications(callback);
+ * @example localNotification.getUnreadNotifications(callback);
  * 
- * function callback(notifications) {
- * 	for( var i = 0; i < notifications.length; i++) {
- * 		alert(notifications[i].alert);
- * 	}
- * }
+ * function callback(notifications) { for( var i = 0; i < notifications.length;
+ * i++) { alert(notifications[i].alert); } }
  * 
  * addNotification에 입력한 action정보가 그대로 전달됨.
  */
@@ -1673,8 +1468,8 @@ LocalNotification.prototype.getUnreadNotifications = function(callback) {
 
 /**
  * 저장된 unreadNotification을 모두 삭제하는 함수
- * @example
- * localNotification.deleteAllUnreadNotifications();
+ * 
+ * @example localNotification.deleteAllUnreadNotifications();
  * 
  */
 LocalNotification.prototype.deleteAllUnreadNotifications = function() {
@@ -1684,10 +1479,10 @@ LocalNotification.prototype.deleteAllUnreadNotifications = function() {
 /**
  * 저장된 unreadNotification중 전달받은 index에 해당하는 unreadNotification을 삭제 하는 함수.
  * 
- * @param {int} index 삭제할 unreadNotification의 index
+ * @param {int}
+ *            index 삭제할 unreadNotification의 index
  * 
- * @example
- * localNotification.deleteUnreadNotification(0);
+ * @example localNotification.deleteUnreadNotification(0);
  * 
  */
 LocalNotification.prototype.deleteUnreadNotification = function(index) {
@@ -1698,10 +1493,10 @@ LocalNotification.prototype.deleteUnreadNotification = function(index) {
 /**
  * addNotification으로 설정한 notification을 취소하는 함수.
  * 
- * @param {int} id addNotification에서 사용한 id
+ * @param {int}
+ *            id addNotification에서 사용한 id
  * 
- * @example
- * localNotification.removeNotification(id);
+ * @example localNotification.removeNotification(id);
  * 
  */
 LocalNotification.prototype.removeNotification = function(id) {
@@ -1712,12 +1507,11 @@ LocalNotification.prototype.removeNotification = function(id) {
 /**
  * Notification발생 시 즉시 보여줄 것인지 내부에 저장을 할것인지를 설정 하는 함수.
  * 
- * @param {boolean} use immediateForegroundNotification을 사용 할지 여부. 
- * true: 즉시 보여주기
- * false: 내부에 저장하기.
+ * @param {boolean}
+ *            use immediateForegroundNotification을 사용 할지 여부. true: 즉시 보여주기
+ *            false: 내부에 저장하기.
  * 
- * @example
- * localNotification.useImmediateForegroundNotification(true);
+ * @example localNotification.useImmediateForegroundNotification(true);
  * 
  */
 LocalNotification.prototype.useImmediateForegroundNotification = function(use) {
@@ -1728,10 +1522,8 @@ LocalNotification.prototype.useImmediateForegroundNotification = function(use) {
 var localNotification = new LocalNotification();
 
 /**
- * 로그를 관장하는 클래스.
- * 전역으로 선언된 log 를 이용해서 사용 
- * 호출 예> log.error();
- *
+ * 로그를 관장하는 클래스. 전역으로 선언된 log 를 이용해서 사용 호출 예> log.error();
+ * 
  * @constructor
  */
 function Log() {
@@ -1740,7 +1532,8 @@ function Log() {
 /**
  * ERROR log message 출력 하는 함수.
  * 
- * @param {string} message 출력될 message.
+ * @param {string}
+ *            message 출력될 message.
  */
 Log.prototype.error = function(message) {
 	if(isValid(message))
@@ -1750,7 +1543,8 @@ Log.prototype.error = function(message) {
 /**
  * log message 출력 하는 함수.
  * 
- * @param {string} message 출력될 message.
+ * @param {string}
+ *            message 출력될 message.
  */
 Log.prototype.log = function(message) {
 	if(isValid(message))
@@ -1760,7 +1554,8 @@ Log.prototype.log = function(message) {
 /**
  * WARN log message 출력 하는 함수.
  * 
- * @param {string} message 출력될 message.
+ * @param {string}
+ *            message 출력될 message.
  */
 Log.prototype.warn = function(message) {
 	if(isValid(message))
@@ -1770,11 +1565,10 @@ Log.prototype.warn = function(message) {
 var log = new Log();
 
 /**
- * 어플리케이션이 실행되어 있는 동안에만 사용할 수 있는 저장소 클래스.
- * 다른 저장소(Preference and GlobalPreference)들과는 다르게 어플리케이션이 종료되면 저장되어 있던 값들이 사라짐.
- * 전역으로 선언된 memoryPreference 를 이용해서 사용 
- * 호출 예> memoryPreference.contains(key);
- *
+ * 어플리케이션이 실행되어 있는 동안에만 사용할 수 있는 저장소 클래스. 다른 저장소(Preference and
+ * GlobalPreference)들과는 다르게 어플리케이션이 종료되면 저장되어 있던 값들이 사라짐. 전역으로 선언된
+ * memoryPreference 를 이용해서 사용 호출 예> memoryPreference.contains(key);
+ * 
  * @constructor
  */
 function MemoryPreference() {
@@ -1783,7 +1577,8 @@ function MemoryPreference() {
 /**
  * MemoryPreference 해당 key가 존재하는 알아보는 함수.
  * 
- * @param {string} key 존재 유무를 확인할 key.
+ * @param {string}
+ *            key 존재 유무를 확인할 key.
  * @returns {boolean} MemoryPreference 해당키가 존재하면 true, 존재 하지 않으면 false리턴.
  */
 MemoryPreference.prototype.contains = function(key) {
@@ -1794,7 +1589,8 @@ MemoryPreference.prototype.contains = function(key) {
 /**
  * MemoryPreference value를 가져오는 함수.
  * 
- * @param {string} key MemoryPreference 가져올 value의 key.
+ * @param {string}
+ *            key MemoryPreference 가져올 value의 key.
  * @returns {string} Value key에 해당하는 value.
  */
 MemoryPreference.prototype.get = function(key) {
@@ -1807,8 +1603,10 @@ MemoryPreference.prototype.get = function(key) {
 /**
  * MemoryPreference에 key, value쌍을 저장.
  * 
- * @param {string} key 저장할 value의 key.
- * @param {string} value 저장할 data의 value.
+ * @param {string}
+ *            key 저장할 value의 key.
+ * @param {string}
+ *            value 저장할 data의 value.
  */
 MemoryPreference.prototype.put = function(key, value) {
 	if(isValid(key) && isValid(value))
@@ -1818,7 +1616,8 @@ MemoryPreference.prototype.put = function(key, value) {
 /**
  * MemoryPreference에서 key, value쌍을 제거하는 함수.
  * 
- * @param {string} key MemoryPreference에서 제거하기를 원하는 key.
+ * @param {string}
+ *            key MemoryPreference에서 제거하기를 원하는 key.
  */
 MemoryPreference.prototype.remove = function(key) {
 	if(isValid(key))
@@ -1835,11 +1634,9 @@ MemoryPreference.prototype.removeAll = function() {
 var memoryPreference = new MemoryPreference();
 
 /**
- * Multimedia 를 다루는 클래스
- * 사진을 찍고 디바이스에 저장되어 있는 사진을 가져올 수 있음.
- * 전역으로 선언된 multimedia 를 이용해서 사용 
- * 호출 예> multimedia.getPicture(successCallback, errorCallback);
- *
+ * Multimedia 를 다루는 클래스 사진을 찍고 디바이스에 저장되어 있는 사진을 가져올 수 있음. 전역으로 선언된 multimedia 를
+ * 이용해서 사용 호출 예> multimedia.getPicture(successCallback, errorCallback);
+ * 
  * @constructor
  */
 function Multimedia() {
@@ -1856,22 +1653,19 @@ Multimedia.prototype.deleteImage = function(path, successCallback, errorCallback
 /**
  * 디바이스에 저장되어 있는 사진의 회전 값을 가져오는 함수.
  * 
- * @param {string} imagePath 회전 값을 가져올 이미지의 경로.
- * @param {function} callback 성공 시 불려질 함수.
+ * @param {string}
+ *            imagePath 회전 값을 가져올 이미지의 경로.
+ * @param {function}
+ *            callback 성공 시 불려질 함수.
  * 
- * @example
- * function callback(imageInfo) {
- * 	// do something..
- * }
+ * @example function callback(imageInfo) { // do something.. }
  * 
- * @example
- * var imageInfo = {
- * "path" : "path to Image",
- * "degree" : "rotate degree"}
+ * @example var imageInfo = { "path" : "path to Image", "degree" : "rotate
+ *          degree"}
  * 
  * degree : 선택된 사진의 회전
  * 
- * error 발생 시  callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
+ * error 발생 시 callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
  */
 Multimedia.prototype.getImageOrientation = function(imagePath, callback) {
 	if(isValid(imagePath) && isValid(callback)) {
@@ -1885,26 +1679,22 @@ Multimedia.prototype.getImageOrientation = function(imagePath, callback) {
 /**
  * 디바이스에 저장되어 있는 사진을 가져오는 함수.
  * 
- * @param {function} successCallback 성공 시 불려질 함수.
- * @param {function} errorCallback 실패 시 불려질 함수.
- * @param {json} option 좌표. iPad에서만 사용 
+ * @param {function}
+ *            successCallback 성공 시 불려질 함수.
+ * @param {function}
+ *            errorCallback 실패 시 불려질 함수.
+ * @param {json}
+ *            option 좌표. iPad에서만 사용
  * 
- * @example
- * function successCallback(path) {
- * 	alert(path);
- * }
+ * @example function successCallback(path) { alert(path); }
  * 
  * path : 선택된 사진의 저장 경로.
  * 
- * @example
- * function errorCallback(error) {
- * 	alert("error message : " + error);
- * }
+ * @example function errorCallback(error) { alert("error message : " + error); }
  * 
  * error : error message
  * 
- * @example
- * var option = {"x" : number,"y" : number};
+ * @example var option = {"x" : number,"y" : number};
  */
 Multimedia.prototype.getPicture = function(successCallback, errorCallback, option) {
 	if(isValid(successCallback) && isValid(errorCallback))
@@ -1914,25 +1704,20 @@ Multimedia.prototype.getPicture = function(successCallback, errorCallback, optio
 /**
  * 디바이스에 저장되어 있는 사진의 크기를 수정하는 함수.
  * 
- * @param {json} imageInfo 수정할 이미의 경로, 수정할 이미지의 크기
- * @param {function} callback 성공 시 불려질 함수.
+ * @param {json}
+ *            imageInfo 수정할 이미의 경로, 수정할 이미지의 크기
+ * @param {function}
+ *            callback 성공 시 불려질 함수.
  * 
- * @example
- * var = imageInfo {
- * "path" : "mnt/Alopex/testImage.jpeg",
- * "width" : 100,
- * "height" : 100,
- * "overwrite" : true | false
- * };
+ * @example var = imageInfo { "path" : "mnt/Alopex/testImage.jpeg", "width" :
+ *          100, "height" : 100, "overwrite" : true | false };
  * 
- * function callback(path) {
- * 	alert(path);
- * }
+ * function callback(path) { alert(path); }
  * 
- * path : 저장된 사진의 저장 경로.
- * overwrite : true일 경우 원본파일 수정, false일경우 복사본 만들어서 수정, android only
+ * path : 저장된 사진의 저장 경로. overwrite : true일 경우 원본파일 수정, false일경우 복사본 만들어서 수정,
+ * android only
  * 
- * error 발생 시  callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
+ * error 발생 시 callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
  */
 Multimedia.prototype.resizePicture = function(pictureInfo, callback) {
 	if(isValid(pictureInfo) && isValid(callback)) {
@@ -1946,24 +1731,20 @@ Multimedia.prototype.resizePicture = function(pictureInfo, callback) {
 /**
  * 디바이스에 저장되어 있는 사진을 회전 시키는 함수.
  * 
- * @param {json} imageInfo 수정할 이미의 경로, 회전 시킬 각도.(90|180|270)
- * @param {function} callback 성공 시 불려질 함수.
+ * @param {json}
+ *            imageInfo 수정할 이미의 경로, 회전 시킬 각도.(90|180|270)
+ * @param {function}
+ *            callback 성공 시 불려질 함수.
  * 
- * @example
- * var = imageInfo {
- * "path" : "mnt/Alopex/testImage.jpeg",
- * "degree" : 90,
- * "overwrite" : true | false
- * };
+ * @example var = imageInfo { "path" : "mnt/Alopex/testImage.jpeg", "degree" :
+ *          90, "overwrite" : true | false };
  * 
- * function callback(path) {
- * 	alert(path);
- * }
+ * function callback(path) { alert(path); }
  * 
- * path : 저장된 사진의 저장 경로.
- * overwrite : true일 경우 원본파일 수정, false일경우 복사본 만들어서 수정, android only
+ * path : 저장된 사진의 저장 경로. overwrite : true일 경우 원본파일 수정, false일경우 복사본 만들어서 수정,
+ * android only
  * 
- * error 발생 시  callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
+ * error 발생 시 callback함수의 인자로 "error"문자열 전달. 원인은 로그로 출력.
  */
 Multimedia.prototype.rotateImage = function(imageInfo, callback) {
 	if(isValid(imageInfo) && isValid(callback)) {
@@ -1985,30 +1766,20 @@ Multimedia.prototype.saveImage = function(path, successCallback, errorCallback) 
 /**
  * 디바이스의 카메라를 이용하여 사진을 찍는 함수.
  * 
- * @param {function} successCallback 성공 시 불려질 함수.
- * @param {function} errorCallback 실패 시 불려질 함수.
+ * @param {function}
+ *            successCallback 성공 시 불려질 함수.
+ * @param {function}
+ *            errorCallback 실패 시 불려질 함수.
  * 
- * @example
- * function successCallback(picture) {
- * 	alert("path = " + picture.path);
- * 	alert("width of picture = " + picture.width);
- * 	alert("height of picture = " + picture.height);
- * }
+ * @example function successCallback(picture) { alert("path = " + picture.path);
+ *          alert("width of picture = " + picture.width); alert("height of
+ *          picture = " + picture.height); }
  * 
- * picture = {
- * 	"path" : "path to picture",
- * 	"width" : 1024,
- * 	"height" : 2048
- * };
+ * picture = { "path" : "path to picture", "width" : 1024, "height" : 2048 };
  * 
- * path : 저장된 사진의 저장 경로.
- * width : 저장된 사진의 가로 길이.(px)
- * height : 저장된 사진의 세로 길이.(px)
+ * path : 저장된 사진의 저장 경로. width : 저장된 사진의 가로 길이.(px) height : 저장된 사진의 세로 길이.(px)
  * 
- * @example
- * function errorCallback(error) {
- * 	alert("error message : " + error);
- * }
+ * @example function errorCallback(error) { alert("error message : " + error); }
  * 
  * error : error message
  */
@@ -2020,20 +1791,23 @@ Multimedia.prototype.takePicture = function(successCallback, errorCallback) {
 var multimedia = new Multimedia();
 
 /**
- * 디바이스 플렛폼 UI API.
- * 전역으로 선언된 nativeUI 를 이용해서 사용 
- * 호출 예> nativeUI.dismissProgressDialog();
- *
+ * 디바이스 플렛폼 UI API. 전역으로 선언된 nativeUI 를 이용해서 사용 호출 예>
+ * nativeUI.dismissProgressDialog();
+ * 
  * @constructor
- * @deprecated NativeUI Calss is deprecated. Use PlatformUIComponent class instead.
+ * @deprecated NativeUI Calss is deprecated. Use PlatformUIComponent class
+ *             instead.
  */
+
 function NativeUI() {
-	deprecated("NativeUI Class", "PlatformUIComponent Class");
+	// deprecated("NativeUI Class", "PlatformUIComponent Class");
 }
 
 /**
  * 활성화 되어 있는 프로그래스 다이얼 로그를 닫는 함수.
- * @deprecated nativeUI.dismissProgressBarDialog is deprecated. Use platformUIComponent.dismissProgressBarDialog instead.
+ * 
+ * @deprecated nativeUI.dismissProgressBarDialog is deprecated. Use
+ *             platformUIComponent.dismissProgressBarDialog instead.
  */
 NativeUI.prototype.dismissProgressBarDialog = function() {
 	platformUIComponent.dismissProgressBarDialog();
@@ -2043,7 +1817,9 @@ NativeUI.prototype.dismissProgressBarDialog = function() {
 
 /**
  * 활성화 되어 있는 프로그래스 바 다이얼 로그를 닫는 함수.
- * @deprecated nativeUI.dismissProgressDialog is deprecated. Use platformUIComponent.dismissProgressDialog instead.
+ * 
+ * @deprecated nativeUI.dismissProgressDialog is deprecated. Use
+ *             platformUIComponent.dismissProgressDialog instead.
  */
 NativeUI.prototype.dismissProgressDialog = function() {
 	platformUIComponent.dismissProgressDialog();
@@ -2053,7 +1829,9 @@ NativeUI.prototype.dismissProgressDialog = function() {
 
 /**
  * 활성화 되어 있는 소프트 키보드를 닫는 함수.
- * @deprecated nativeUI.dismissSoftKeyboard is deprecated. Use platformUIComponent.dismissSoftKeyboard instead.
+ * 
+ * @deprecated nativeUI.dismissSoftKeyboard is deprecated. Use
+ *             platformUIComponent.dismissSoftKeyboard instead.
  */
 NativeUI.prototype.dismissSoftKeyboard = function(callback) {
 	platformUIComponent.dismissSoftKeyboard(callback);
@@ -2062,16 +1840,14 @@ NativeUI.prototype.dismissSoftKeyboard = function(callback) {
 };
 
 /**
- * SoftKeyboard가 올라왔는지 확인하는 함수.
- * iOS platform에서 SoftKeyboard가 올라왔는 지 유무를 체크해 callback함수에 true 또는 false를 전달.
- * Android platfor에서는 SoftKeyboard가 확인 할 수 있는 방법이 없어서 빈 더미 펑션임. 항상 true를 전달.
+ * SoftKeyboard가 올라왔는지 확인하는 함수. iOS platform에서 SoftKeyboard가 올라왔는 지 유무를 체크해
+ * callback함수에 true 또는 false를 전달. Android platfor에서는 SoftKeyboard가 확인 할 수 있는 방법이
+ * 없어서 빈 더미 펑션임. 항상 true를 전달.
  * 
- * @example
- * function callback(state){
- * 		alert(state);
- * };
+ * @example function callback(state){ alert(state); };
  * 
- * @deprecated nativeUI.isKeyboardShowing is deprecated. Use platformUIComponent.isKeyboardShowing instead.
+ * @deprecated nativeUI.isKeyboardShowing is deprecated. Use
+ *             platformUIComponent.isKeyboardShowing instead.
  */
 NativeUI.prototype.isKeyboardShowing = function(callback) {
 	platformUIComponent.isKeyboardShowing(callback);
@@ -2082,8 +1858,10 @@ NativeUI.prototype.isKeyboardShowing = function(callback) {
 /**
  * 프로그래스 바 다이얼의 현재 프로그래스를 설정 하는 함수.
  * 
- * @param {number} progress 새로운 프로그래서 값 0 ~ 100 사이.
- * @deprecated nativeUI.setProgress is deprecated. Use platformUIComponent.setProgress instead.
+ * @param {number}
+ *            progress 새로운 프로그래서 값 0 ~ 100 사이.
+ * @deprecated nativeUI.setProgress is deprecated. Use
+ *             platformUIComponent.setProgress instead.
  */
 NativeUI.prototype.setProgress = function(progress) {
 	platformUIComponent.setProgress(progress);
@@ -2094,18 +1872,19 @@ NativeUI.prototype.setProgress = function(progress) {
 /**
  * 선택 매뉴를 화면별로 설정하는 함.
  * 
- * @param {json} menuItems required
+ * @param {json}
+ *            menuItems required
  * 
- * @example
- * var menuItems = [{"title" : "선택", "callback" : "select", "icon" : "/res/image/icon1.png"},
- *                  {"title" : "추가", "callback" : "add", "icon" : ""},
- *                  {"title" : "종료", "callback" : "exit"}];
+ * @example var menuItems = [{"title" : "선택", "callback" : "select", "icon" :
+ *          "/res/image/icon1.png"}, {"title" : "추가", "callback" : "add", "icon" :
+ *          ""}, {"title" : "종료", "callback" : "exit"}];
  * 
  * nativeUI.setOptionMenu(menuItems);
  * 
  * icon 항목은 옵션 항목으로서 메뉴에 보여질 아이콘 이미지 가 있으면 넣고 없으면 생략가능
  * 
- * @deprecated nativeUI.setOptionMenu is deprecated. Use platformUIComponent.setOptionMenu instead.
+ * @deprecated nativeUI.setOptionMenu is deprecated. Use
+ *             platformUIComponent.setOptionMenu instead.
  */
 NativeUI.prototype.setOptionMenu = function(menuItems) {
 	platformUIComponent.setOptionMenu(menuItems);
@@ -2116,22 +1895,17 @@ NativeUI.prototype.setOptionMenu = function(menuItems) {
 /**
  * 사용자 선택 매뉴를 화면에 보여주는 함수.
  * 
- * @param {json} menuItems required
- * @param {json} option optional
+ * @param {json}
+ *            menuItems required
+ * @param {json}
+ *            option optional
  * 
- * @example
- * var menuItems = {
- * 	"items" : [
- * 		{"전체 선택" : "selectAll"},
- * 		{"전제 삭제" : "deleteAll"},
- * 		{"종료" : "finish"}
- * 	]
- * };
+ * @example var menuItems = { "items" : [ {"전체 선택" : "selectAll"}, {"전제 삭제" :
+ *          "deleteAll"}, {"종료" : "finish"} ] };
  * 
- * items : context menu에서 보여질 목록의 집합.
- * 첫 필드: contex menu에서 보여질 text.
- * 두번째 필드: 목록들중 특정 목록이 선택 되었을 때 호출될 callback의 함수 이름.
- *  
+ * items : context menu에서 보여질 목록의 집합. 첫 필드: contex menu에서 보여질 text. 두번째 필드: 목록들중
+ * 특정 목록이 선택 되었을 때 호출될 callback의 함수 이름.
+ * 
  * var option = {"title" : "This is title of context menu"};
  * 
  * title : contenx menu 상단에 보여질 context menu의 title text
@@ -2144,7 +1918,8 @@ NativeUI.prototype.setOptionMenu = function(menuItems) {
  * 
  * option is optional arguement.
  * 
- * @deprecated nativeUI.showContextMenu is deprecated. Use platformUIComponent.showContextMenu instead.
+ * @deprecated nativeUI.showContextMenu is deprecated. Use
+ *             platformUIComponent.showContextMenu instead.
  */
 NativeUI.prototype.showContextMenu = function(menuItems, option) {
 	platformUIComponent.showContextMenu(menuItems, option);
@@ -2153,21 +1928,20 @@ NativeUI.prototype.showContextMenu = function(menuItems, option) {
 };
 
 /**
- * 날짜를 선택할 수 있는 다이얼 로그를 보여줍니다.
- * 기본 값으로 오늘의 날짜가 선택되어 있습니다.
+ * 날짜를 선택할 수 있는 다이얼 로그를 보여줍니다. 기본 값으로 오늘의 날짜가 선택되어 있습니다.
  * 
- * @param {function} callback 날짜를 선택 했을 시 불려질 함수.
- * @param {json} option 좌표. iPad에서만 사용 
+ * @param {function}
+ *            callback 날짜를 선택 했을 시 불려질 함수.
+ * @param {json}
+ *            option 좌표. iPad에서만 사용
  * 
- * @example
- * function callback(date) {
- * 	alert(date.year + " : " + date.month + " : " + date.day);
- * }
+ * @example function callback(date) { alert(date.year + " : " + date.month + " : " +
+ *          date.day); }
  * 
- * @example
- * var option = {"x" : number,"y" : number};
+ * @example var option = {"x" : number,"y" : number};
  * 
- * @deprecated nativeUI.showDatePicker is deprecated. Use platformUIComponent.showDatePicker instead.
+ * @deprecated nativeUI.showDatePicker is deprecated. Use
+ *             platformUIComponent.showDatePicker instead.
  */
 NativeUI.prototype.showDatePicker = function(callback, option) {
 	platformUIComponent.showDatePicker(callback, option);
@@ -2176,25 +1950,24 @@ NativeUI.prototype.showDatePicker = function(callback, option) {
 };
 
 /**
- * 날짜를 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값을 설정 할 수 있습니다.
+ * 날짜를 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값을 설정 할 수 있습니다.
  * 
- * @param {json} date 기본 값으로 설정할 날짜 정보
- * @param {function} callback 날짜를 선택 했을 시 불려질 함수
- * @param {json} option 좌표. iPad에서만 사용 
+ * @param {json}
+ *            date 기본 값으로 설정할 날짜 정보
+ * @param {function}
+ *            callback 날짜를 선택 했을 시 불려질 함수
+ * @param {json}
+ *            option 좌표. iPad에서만 사용
  * 
- * @example
- * var date = {"year" : 2011, "month" : 10, "day" : 31};
+ * @example var date = {"year" : 2011, "month" : 10, "day" : 31};
  * 
- * @example
- * function callback(date) {
- * 	alert(date.year + " : " + date.month + " : " + date.day);
- * }
+ * @example function callback(date) { alert(date.year + " : " + date.month + " : " +
+ *          date.day); }
  * 
- * @example
- * var option = {"x" : number,"y" : number};
+ * @example var option = {"x" : number,"y" : number};
  * 
- * @deprecated nativeUI.showDatePickerWithData is deprecated. Use platformUIComponent.showDatePickerWithData instead.
+ * @deprecated nativeUI.showDatePickerWithData is deprecated. Use
+ *             platformUIComponent.showDatePickerWithData instead.
  */
 NativeUI.prototype.showDatePickerWithData = function(date, callback, option) {
 	platformUIComponent.showDatePickerWithData(date, callback, option);
@@ -2205,32 +1978,25 @@ NativeUI.prototype.showDatePickerWithData = function(date, callback, option) {
 /**
  * 다중 선택 할 수 있는 다이알 로그를 보여주는 함수.
  * 
- * @param {json} selection 선택 옵션 정보
+ * @param {json}
+ *            selection 선택 옵션 정보
  * 
- * @example
- * var = selection {
- * 	"items" : [{"item1" : false}, {"item2" : false}, {"item3" : true}],
- * 	"callback" : "multiSelectCallback",
- * 	"title" : "This is a title",
- *  "x" : number, 															// iPad only
- *  "y" : number															// iPad only
- * };
+ * @example var = selection { "items" : [{"item1" : false}, {"item2" : false},
+ *          {"item3" : true}], "callback" : "multiSelectCallback", "title" :
+ *          "This is a title", "x" : number, // iPad only "y" : number // iPad
+ *          only };
  * 
- * itmes : 다이얼로그에 보여질 항목들의 집합
- * 첫 필드 : 다이얼로그에 보여질 항목의 text
- * 두번째 필드 : 다이얼로그 보여 졌을 때 선택 여부
- * callback : 다이얼로그에서 항목을 선택하고 확인 버튼을 선택 했을 때 호출될 함수명
- * title : optional. 다이얼로그 상단에 보여질 title text.
- * x, y : iPad에서 Pop-up view의 좌표
+ * itmes : 다이얼로그에 보여질 항목들의 집합 첫 필드 : 다이얼로그에 보여질 항목의 text 두번째 필드 : 다이얼로그 보여 졌을 때
+ * 선택 여부 callback : 다이얼로그에서 항목을 선택하고 확인 버튼을 선택 했을 때 호출될 함수명 title : optional.
+ * 다이얼로그 상단에 보여질 title text. x, y : iPad에서 Pop-up view의 좌표
  * 
- * function multiSelectCallback(selectedItems : Array) {
- * 	for(var i = 0; i < array.length; i++)
- * 		alert(array[i]);
- * }
+ * function multiSelectCallback(selectedItems : Array) { for(var i = 0; i <
+ * array.length; i++) alert(array[i]); }
  * 
  * selectedItems : 다이얼로그에서 선택된 item들의 집합
  * 
- * @deprecated nativeUI.showMultiSelect is deprecated. Use platformUIComponent.showMultiSelect instead.
+ * @deprecated nativeUI.showMultiSelect is deprecated. Use
+ *             platformUIComponent.showMultiSelect instead.
  */
 NativeUI.prototype.showMultiSelect = function(selection) {
 	platformUIComponent.showMultiSelect(selection);
@@ -2241,22 +2007,20 @@ NativeUI.prototype.showMultiSelect = function(selection) {
 /**
  * 프로그레스 바 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} option 옵션 정보
+ * @param {json}
+ *            option 옵션 정보
  * 
  * option : optional (null, json or empty)
  * 
- * @example
- * var option = {
- * 	"message" : "message content",		// optional
- * 	"cancelable" : true | false,		// optional
- * 	"cancelCallback" : "function name"	// optional
- * };
+ * @example var option = { "message" : "message content", // optional
+ *          "cancelable" : true | false, // optional "cancelCallback" :
+ *          "function name" // optional };
  * 
- * message : 다이얼로그에서 보여질 text
- * cancelable : 다이얼로그를 취소 할 수 있을지 여부
- * cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
+ * message : 다이얼로그에서 보여질 text cancelable : 다이얼로그를 취소 할 수 있을지 여부 cancelCallback :
+ * 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
  * 
- * @deprecated nativeUI.showProgressBarDialog is deprecated. Use platformUIComponent.showProgressBarDialog instead.
+ * @deprecated nativeUI.showProgressBarDialog is deprecated. Use
+ *             platformUIComponent.showProgressBarDialog instead.
  */
 NativeUI.prototype.showProgressBarDialog = function(option) {
 	platformUIComponent.showProgressBarDialog(option);
@@ -2267,31 +2031,26 @@ NativeUI.prototype.showProgressBarDialog = function(option) {
 /**
  * 프로그레스 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} option 옵션 정보
+ * @param {json}
+ *            option 옵션 정보
  * 
  * option : optional (null, json or empty)
  * 
- * @example
- * var option = {
- * 	"message" : "message content",		// optional
- * 	"cancelable" : true | false,		// optional
- * 	"cancelCallback" : "function name",	// optional
- * 	"color" : "white" | "grey"			// iOS only
- * };
+ * @example var option = { "message" : "message content", // optional
+ *          "cancelable" : true | false, // optional "cancelCallback" :
+ *          "function name", // optional "color" : "white" | "grey" // iOS only };
  * 
- * message : 다이얼로그에서 보여질 text (Android 전용)
- * cancelable : 다이얼로그를 취소 할 수 있을지 여부 (Android 전용)
- * cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
- * color : 다이얼로그의 생상(iOS 전용)
+ * message : 다이얼로그에서 보여질 text (Android 전용) cancelable : 다이얼로그를 취소 할 수 있을지 여부
+ * (Android 전용) cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function,
+ * cancelable이 true인 경우에만 동작 color : 다이얼로그의 생상(iOS 전용)
  * 
- * @example
- * showProgressDialog();
- * showProgressDialog(null);
- * showProgressDialog(option);
+ * @example showProgressDialog(); showProgressDialog(null);
+ *          showProgressDialog(option);
  * 
  * nativeUI.showProgressDialog(); or nativeUI.showProgressDialog(option);
  * 
- * @deprecated nativeUI.showProgressDialog is deprecated. Use platformUIComponent.showProgressDialog instead.
+ * @deprecated nativeUI.showProgressDialog is deprecated. Use
+ *             platformUIComponent.showProgressDialog instead.
  */
 NativeUI.prototype.showProgressDialog = function(option) {
 	platformUIComponent.showProgressDialog(option);
@@ -2302,31 +2061,25 @@ NativeUI.prototype.showProgressDialog = function(option) {
 /**
  * 단일 선택 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} selection 선택 옵션
+ * @param {json}
+ *            selection 선택 옵션
  * 
- * @example
- * var selection = {
- * 	"items" : ["item 1", "item 2", "item 3"],	// required
- * 	"defValue" : 0,								// required
- * 	"callback" : "singleSelectCallback",		// required
- * 	"title" : "this is a title"					// optional
- *  "x" : number, 								// iPad only
- *  "y" : number								// iPad only
- * }
+ * @example var selection = { "items" : ["item 1", "item 2", "item 3"], //
+ *          required "defValue" : 0, // required "callback" :
+ *          "singleSelectCallback", // required "title" : "this is a title" //
+ *          optional "x" : number, // iPad only "y" : number // iPad only }
  * 
- * items : 다이얼로그에 보여줄 항목의 집합
- * 필드 : 다이얼로그에 보여줄 항목의 text
- * callback : 다이얼로그에서 특정 항목이 선택 되었을때 호출될 callback 함수명
- * title : 다이얼로그 상단에 보여질 title text.
- * x, y : iPad에서 Pop-up view의 좌표
- *  
- * function singleSelectCallback(selectedIndex) {
- * 	alert("Selected index is " + selectedIndex);
- * }
+ * items : 다이얼로그에 보여줄 항목의 집합 필드 : 다이얼로그에 보여줄 항목의 text callback : 다이얼로그에서 특정 항목이
+ * 선택 되었을때 호출될 callback 함수명 title : 다이얼로그 상단에 보여질 title text. x, y : iPad에서
+ * Pop-up view의 좌표
+ * 
+ * function singleSelectCallback(selectedIndex) { alert("Selected index is " +
+ * selectedIndex); }
  * 
  * selectedIndex : 다이얼로그에서 선택된 항목의 index
  * 
- * @deprecated nativeUI.showSingleSelect is deprecated. Use platformUIComponent.showSingleSelect instead.
+ * @deprecated nativeUI.showSingleSelect is deprecated. Use
+ *             platformUIComponent.showSingleSelect instead.
  */
 NativeUI.prototype.showSingleSelect = function(selection) {
 	platformUIComponent.showSingleSelect(selection);
@@ -2335,29 +2088,24 @@ NativeUI.prototype.showSingleSelect = function(selection) {
 };
 
 /**
- * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값으로 현제 시간이 선택 됨.
+ * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값으로 현제 시간이 선택 됨.
  * 
- * @param {function} callback 선택후 불려질 함수
- * @param {json} option
+ * @param {function}
+ *            callback 선택후 불려질 함수
+ * @param {json}
+ *            option
  * 
- * @example
- * function callback(time) {
- * 	alert(time.hour + "" : "" + time.minute + "" : "" + time.ampm);
- * }"
+ * @example function callback(time) { alert(time.hour + "" : "" + time.minute + "" : "" +
+ *          time.ampm); }"
  * 
- * @example
- * var option = {
- *  "is24HourView" : ture | false,
- *  "x" : number, 						// iPad only
- *  "y" : number						// iPad only
- * }
+ * @example var option = { "is24HourView" : ture | false, "x" : number, // iPad
+ *          only "y" : number // iPad only }
  * 
- * x, y : iPad에서 Pop-up view의 좌표
- * 만약, option이 없다면 그대로 실행됨.
- * is24HourView가 true이면 display되어지고 데이터타입은 24HourView mode.
+ * x, y : iPad에서 Pop-up view의 좌표 만약, option이 없다면 그대로 실행됨. is24HourView가 true이면
+ * display되어지고 데이터타입은 24HourView mode.
  * 
- * @deprecated nativeUI.showTimePicker is deprecated. Use platformUIComponent.showTimePicker instead.
+ * @deprecated nativeUI.showTimePicker is deprecated. Use
+ *             platformUIComponent.showTimePicker instead.
  */
 NativeUI.prototype.showTimePicker = function(callback, option) {
 	platformUIComponent.showTimePicker(callback, option);
@@ -2366,35 +2114,29 @@ NativeUI.prototype.showTimePicker = function(callback, option) {
 };
 
 /**
- * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값을 설정 할 수 있음.
+ * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값을 설정 할 수 있음.
  * 
- * @param {json} time 기본 설정 시간 정보
- * @param {function} callback 선택후 불려질 함수
+ * @param {json}
+ *            time 기본 설정 시간 정보
+ * @param {function}
+ *            callback 선택후 불려질 함수
  * 
- * @example
- * var time = {"hour" : 7, "minute" : 16, "ampm" :"am" | "pm"}
+ * @example var time = {"hour" : 7, "minute" : 16, "ampm" :"am" | "pm"}
  * 
- * hour : 다이얼로그에서 보여줄 시간 정보
- * minute : 다이얼로그에서 보여줄 분 정보
- * ampm : 다이얼로그에서 보여줄 am/pm 정보
+ * hour : 다이얼로그에서 보여줄 시간 정보 minute : 다이얼로그에서 보여줄 분 정보 ampm : 다이얼로그에서 보여줄 am/pm
+ * 정보
  * 
- * function callback(time) {
- * 	alert(time.hour + " : " + time.minute + " : " + time.ampm);
- * }
+ * function callback(time) { alert(time.hour + " : " + time.minute + " : " +
+ * time.ampm); }
  * 
- * @example
- * var option = {
- *  "is24HourView" : ture | false,
- *  "x" : number, 						// iPad only
- *  "y" : number						// iPad only
- * }
+ * @example var option = { "is24HourView" : ture | false, "x" : number, // iPad
+ *          only "y" : number // iPad only }
  * 
- * x, y : iPad에서 Pop-up view의 좌표
- * 만약, option이 없다면 그대로 실행됨.
- * is24HourView가 true이면 display되어지고 데이터타입은 24HourView mode.
+ * x, y : iPad에서 Pop-up view의 좌표 만약, option이 없다면 그대로 실행됨. is24HourView가 true이면
+ * display되어지고 데이터타입은 24HourView mode.
  * 
- * @deprecated nativeUI.showTimePickerWithData is deprecated. Use platformUIComponent.showTimePickerWithData instead.
+ * @deprecated nativeUI.showTimePickerWithData is deprecated. Use
+ *             platformUIComponent.showTimePickerWithData instead.
  */
 NativeUI.prototype.showTimePickerWithData = function(time, callback, option) {
 	platformUIComponent.showTimePickerWithData(time, callback, option);
@@ -2405,10 +2147,8 @@ NativeUI.prototype.showTimePickerWithData = function(time, callback, option) {
 var nativeUI = new NativeUI();
 
 /**
- * 디바이스 기본 전화기능 클래스
- * 전역으로 선언된 phone 를 이용해서 사용 
- * 호출 예> phone.call(number);
- *
+ * 디바이스 기본 전화기능 클래스 전역으로 선언된 phone 를 이용해서 사용 호출 예> phone.call(number);
+ * 
  * @constructor
  */
 function Phone() {
@@ -2417,7 +2157,8 @@ function Phone() {
 /**
  * 전화걸기 실행 함수.
  * 
- * @param {number} number 전화번호.
+ * @param {number}
+ *            number 전화번호.
  */
 Phone.prototype.call = function(number) {
 	if(isValid(number))
@@ -2426,16 +2167,13 @@ Phone.prototype.call = function(number) {
 
 /**
  * 이메일 보내기 함수.
- * @param {json} mail 이메일 정보 데이터
  * 
- * @example
- * var mail = {
- * 	"to" : ["a@b.com", "c@d.com", "e@f.com"],
- * 	"title" : "title value",
- * 	"body" : "body contents",
- * 	"cc" : ["a@b.com", "c@d.com", "e@f.com"],
- * "bcc" : ["a@b.com", "c@d.com", "e@f.com"]
- * };
+ * @param {json}
+ *            mail 이메일 정보 데이터
+ * 
+ * @example var mail = { "to" : ["a@b.com", "c@d.com", "e@f.com"], "title" :
+ *          "title value", "body" : "body contents", "cc" : ["a@b.com",
+ *          "c@d.com", "e@f.com"], "bcc" : ["a@b.com", "c@d.com", "e@f.com"] };
  */
 Phone.prototype.sendEmail = function(mail) {
 	if(isValid(mail))
@@ -2444,13 +2182,12 @@ Phone.prototype.sendEmail = function(mail) {
 
 /**
  * SMS 보내기 함수.
- * @param {json} sms sms 정보 데이터
  * 
- * @example
- * var sms = {
- * 	"numbers" : ["01011112222", "01022223333"],
- * 	"message" : "message body",
- * };
+ * @param {json}
+ *            sms sms 정보 데이터
+ * 
+ * @example var sms = { "numbers" : ["01011112222", "01022223333"], "message" :
+ *          "message body", };
  * 
  * 갤럭시S2 LTE HD버전에서 number만 들어가고 message body는 들어가지않음.
  */
@@ -2462,11 +2199,9 @@ Phone.prototype.sendSMS = function(sms) {
 var phone = new Phone();
 
 /**
- * 어플리케이션 저장소 클래스
- * 어플리케이션이 종료 되었다가 실행되어도 preference의 정보는 유지됨.
- * 전역으로 선언된 preference 를 이용해서 사용 
- * 호출 예> preference.contains(key);
- *
+ * 어플리케이션 저장소 클래스 어플리케이션이 종료 되었다가 실행되어도 preference의 정보는 유지됨. 전역으로 선언된 preference
+ * 를 이용해서 사용 호출 예> preference.contains(key);
+ * 
  * @constructor
  */
 function Preference() {
@@ -2475,7 +2210,8 @@ function Preference() {
 /**
  * preferences에 해당 key가 존재하는 알아보는 함수.
  * 
- * @param {string} key 존재 유무를 확인할 key.
+ * @param {string}
+ *            key 존재 유무를 확인할 key.
  * @returns {boolean} Returns Preference에 해당키가 존재하면 true, 존재 하지 않으면 false리턴.
  */
 Preference.prototype.contains = function(key) {
@@ -2486,7 +2222,8 @@ Preference.prototype.contains = function(key) {
 /**
  * Preference에서 value를 가져오는 함수.
  * 
- * @param {string} key Preference에서 가져올 value의 key.
+ * @param {string}
+ *            key Preference에서 가져올 value의 key.
  * @returns {string} Value key에 해당하는 value.
  */
 Preference.prototype.get = function(key) {
@@ -2499,8 +2236,10 @@ Preference.prototype.get = function(key) {
 /**
  * Preference에 value를 저장하는 함수.
  * 
- * @param {string} key value의 key.
- * @param {string} value 저장할 value.
+ * @param {string}
+ *            key value의 key.
+ * @param {string}
+ *            value 저장할 value.
  * 
  * Preference는 key가 중복 될 수 없다. 때문에 GlobalPreference에 이미 존재하는 key라면 value가 수정됨.
  */
@@ -2512,7 +2251,8 @@ Preference.prototype.put = function(key, value) {
 /**
  * Preference에서 key, value를 제거하는 함수.
  * 
- * @param {string} key Preference에서 제거하기를 원하는 key.
+ * @param {string}
+ *            key Preference에서 제거하기를 원하는 key.
  */
 Preference.prototype.remove = function(key) {
 	if(isValid(key))
@@ -2529,10 +2269,9 @@ Preference.prototype.removeAll = function() {
 var preference = new Preference();
 
 /**
- * PushNotification을 관장하는 클래스
- * 전역으로 선언된 pushNotification 를 이용해서 사용
- * 호출 예> pushNotification.addNotification();
- *
+ * PushNotification을 관장하는 클래스 전역으로 선언된 pushNotification 를 이용해서 사용 호출 예>
+ * pushNotification.addNotification();
+ * 
  * @constructor
  */
 function PushNotification() {
@@ -2540,8 +2279,8 @@ function PushNotification() {
 
 /**
  * 저장된 unreadNotification을 모두 삭제하는 함수
- * @example
- * pushNotification.deleteAllUnreadNotifications();
+ * 
+ * @example pushNotification.deleteAllUnreadNotifications();
  * 
  */
 PushNotification.prototype.deleteAllUnreadNotifications = function() {
@@ -2551,10 +2290,10 @@ PushNotification.prototype.deleteAllUnreadNotifications = function() {
 /**
  * 저장된 unreadNotification중 전달받은 index에 해당하는 unreadNotification을 삭제 하는 함수.
  * 
- * @param {int} index 삭제할 unreadNotification의 index
+ * @param {int}
+ *            index 삭제할 unreadNotification의 index
  * 
- * @example
- * pushNotification.deleteUnreadNotification(0);
+ * @example pushNotification.deleteUnreadNotification(0);
  * 
  */
 PushNotification.prototype.deleteUnreadNotification = function(index) {
@@ -2565,14 +2304,12 @@ PushNotification.prototype.deleteUnreadNotification = function(index) {
 /**
  * register함수를 통해 Push Server(GCM or apns)에 등록된 id를 가져오는 함수.
  * 
- * @param {function} callback callback method
+ * @param {function}
+ *            callback callback method
  * 
- * @example
- * pushNotification.getRegistrationId(callback);
+ * @example pushNotification.getRegistrationId(callback);
  * 
- * function callback(id) {
- * 	alert(id);
- * }
+ * function callback(id) { alert(id); }
  */
 PushNotification.prototype.getRegistrationId = function(callback) {
 	if(isValid(callback))
@@ -2582,16 +2319,13 @@ PushNotification.prototype.getRegistrationId = function(callback) {
 /**
  * 저장된 모든 unreadNotification을 가져오는 함수.
  * 
- * @param {function} callback callback method
+ * @param {function}
+ *            callback callback method
  * 
- * @example
- * pushNotification.getUnreadNotifications(callback);
+ * @example pushNotification.getUnreadNotifications(callback);
  * 
- * function callback(notifications) {
- * 	for( var i = 0; i < notifications.length; i++) {
- * 		alert(notifications[i].alert);
- * 	}
- * }
+ * function callback(notifications) { for( var i = 0; i < notifications.length;
+ * i++) { alert(notifications[i].alert); } }
  * 
  * addNotification에 입력한 action정보가 그대로 전달됨.
  */
@@ -2601,13 +2335,12 @@ PushNotification.prototype.getUnreadNotifications = function(callback) {
 };
 
 /**
- * Push Server(GCM)에 식별자(디바이스, 어플리케이션)를 등록하는 함수.
- * -android 플랫폼 고유 함수-
+ * Push Server(GCM)에 식별자(디바이스, 어플리케이션)를 등록하는 함수. -android 플랫폼 고유 함수-
  * 
- * @param {string} senderId 구글GCM을 사용하기 위한 senderId
+ * @param {string}
+ *            senderId 구글GCM을 사용하기 위한 senderId
  * 
- * @example
- * pushNotification.register("0000000");
+ * @example pushNotification.register("0000000");
  * 
  */
 PushNotification.prototype.register = function(senderId) {
@@ -2616,11 +2349,9 @@ PushNotification.prototype.register = function(senderId) {
 };
 
 /**
- * Push Server(GCM)에 등록된 식별자(디바이스, 어플리케이션)를 제거하는 함수.
- * -android 플랫폼 고유 함수-
+ * Push Server(GCM)에 등록된 식별자(디바이스, 어플리케이션)를 제거하는 함수. -android 플랫폼 고유 함수-
  * 
- * @example
- * pushNotification.unregister();
+ * @example pushNotification.unregister();
  * 
  */
 PushNotification.prototype.unregister = function() {
@@ -2630,10 +2361,10 @@ PushNotification.prototype.unregister = function() {
 /**
  * addNotification으로 설정한 notification을 취소하는 함수.
  * 
- * @param {boolean} use immediateForegroundNotification을 사용 할지 여부.
+ * @param {boolean}
+ *            use immediateForegroundNotification을 사용 할지 여부.
  * 
- * @example
- * pushNotification.useImmediateForegroundNotification(true);
+ * @example pushNotification.useImmediateForegroundNotification(true);
  * 
  */
 PushNotification.prototype.useImmediateForegroundNotification = function(use) {
@@ -2644,25 +2375,18 @@ PushNotification.prototype.useImmediateForegroundNotification = function(use) {
 var pushNotification = new PushNotification();
 
 /**
- * 어플리케이션의 네비게이션을 관리하는 클래스.
- * 전역으로 선언된 navigation을 이용해서 사용 
- * 호출 예> navigation.goHome(); 
- *
+ * 어플리케이션의 네비게이션을 관리하는 클래스. 전역으로 선언된 navigation을 이용해서 사용 호출 예>
+ * navigation.goHome();
+ * 
  * @constructor
  * @property {json} parameters 이전 페이지에서 전달받은 데이터.
  * @property {json} results navigation.back(results) 를 통해서 전달받은 데이터.
  * @property {string} pageId 현제 화면의 pageId
- * @example
- * A페이지에서 B페이지로 이동 시 parameters를 B페이지에서 다음과 같이 사용.
- * var param = navigation.parameters.key
- * A페이지에서 B페이지로 이동 후 back을 통해 다시 A페이지로 이동시 results를 다음과 같이 사용.
- * var param = navigation.results.key
+ * @example A페이지에서 B페이지로 이동 시 parameters를 B페이지에서 다음과 같이 사용. var param =
+ *          navigation.parameters.key A페이지에서 B페이지로 이동 후 back을 통해 다시 A페이지로 이동시
+ *          results를 다음과 같이 사용. var param = navigation.results.key
  * 
- * var params = {
- * 	"key1" : "value1",
- * 	"key2" : "value2",
- * 	"key3" : "value3"
- * }
+ * var params = { "key1" : "value1", "key2" : "value2", "key3" : "value3" }
  */
 function Navigation() {
 	this.parameters = null;
@@ -2671,18 +2395,14 @@ function Navigation() {
 }
 
 /**
- * 이전 페이지로 이동하는 함수. 
- * 이동시 전달할 데이터가 있으면 json 형식으로, 없으면 생략가능.
+ * 이전 페이지로 이동하는 함수. 이동시 전달할 데이터가 있으면 json 형식으로, 없으면 생략가능.
  * 
- * @param {json|empty} results 이전 페이지로 이동시 전달할 데이터, 없으면 생략가능.
- * @example
- * var results = {
- * 	"key1" : "value1",
- * 	"key2" : "value2",
- * 	"key3" : "value3"
- * };
+ * @param {json|empty}
+ *            results 이전 페이지로 이동시 전달할 데이터, 없으면 생략가능.
+ * @example var results = { "key1" : "value1", "key2" : "value2", "key3" :
+ *          "value3" };
  * 
- * -android 플랫폼 고유 기능- 시작 페이지에서 back호출 시 앱종료 
+ * -android 플랫폼 고유 기능- 시작 페이지에서 back호출 시 앱종료
  */
 Navigation.prototype.back = function(results) {
 	if(results)
@@ -2692,25 +2412,20 @@ Navigation.prototype.back = function(results) {
 };
 
 /**
- * 화면 히스토리 상의 특정 페이지로 이동하는 함수.
- * 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의 history를 모두 삭제하고 해당 페이지로 이동.
- * 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우 화면 전환 하지 않음.
+ * 화면 히스토리 상의 특정 페이지로 이동하는 함수. 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그
+ * 화면까지의 history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우
+ * 화면 전환 하지 않음.
  * 
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "page id",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * };
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "page id", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } };
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters : optional
+ * pageId : required (이동할 페이지의 id) parameters : optional
  * 
- * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기 때문에 히스토리에서 B를 삭제하고 A로이동
+ * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기
+ * 때문에 히스토리에서 B를 삭제하고 A로이동
  */
 Navigation.prototype.backTo = function(navigationRule) {
 	if(isValid(navigationRule)) {
@@ -2732,26 +2447,21 @@ Navigation.prototype.backTo = function(navigationRule) {
 };
 
 /**
- * 특정 페이지로 이동하는 함수.
- * 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의 history를 모두 삭제하고 해당 페이지로 이동.
- * 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우 navigation함수를 통해 페이지 이동.
+ * 특정 페이지로 이동하는 함수. 어플리케이션 screen history에 이동하고자 하는 페이지가 존재하는 경우 그 화면까지의
+ * history를 모두 삭제하고 해당 페이지로 이동. 어플리케이션 screen history에 해당 페이지가 존재 하지 않는 경우
+ * navigation함수를 통해 페이지 이동.
  * 
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "page id",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * };
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "page id", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } };
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters : optional
+ * pageId : required (이동할 페이지의 id) parameters : optional
  * 
- * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기 때문에 히스토리에서 B를 삭제하고 A로이동
- * C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로 동작함
+ * A화면에서 B화면으로 이동 후 다시 B화면에서 C화면으로 이동 C화면에서 backTo를 통해 A로 이동시 히스토리에 A화면이 존재하기
+ * 때문에 히스토리에서 B를 삭제하고 A로이동 C화면에서 backTo D를 하면 히스토리에 D가 존재 하지 않기 때문에 navigate D로
+ * 동작함
  */
 Navigation.prototype.backToOrNavigate = function(navigationRule) {
 	if(isValid(navigationRule)) {
@@ -2773,8 +2483,7 @@ Navigation.prototype.backToOrNavigate = function(navigationRule) {
 };
 
 /**
- * -android 플렛폼 고유 함수(apple정책상 강제로 어플리케이션 종료 시킬수 없음)-
- * 어플리케이션을 종료 시키는 함수.
+ * -android 플렛폼 고유 함수(apple정책상 강제로 어플리케이션 종료 시킬수 없음)- 어플리케이션을 종료 시키는 함수.
  */
 Navigation.prototype.exit = function() {
 	navigationJSNI.exit();
@@ -2790,21 +2499,13 @@ Navigation.prototype.goHome = function() {
 /**
  * 어플리케이션 screen 이동 하는 함수.
  * 
- * @param {json} navigationRule 이동할 screen의 정보.
- * @example
- * var navigationRule = {
- * 	"pageId" : "pageid",
- * 	"parameters" : {
- * 		"parameter1" : "value1",
- * 		"parameter2" : "value2",
- * 		"parameter3" : "value3"
- * 	}
- * 	"loadImage": "image url",
- * 	"autoDismiss" : true | false
- * }
+ * @param {json}
+ *            navigationRule 이동할 screen의 정보.
+ * @example var navigationRule = { "pageId" : "pageid", "parameters" : {
+ *          "parameter1" : "value1", "parameter2" : "value2", "parameter3" :
+ *          "value3" } "loadImage": "image url", "autoDismiss" : true | false }
  * 
- * pageId : required (이동할 페이지의 id)
- * parameters, loadImage, autoDismiss : optional
+ * pageId : required (이동할 페이지의 id) parameters, loadImage, autoDismiss : optional
  * loadImage가 있으면 네비게이션 중간에 이미지를 로드함. loadImage가 있는데 autoDismiss가 없으면 자동으로 true
  */
 Navigation.prototype.navigate = function(navigationRule) {
@@ -2821,18 +2522,17 @@ Navigation.prototype.navigate = function(navigationRule) {
 		}
 		
 		this.results = null;
+		
 		navigationJSNI.navigate(JSON.stringify(navigationRule));
 	}
 };
 
 var navigation = new Navigation();
 
-
 /**
- * 디바이스 플렛폼 UI API.
- * 전역으로 선언된 platformUIComponent 를 이용해서 사용 
- * 호출 예> platformUIComponent.dismissProgressDialog();
- *
+ * 디바이스 플렛폼 UI API. 전역으로 선언된 platformUIComponent 를 이용해서 사용 호출 예>
+ * platformUIComponent.dismissProgressDialog();
+ * 
  * @constructor
  */
 function PlatformUIComponent() {
@@ -2855,7 +2555,8 @@ PlatformUIComponent.prototype.dismissProgressDialog = function() {
 /**
  * 활성화 되어 있는 소프트 키보드를 닫는 함수.
  * 
- * @param {function} callback softKeyboard가 사라질 때 호출될 함수.
+ * @param {function}
+ *            callback softKeyboard가 사라질 때 호출될 함수.
  */
 PlatformUIComponent.prototype.dismissSoftKeyboard = function(callback) {
 	if(isValid(callback))
@@ -2863,15 +2564,13 @@ PlatformUIComponent.prototype.dismissSoftKeyboard = function(callback) {
 };
 
 /**
- * SoftKeyboard가 올라왔는지 확인하는 함수.
- * iOS platform에서 SoftKeyboard가 올라왔는 지 유무를 체크해 callback함수에 true 또는 false를 전달.
- * Android platfor에서는 SoftKeyboard가 확인 할 수 있는 방법이 없어서 빈 더미 펑션임. 항상 true를 전달.
+ * SoftKeyboard가 올라왔는지 확인하는 함수. iOS platform에서 SoftKeyboard가 올라왔는 지 유무를 체크해
+ * callback함수에 true 또는 false를 전달. Android platfor에서는 SoftKeyboard가 확인 할 수 있는 방법이
+ * 없어서 빈 더미 펑션임. 항상 true를 전달.
  * 
- * @param {function} callback 결과값을 전달 받을 함수.
- * @example
- * function callback(state){
- * 		alert(state);
- * };
+ * @param {function}
+ *            callback 결과값을 전달 받을 함수.
+ * @example function callback(state){ alert(state); };
  */
 PlatformUIComponent.prototype.isKeyboardShowing = function(callback) {
 	if(isValid(callback))
@@ -2881,7 +2580,8 @@ PlatformUIComponent.prototype.isKeyboardShowing = function(callback) {
 /**
  * 프로그래스 바 다이얼의 현재 프로그래스를 설정 하는 함수.
  * 
- * @param {number} progress 진행 값 0 ~ 100 사이.
+ * @param {number}
+ *            progress 진행 값 0 ~ 100 사이.
  */
 PlatformUIComponent.prototype.setProgress = function(progress) {
 	if(isValid(progress)) {
@@ -2893,12 +2593,12 @@ PlatformUIComponent.prototype.setProgress = function(progress) {
 /**
  * 선택 매뉴를 화면별로 설정하는 함.
  * 
- * @param {json} menuItems 메뉴에 보여질 항목.
+ * @param {json}
+ *            menuItems 메뉴에 보여질 항목.
  * 
- * @example
- * var menuItems = [{"title" : "선택", "callback" : "select", "icon" : "/res/image/icon1.png"},
- *                  {"title" : "추가", "callback" : "add", "icon" : ""},
- *                  {"title" : "종료", "callback" : "exit"}];
+ * @example var menuItems = [{"title" : "선택", "callback" : "select", "icon" :
+ *          "/res/image/icon1.png"}, {"title" : "추가", "callback" : "add", "icon" :
+ *          ""}, {"title" : "종료", "callback" : "exit"}];
  * 
  * platformUIComponent.setOptionMenu(menuItems);
  * 
@@ -2912,22 +2612,17 @@ PlatformUIComponent.prototype.setOptionMenu = function(menuItems) {
 /**
  * 사용자 선택 매뉴를 화면에 보여주는 함수.
  * 
- * @param {json} menuItems 메뉴에 보여질 항목. required
- * @param {json} option 추가 설정 정보. optional
+ * @param {json}
+ *            menuItems 메뉴에 보여질 항목. required
+ * @param {json}
+ *            option 추가 설정 정보. optional
  * 
- * @example
- * var menuItems = {
- * 	"items" : [
- * 		{"전체 선택" : "selectAll"},
- * 		{"전제 삭제" : "deleteAll"},
- * 		{"종료" : "finish"}
- * 	]
- * };
+ * @example var menuItems = { "items" : [ {"전체 선택" : "selectAll"}, {"전제 삭제" :
+ *          "deleteAll"}, {"종료" : "finish"} ] };
  * 
- * items : context menu에서 보여질 목록의 집합.
- * 첫 필드: contex menu에서 보여질 text.
- * 두번째 필드: 목록들중 특정 목록이 선택 되었을 때 호출될 callback의 함수 이름.
- *  
+ * items : context menu에서 보여질 목록의 집합. 첫 필드: contex menu에서 보여질 text. 두번째 필드: 목록들중
+ * 특정 목록이 선택 되었을 때 호출될 callback의 함수 이름.
+ * 
  * var option = {"title" : "This is title of context menu"};
  * 
  * title : contenx menu 상단에 보여질 context menu의 title text
@@ -2950,19 +2645,17 @@ PlatformUIComponent.prototype.showContextMenu = function(menuItems, option) {
 };
 
 /**
- * 날짜를 선택할 수 있는 다이얼 로그를 보여줍니다.
- * 기본 값으로 오늘의 날짜가 선택되어 있습니다.
+ * 날짜를 선택할 수 있는 다이얼 로그를 보여줍니다. 기본 값으로 오늘의 날짜가 선택되어 있습니다.
  * 
- * @param {function} callback 날짜를 선택 했을 시 불려질 함수.
- * @param {json} option 좌표. iPad에서만 사용 
+ * @param {function}
+ *            callback 날짜를 선택 했을 시 불려질 함수.
+ * @param {json}
+ *            option 좌표. iPad에서만 사용
  * 
- * @example
- * function callback(date) {
- * 	alert(date.year + " : " + date.month + " : " + date.day);
- * }
+ * @example function callback(date) { alert(date.year + " : " + date.month + " : " +
+ *          date.day); }
  * 
- * @example
- * var option = {"x" : number,"y" : number};
+ * @example var option = {"x" : number,"y" : number};
  */
 PlatformUIComponent.prototype.showDatePicker = function(callback, option) {
 	if(isValid(callback))
@@ -2970,23 +2663,21 @@ PlatformUIComponent.prototype.showDatePicker = function(callback, option) {
 };
 
 /**
- * 날짜를 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값을 설정 할 수 있습니다.
+ * 날짜를 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값을 설정 할 수 있습니다.
  * 
- * @param {json} date 기본 값으로 설정할 날짜 정보
- * @param {function} callback 날짜를 선택 했을 시 불려질 함수
- * @param {json} option 좌표. iPad에서만 사용 
+ * @param {json}
+ *            date 기본 값으로 설정할 날짜 정보
+ * @param {function}
+ *            callback 날짜를 선택 했을 시 불려질 함수
+ * @param {json}
+ *            option 좌표. iPad에서만 사용
  * 
- * @example
- * var date = {"year" : 2011, "month" : 10, "day" : 31};
+ * @example var date = {"year" : 2011, "month" : 10, "day" : 31};
  * 
- * @example
- * function callback(date) {
- * 	alert(date.year + " : " + date.month + " : " + date.day);
- * }
+ * @example function callback(date) { alert(date.year + " : " + date.month + " : " +
+ *          date.day); }
  * 
- * @example
- * var option = {"x" : number,"y" : number};
+ * @example var option = {"x" : number,"y" : number};
  */
 PlatformUIComponent.prototype.showDatePickerWithData = function(date, callback, option) {
 	if(isValid(date) && isValid(callback)) {
@@ -3042,28 +2733,20 @@ PlatformUIComponent.prototype.showDatePickerWithData = function(date, callback, 
 /**
  * 다중 선택 할 수 있는 다이알 로그를 보여주는 함수.
  * 
- * @param {json} selection 선택 옵션 정보
+ * @param {json}
+ *            selection 선택 옵션 정보
  * 
- * @example
- * var = selection {
- * 	"items" : [{"item1" : false}, {"item2" : false}, {"item3" : true}],
- * 	"callback" : "multiSelectCallback",
- * 	"title" : "This is a title",
- *  "x" : number, 															// iPad only
- *  "y" : number															// iPad only
- * };
+ * @example var = selection { "items" : [{"item1" : false}, {"item2" : false},
+ *          {"item3" : true}], "callback" : "multiSelectCallback", "title" :
+ *          "This is a title", "x" : number, // iPad only "y" : number // iPad
+ *          only };
  * 
- * itmes : 다이얼로그에 보여질 항목들의 집합
- * 첫 필드 : 다이얼로그에 보여질 항목의 text
- * 두번째 필드 : 다이얼로그 보여 졌을 때 선택 여부
- * callback : 다이얼로그에서 항목을 선택하고 확인 버튼을 선택 했을 때 호출될 함수명
- * title : optional. 다이얼로그 상단에 보여질 title text.
- * x, y : iPad에서 Pop-up view의 좌표
+ * itmes : 다이얼로그에 보여질 항목들의 집합 첫 필드 : 다이얼로그에 보여질 항목의 text 두번째 필드 : 다이얼로그 보여 졌을 때
+ * 선택 여부 callback : 다이얼로그에서 항목을 선택하고 확인 버튼을 선택 했을 때 호출될 함수명 title : optional.
+ * 다이얼로그 상단에 보여질 title text. x, y : iPad에서 Pop-up view의 좌표
  * 
- * function multiSelectCallback(selectedItems : Array) {
- * 	for(var i = 0; i < array.length; i++)
- * 		alert(array[i]);
- * }
+ * function multiSelectCallback(selectedItems : Array) { for(var i = 0; i <
+ * array.length; i++) alert(array[i]); }
  * 
  * selectedItems : 다이얼로그에서 선택된 item들의 집합
  */
@@ -3075,20 +2758,17 @@ PlatformUIComponent.prototype.showMultiSelect = function(selection) {
 /**
  * 프로그레스 바 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} option 옵션 정보
+ * @param {json}
+ *            option 옵션 정보
  * 
  * option : optional (null, json or empty)
  * 
- * @example
- * var option = {
- * 	"message" : "message content",		// optional
- * 	"cancelable" : true | false,		// optional
- * 	"cancelCallback" : "function name"	// optional
- * };
+ * @example var option = { "message" : "message content", // optional
+ *          "cancelable" : true | false, // optional "cancelCallback" :
+ *          "function name" // optional };
  * 
- * message : 다이얼로그에서 보여질 text
- * cancelable : 다이얼로그를 취소 할 수 있을지 여부
- * cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
+ * message : 다이얼로그에서 보여질 text cancelable : 다이얼로그를 취소 할 수 있을지 여부 cancelCallback :
+ * 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
  */
 PlatformUIComponent.prototype.showProgressBarDialog = function(option) {
 	if(isValid(option))
@@ -3100,59 +2780,49 @@ PlatformUIComponent.prototype.showProgressBarDialog = function(option) {
 /**
  * 프로그레스 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} option 옵션 정보
+ * @param {json}
+ *            option 옵션 정보
  * 
  * option : optional (null, json or empty)
  * 
- * @example
- * var option = {
- * 	"message" : "message content",		// optional
- * 	"cancelable" : true | false,		// optional
- * 	"cancelCallback" : "function name",	// optional
- * 	"color" : "white" | "grey"			// iOS only
- * };
+ * @example var option = { "message" : "message content", // optional
+ *          "cancelable" : true | false, // optional "cancelCallback" :
+ *          "function name", // optional "color" : "white" | "grey" // iOS only };
  * 
- * message : 다이얼로그에서 보여질 text (Android 전용)
- * cancelable : 다이얼로그를 취소 할 수 있을지 여부 (Android 전용)
- * cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function, cancelable이 true인 경우에만 동작
- * color : 다이얼로그의 생상(iOS 전용)
+ * message : 다이얼로그에서 보여질 text (Android 전용) cancelable : 다이얼로그를 취소 할 수 있을지 여부
+ * (Android 전용) cancelCallback : 다이얼로그가 취소 되었을때 호출될 callback function,
+ * cancelable이 true인 경우에만 동작 color : 다이얼로그의 생상(iOS 전용)
  * 
- * @example
- * showProgressDialog();
- * showProgressDialog(null);
- * showProgressDialog(option);
+ * @example showProgressDialog(); showProgressDialog(null);
+ *          showProgressDialog(option);
  * 
- * platformUIComponent.showProgressDialog(); or platformUIComponent.showProgressDialog(option);
+ * platformUIComponent.showProgressDialog(); or
+ * platformUIComponent.showProgressDialog(option);
  */
 PlatformUIComponent.prototype.showProgressDialog = function(option) {
 	if(isValid(option))
 		platformUIComponentJSNI.showProgressDialog(JSON.stringify(option));
+	else
+		platformUIComponentJSNI.showProgressDialog(null);
 };
 
 /**
  * 단일 선택 다이얼 로그를 보여주는 함수.
  * 
- * @param {json} selection 선택 옵션
+ * @param {json}
+ *            selection 선택 옵션
  * 
- * @example
- * var selection = {
- * 	"items" : ["item 1", "item 2", "item 3"],	// required
- * 	"defValue" : 0,								// required
- * 	"callback" : "singleSelectCallback",		// required
- * 	"title" : "this is a title"					// optional
- *  "x" : number, 								// iPad only
- *  "y" : number								// iPad only
- * }
+ * @example var selection = { "items" : ["item 1", "item 2", "item 3"], //
+ *          required "defValue" : 0, // required "callback" :
+ *          "singleSelectCallback", // required "title" : "this is a title" //
+ *          optional "x" : number, // iPad only "y" : number // iPad only }
  * 
- * items : 다이얼로그에 보여줄 항목의 집합
- * 필드 : 다이얼로그에 보여줄 항목의 text
- * callback : 다이얼로그에서 특정 항목이 선택 되었을때 호출될 callback 함수명
- * title : 다이얼로그 상단에 보여질 title text.
- * x, y : iPad에서 Pop-up view의 좌표
- *  
- * function singleSelectCallback(selectedIndex) {
- * 	alert("Selected index is " + selectedIndex);
- * }
+ * items : 다이얼로그에 보여줄 항목의 집합 필드 : 다이얼로그에 보여줄 항목의 text callback : 다이얼로그에서 특정 항목이
+ * 선택 되었을때 호출될 callback 함수명 title : 다이얼로그 상단에 보여질 title text. x, y : iPad에서
+ * Pop-up view의 좌표
+ * 
+ * function singleSelectCallback(selectedIndex) { alert("Selected index is " +
+ * selectedIndex); }
  * 
  * selectedIndex : 다이얼로그에서 선택된 항목의 index
  */
@@ -3162,27 +2832,21 @@ PlatformUIComponent.prototype.showSingleSelect = function(selection) {
 };
 
 /**
- * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값으로 현제 시간이 선택 됨.
+ * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값으로 현제 시간이 선택 됨.
  * 
- * @param {function} callback 선택후 불려질 함수
- * @param {json} option 12/24표기법, timePicker가 보여질 화면 좌표.
+ * @param {function}
+ *            callback 선택후 불려질 함수
+ * @param {json}
+ *            option 12/24표기법, timePicker가 보여질 화면 좌표.
  * 
- * @example
- * function callback(time) {
- * 	alert(time.hour + "" : "" + time.minute + "" : "" + time.ampm);
- * }"
+ * @example function callback(time) { alert(time.hour + "" : "" + time.minute + "" : "" +
+ *          time.ampm); }"
  * 
- * @example
- * var option = {
- *  "is24HourView" : ture | false,
- *  "x" : number, 						// iPad only
- *  "y" : number						// iPad only
- * }
+ * @example var option = { "is24HourView" : ture | false, "x" : number, // iPad
+ *          only "y" : number // iPad only }
  * 
- * x, y : iPad에서 Pop-up view의 좌표
- * 만약, option이 없다면 그대로 실행됨.
- * is24HourView가 true이면 display되어지고 데이터타입은 24HourView mode.
+ * x, y : iPad에서 Pop-up view의 좌표 만약, option이 없다면 그대로 실행됨. is24HourView가 true이면
+ * display되어지고 데이터타입은 24HourView mode.
  */
 PlatformUIComponent.prototype.showTimePicker = function(callback, option) {
 	if(isValid(callback)) {
@@ -3194,34 +2858,28 @@ PlatformUIComponent.prototype.showTimePicker = function(callback, option) {
 };
 
 /**
- * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수.
- * 기본 값을 설정 할 수 있음.
+ * 시간을 선택할 수 있는 다이얼 로그를 보여주는 함수. 기본 값을 설정 할 수 있음.
  * 
- * @param {json} time 기본 설정 시간 정보
- * @param {function} callback 선택후 불려질 함수
- * @param {json} option 12/24표기법, timePicker가 보여질 화면 좌표.
+ * @param {json}
+ *            time 기본 설정 시간 정보
+ * @param {function}
+ *            callback 선택후 불려질 함수
+ * @param {json}
+ *            option 12/24표기법, timePicker가 보여질 화면 좌표.
  * 
- * @example
- * var time = {"hour" : 7, "minute" : 16, "ampm" :"am" | "pm"}
+ * @example var time = {"hour" : 7, "minute" : 16, "ampm" :"am" | "pm"}
  * 
- * hour : 다이얼로그에서 보여줄 시간 정보
- * minute : 다이얼로그에서 보여줄 분 정보
- * ampm : 다이얼로그에서 보여줄 am/pm 정보
+ * hour : 다이얼로그에서 보여줄 시간 정보 minute : 다이얼로그에서 보여줄 분 정보 ampm : 다이얼로그에서 보여줄 am/pm
+ * 정보
  * 
- * function callback(time) {
- * 	alert(time.hour + " : " + time.minute + " : " + time.ampm);
- * }
+ * function callback(time) { alert(time.hour + " : " + time.minute + " : " +
+ * time.ampm); }
  * 
- * @example
- * var option = {
- *  "is24HourView" : ture | false,
- *  "x" : number, 						// iPad only
- *  "y" : number						// iPad only
- * }
+ * @example var option = { "is24HourView" : ture | false, "x" : number, // iPad
+ *          only "y" : number // iPad only }
  * 
- * x, y : iPad에서 Pop-up view의 좌표
- * 만약, option이 없다면 그대로 실행됨.
- * is24HourView가 true이면 display되어지고 데이터타입은 24HourView mode.
+ * x, y : iPad에서 Pop-up view의 좌표 만약, option이 없다면 그대로 실행됨. is24HourView가 true이면
+ * display되어지고 데이터타입은 24HourView mode.
  */
 PlatformUIComponent.prototype.showTimePickerWithData = function(time, callback, option) {
 	if(isValid(time) && isValid(callback)) {
@@ -3277,7 +2935,7 @@ Sensor.prototype.startAccelerometerSensor = function(successCallback, errorCallb
 			if(interval == undefined || interval == null || interval == "") {
 				deviceSensorJSNI.startAccelerometerSensor(GetFunctionName(successCallback), GetFunctionName(errorCallback), -1);
 			} else {
-				deviceSensorJSNI.startAccelerometerSensor(GetFunctionName(successCallback), GetFunctionName(errorCallback), interval);
+				deviceSensorJSNI.startAccelerometerSensor(GetFunctionName(successCallback, true), GetFunctionName(errorCallback), interval);
 			}
 		}
 	}
@@ -3293,7 +2951,7 @@ Sensor.prototype.startCompassSensor = function(successCallback, errorCallback, i
 			if(interval == undefined || interval == null || interval == "") {
 				deviceSensorJSNI.startCompassSensor(GetFunctionName(successCallback), GetFunctionName(errorCallback), -1);
 			} else {
-				deviceSensorJSNI.startCompassSensor(GetFunctionName(successCallback), GetFunctionName(errorCallback), interval);
+				deviceSensorJSNI.startCompassSensor(GetFunctionName(successCallback, true), GetFunctionName(errorCallback), interval);
 			}
 		}
 	}

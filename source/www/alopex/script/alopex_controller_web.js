@@ -7,9 +7,8 @@
  * with SK C&C. 
  */
 /**
- * @version 3.0.6
+ * @version 3.0.11
  */
-
 
 var _anomFunkMap = {};
 var _anomFunkMapNextId = 0;
@@ -777,8 +776,6 @@ Http.prototype.request = function(entity, successCallback, errorCallback) {
 			this.httpObject.open(entity["method"], entity["url"], true);
 		}
 		
-		this.httpObject.setRequestHeader("Content-Type", "UTF-8");
-		
 		for( var i = 0; i < this.httpRequestKeys.length; i++) {
 			this.httpObject.setRequestHeader(this.httpRequestKeys[i], this.httpRequestValues[i]);
 		}
@@ -1408,7 +1405,7 @@ PushNotification.prototype.getUnreadNotifications = function(callback) {
 		callback(null);
 };
 
-PushNotification.prototype.register = function(sendersID) {
+PushNotification.prototype.register = function(senderID) {
 	console.log("[PushNotification/register]");
 	notSupported("PushNotification.register");
 	
@@ -1613,7 +1610,7 @@ PlatformUIComponent.prototype.showContextMenu = function(menuItems, option) {
 	var title = document.createElement("div");
 	var span = document.createElement('span');
 	
-	this.contextMenu.setAttribute("style", "z-index:12;position:absolute; width:100%; height:100%; background: rgba(180, 180, 180, .3);");
+	this.contextMenu.setAttribute("style", "z-index:999;position:absolute; width:100%; height:100%; background: rgba(180, 180, 180, .3);");
 	wrapper.setAttribute("style", "height:212px;width:250px;position:absolute;top:50%;left:50%;margin-top:-105px;margin-left:-125px;border:1px solid black; background:#e6e6fa");
 	title.setAttribute("style", "padding-left:10px; padding-top: 5px; width:240px; height:38px; border-bottom: 1px solid black;");
 	span.setAttribute("style", "font-size:20px;");
