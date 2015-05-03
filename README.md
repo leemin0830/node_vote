@@ -3,11 +3,11 @@ Simple direct voting system for fun.
 I made this simple system for my team's hackerthon and I hope your team have fun with this system.
 If you want to introduce node.js to your team, this simple app would be nice for that purpose.
 
-# Components
+## Components
 ![image](https://cloud.githubusercontent.com/assets/5653885/7445148/9d23c718-f1e1-11e4-8907-5192515a35c6.png)
 
 
-# Rest API
+## Rest API
 | uri                | method | description                        | request                                | response                               |
 |--------------------|--------|------------------------------------|----------------------------------------|----------------------------------------|
 | /votes             | get    | get a list of vote                 | see moongoose scheme  in server/app.js | see moongoose scheme  in server/app.js |
@@ -28,14 +28,14 @@ If you want to introduce node.js to your team, this simple app would be nice for
 | /current_vote      | post   | set current vote                   |                                        |                                        |
 | /end_vote          | post   | end current vote                   |                                        |                                        |
 
-# Install
+## Install
     npm install
     
-# Run Server
+## Run Server
     node server/app.js
     
-# Vote Page
+## Vote Page
     http://{url}/html/main/main.html
 
-# Result Page (real time result)
+## Result Page (real time result)
     http://{url}/html/main/result.html
