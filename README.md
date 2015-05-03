@@ -3,6 +3,10 @@ Simple direct voting system for fun.
 I made this simple system for my team's hackerthon and I hope your team have fun with this system.
 If you want to introduce node.js to your team, this simple app would be nice for that purpose.
 
+## Prerequisition
+1. node.js
+2. mongodb 
+
 ## Components
 ![image](https://cloud.githubusercontent.com/assets/5653885/7445148/9d23c718-f1e1-11e4-8907-5192515a35c6.png)
 
