@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var restful = require('node-restful');
 var mongoose = restful.mongoose;
 
-var port = 8000;
+var port = 80;
 var currentVoteId;
 var currentCount=0;
 
