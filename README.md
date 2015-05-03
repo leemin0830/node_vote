@@ -4,10 +4,29 @@ I made this simple system for my team's hackerthon and I hope your team have fun
 If you want to introduce node.js to your team, this simple app would be nice for that purpose.
 
 # Components
-![Components](https://cloud.githubusercontent.com/assets/5653885/7444451/a553d70c-f1be-11e4-8638-f701d1c8fa48.png "Components")
+![image](https://cloud.githubusercontent.com/assets/5653885/7445148/9d23c718-f1e1-11e4-8907-5192515a35c6.png)
+
 
 # Rest API
-
+| uri                | method | description                        | request                                | response                               |
+|--------------------|--------|------------------------------------|----------------------------------------|----------------------------------------|
+| /votes             | get    | get a list of vote                 | see moongoose scheme  in server/app.js | see moongoose scheme  in server/app.js |
+| /votes             | post   | make a new vote                    |                                        |                                        |
+| /votes/:id         | get    | get an information of vote         |                                        |                                        |
+| /votes/:id         | put    | update vote                        |                                        |                                        |
+| /votes/:id         | delte  | delete vote                        |                                        |                                        |
+| /voting_papers     | get    | get a voting paper list            |                                        |                                        |
+| /voting_papers     | post   | make a new voting paper for a vote |                                        |                                        |
+| /voting_papers/:id | get    | get an information of voting paper |                                        |                                        |
+| /voting_papers/:id | put    | update voting paper                |                                        |                                        |
+| /voting_papers/:id | delete | delete voting paper                |                                        |                                        |
+| /users             | get    | get a list of users                |                                        |                                        |
+| /users             | post   | make a new user                    |                                        |                                        |
+| /users/:id         | get    | get an information of user         |                                        |                                        |
+| /users/:id         | put    | update user                        |                                        |                                        |
+| /users/:id         | delete | delete user                        |                                        |                                        |
+| /current_vote      | post   | set current vote                   |                                        |                                        |
+| /end_vote          | post   | end current vote                   |                                        |                                        |
 
 # Install
     npm install
