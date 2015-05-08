@@ -39,10 +39,10 @@ If you want to introduce node.js to your team, this simple app would be nice for
     node server/app.js
     
 ## Vote Page
-    http://{url}/html/main/main.html
+    http://{server}/html/main/main.html
 
 ## Result Page (real time result)
-    http://{url}/html/main/result.html
+    http://{server}/html/main/result.html
 
 ## Usage
 1. Make a vote event (/votes/ [post])
