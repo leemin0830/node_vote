@@ -52,5 +52,3 @@ If you want to introduce node.js to your team, this simple app would be nice for
 5. See the realtime voting result.
 
 ![vote](https://cloud.githubusercontent.com/assets/5653885/7531292/29d648a8-f592-11e4-9d91-d7c88bfa68d1.png)
-
-![vote](https://cloud.githubusercontent.com/assets/5653885/7531292/29d648a8-f592-11e4-9d91-d7c88bfa68d1.png)
