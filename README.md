@@ -43,3 +43,14 @@ If you want to introduce node.js to your team, this simple app would be nice for
 
 ## Result Page (real time result)
     http://{url}/html/main/result.html
+
+## Usage
+1. Make a vote event (/votes/ [post])
+2. Set a current vote event (/current_vote [post])
+3. Announce url for voting
+4. People votes
+5. See the realtime voting result.
+
+![vote](https://cloud.githubusercontent.com/assets/5653885/7531292/29d648a8-f592-11e4-9d91-d7c88bfa68d1.png)
+
+![vote](https://cloud.githubusercontent.com/assets/5653885/7531292/29d648a8-f592-11e4-9d91-d7c88bfa68d1.png)
